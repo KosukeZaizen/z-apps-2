@@ -1,10 +1,11 @@
-import { Card } from "@material-ui/core";
+import { Card, LinearProgress, makeStyles } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { changeAppState } from "../../../../../common/appState";
 import { useScreenSize } from "../../../../../common/hooks/useScreenSize";
 import { User, useUser } from "../../../../../common/hooks/useUser";
+import { spaceBetween } from "../../../../../common/util/Array/spaceBetween";
 import { ApplicationState } from "../../../../../store/configureStore";
 import * as vocabStore from "../../../../../store/VocabQuizStore";
 import { FullScreenShurikenProgress } from "../../../../shared/Animations/ShurikenProgress";
@@ -102,32 +103,42 @@ function Content() {
 }
 
 function LevelCard({ user }: { user: User }) {
+    const c = useStatusCardStyles();
+
     return (
-        <Card
-            style={{
-                width: "100%",
-                fontSize: "large",
-                margin: "10px 0",
-                padding: 30,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-            }}
-            className="progressCard"
-        >
+        <Card className={spaceBetween("progressCard", c.card)}>
             <h2 className="progressTitle">{"Current Status"}</h2>
 
             <table className="progressTable">
                 <tbody>
-                    <tr className="totalTr">
+                    <tr>
                         <td className="bold x-large">{"Japanese Level:"}</td>
                         <td className="alignRight total">{user.level}</td>
                     </tr>
                 </tbody>
             </table>
+
+            <div className="small">Exp: 30/100</div>
+            <LinearProgress
+                variant="determinate"
+                value={(30 / 100) * 100}
+                className={c.linearProgress}
+            />
         </Card>
     );
 }
+const useStatusCardStyles = makeStyles(() => ({
+    card: {
+        width: "100%",
+        fontSize: "large",
+        margin: "10px 0",
+        padding: 30,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    linearProgress: { width: 210, marginBottom: 10 },
+}));
 
 function logout() {
     changeAppState("signInPanelState", "signIn");
@@ -160,6 +171,8 @@ const Progress = connect(
         kanjiProgress,
         actionGameProgress,
     } = useProgress(loadAllGenres, allGenres);
+
+    const c = useStatusCardStyles();
 
     const tableContents: {
         name: string;
@@ -199,18 +212,7 @@ const Progress = connect(
     );
 
     return (
-        <Card
-            style={{
-                width: "100%",
-                fontSize: "large",
-                margin: "10px 0",
-                padding: 30,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-            }}
-            className="progressCard"
-        >
+        <Card className={spaceBetween("progressCard", c.card)}>
             <h2 className="progressTitle">{"Your Progress"}</h2>
 
             <table className="progressTable">
