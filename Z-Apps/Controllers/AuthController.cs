@@ -10,8 +10,14 @@ namespace Z_Apps.Controllers
     [Route("api/[controller]")]
     public class AuthController : Controller
     {
-        UserService userService = new UserService();
-        JwtService jwtService = new JwtService();
+        UserService userService;
+        JwtService jwtService;
+
+        public AuthController()
+        {
+            userService = new UserService();
+            jwtService = new JwtService();
+        }
 
         [HttpPost("[action]/")]
         public IActionResult Register([FromBody] RegisterParam param)

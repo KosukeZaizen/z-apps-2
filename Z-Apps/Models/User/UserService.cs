@@ -9,7 +9,11 @@ namespace Z_Apps.Models
 {
     public class UserService
     {
-        private DBCon con = new DBCon(DBType.wiki_db);
+        private DBCon con;
+        public UserService()
+        {
+            con = new DBCon(DBType.wiki_db);
+        }
 
         public bool RegisterUser(string Name, string Email, string Password)
         {
@@ -139,6 +143,57 @@ WHERE UserId = @UserId;
                     .Select(l => 100 * Math.Pow(1.1, (l - 1)))
                     .Sum()
             );
+        }
+
+        public static int GetLevelFromExp(long exp)
+        {
+            /**
+                *------------------
+                * Exp    |   Level
+                *------------------
+                * 0      ->  1
+                * 100    ->  2
+                * 210    ->  3
+                * 331    ->  4
+                * 465    ->  5
+                * ...
+                * 14864  ->  30
+                * 105719 ->  50
+                * 116391 ->  51
+                * 12526830 -> 100
+                * 13779613 -> 101
+                **/
+
+            var _exp = exp > 0 ? exp : 0;
+
+            int i = 1;
+            while (true)
+            {
+                if (UserService.GetMinimumExpForTheLevel(i + 1) > _exp)
+                {
+                    return i;
+                }
+                i++;
+            }
+        }
+
+        public ExpProgress GetExpProgress(long exp)
+        {
+            var currentLevel = GetLevelFromExp(exp);
+            var nextLevel = currentLevel + 1;
+            var minimumExpForCurrentLevel = GetMinimumExpForTheLevel(currentLevel);
+            var expForNextLevel = GetMinimumExpForTheLevel(nextLevel);
+
+            return new ExpProgress()
+            {
+                expProgress = exp - minimumExpForCurrentLevel,
+                necessaryExp = expForNextLevel - minimumExpForCurrentLevel
+            };
+        }
+        public class ExpProgress
+        {
+            public long expProgress { get; set; }
+            public long necessaryExp { get; set; }
         }
     }
 }

@@ -1,6 +1,6 @@
 using Z_Apps.Models;
 
-namespace UnitTest.Auth
+namespace UnitTest.UserTest
 {
     [TestClass]
     public class UserTest

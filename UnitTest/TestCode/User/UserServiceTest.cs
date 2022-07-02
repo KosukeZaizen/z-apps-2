@@ -1,6 +1,6 @@
 using Z_Apps.Models;
 
-namespace UnitTest.Auth
+namespace UnitTest.UserTest
 {
     [TestClass]
     public class UserServiceTest
@@ -124,6 +124,66 @@ namespace UnitTest.Auth
         public void GetMinimumExpForTheLevel_testLv100()
         {
             Assert.AreEqual(12526830, UserService.GetMinimumExpForTheLevel(100));
+        }
+
+        [TestMethod]
+        public void GetExpProgress_0()
+        {
+            var service = new UserService();
+            var progress = service.GetExpProgress(0);
+
+            Assert.AreEqual(0, progress.expProgress);
+            Assert.AreEqual(100, progress.necessaryExp);
+        }
+
+        [TestMethod]
+        public void GetExpProgress_45()
+        {
+            var service = new UserService();
+            var progress = service.GetExpProgress(45);
+
+            Assert.AreEqual(45, progress.expProgress);
+            Assert.AreEqual(100, progress.necessaryExp);
+        }
+
+        [TestMethod]
+        public void GetExpProgress_100()
+        {
+            var service = new UserService();
+            var progress = service.GetExpProgress(100);
+
+            Assert.AreEqual(0, progress.expProgress);
+            Assert.AreEqual(110, progress.necessaryExp);
+        }
+
+        [TestMethod]
+        public void GetExpProgress_209()
+        {
+            var service = new UserService();
+            var progress = service.GetExpProgress(209);
+
+            Assert.AreEqual(109, progress.expProgress);
+            Assert.AreEqual(110, progress.necessaryExp);
+        }
+
+        [TestMethod]
+        public void GetExpProgress_12526830()
+        {
+            var service = new UserService();
+            var progress = service.GetExpProgress(12526830);
+
+            Assert.AreEqual(0, progress.expProgress);
+            Assert.AreEqual(1252783, progress.necessaryExp);
+        }
+
+        [TestMethod]
+        public void GetExpProgress_13779612()
+        {
+            var service = new UserService();
+            var progress = service.GetExpProgress(13779612);
+
+            Assert.AreEqual(1252782, progress.expProgress);
+            Assert.AreEqual(1252783, progress.necessaryExp);
         }
     }
 }
