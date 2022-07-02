@@ -227,7 +227,7 @@ export function Quiz1({
                     {consts.OTHER_KANA_TYPE} Quiz
                 </button>
             </Link>
-            {/* <ResultDialog
+            <ResultDialog
                 open={isResultDialogShown || true} // TODO: remove "true"
                 onClose={() => {
                     setResultDialogShown(false);
@@ -236,7 +236,7 @@ export function Quiz1({
                 // maxChar={maxChar} TODO: uncomment
                 score={9}
                 maxChar={10}
-            /> */}
+            />
         </div>
     );
 }

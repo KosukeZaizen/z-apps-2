@@ -90,7 +90,7 @@ function Content() {
                     </div>
                 }
             />
-            {/* <LevelCard user={user} /> */}
+            <LevelCard user={user} />
             <Progress />
             <button
                 className="btn btn-dark btn-block logoutButton"
