@@ -49,6 +49,7 @@ interface Props {
     changeKanaStatus: (romaji: keyof KanaList, result: boolean) => void;
     font: FontClassName;
     screenWidth: number;
+    setScore: (score: number) => void;
 }
 interface State {
     dialogState: DialogState;
@@ -152,6 +153,7 @@ export class Quiz2 extends React.Component<Props, State> {
             changePage,
             consts: { KANA_LIST },
             kanaSounds,
+            setScore,
         } = this.props;
 
         if (dialogState === "closed") {
@@ -187,6 +189,7 @@ export class Quiz2 extends React.Component<Props, State> {
         const gameCount = newCorrect + Object.keys(newIncorrectList).length;
         if (gameCount === maxChar) {
             // Finish the game
+            setScore(newCorrect);
             changePage(3);
             return;
         }
