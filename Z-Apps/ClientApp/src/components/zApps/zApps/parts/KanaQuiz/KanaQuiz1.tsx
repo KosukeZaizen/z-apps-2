@@ -3,14 +3,11 @@ import { CSSProperties, useEffect, useState } from "react";
 import { changeAppState } from "../../../../../common/appState";
 import { BLOB_URL } from "../../../../../common/consts";
 import { useAbTest } from "../../../../../common/hooks/useAbTest";
-import { useScreenSize } from "../../../../../common/hooks/useScreenSize";
 import { useUser } from "../../../../../common/hooks/useUser";
-import { spaceBetween } from "../../../../../common/util/Array/spaceBetween";
 import { LazyExecutor, LazyLoad } from "../../../../../common/util/LazyLoad";
 import ShurikenProgress from "../../../../shared/Animations/ShurikenProgress";
 import { AuthorArea } from "../../../../shared/Author";
-import CharacterComment from "../../../../shared/CharacterComment";
-import { CenterDialog } from "../../../../shared/Dialog/CenterDialog";
+import { ResultExpDialog } from "../../../../shared/Dialog/ResultExpDialog";
 import { AnchorLink } from "../../../../shared/HashScroll";
 import { Link } from "../../../../shared/Link/LinkWithYouTube";
 import { Markdown } from "../../../../shared/Markdown";
@@ -282,61 +279,25 @@ function ResultDialog({
     score: number;
     maxChar: number;
 }) {
-    const c = useResultDialogStyles();
-    const { screenWidth } = useScreenSize();
-    const exp = score * 10;
-
     return (
-        <CenterDialog open={open} onClose={onClose}>
-            <div className={c.container}>
+        <ResultExpDialog
+            open={open}
+            onClose={onClose}
+            score={score}
+            maxChar={maxChar}
+            exp={10 * score}
+            topSmallMessage={
                 <div>
-                    <div>
-                        Your Score: {score}/{maxChar}
-                    </div>
-                    <div className={spaceBetween("x-large", "bold")}>
-                        You got {exp} EXP!
-                    </div>
+                    Your Score: {score}/{maxChar}
                 </div>
-                <CharacterComment
-                    imgNumber={1}
-                    screenWidth={Math.min(300, screenWidth)}
-                    comment={
-                        <div>
-                            Receive the EXP by making a free lifetime account!
-                        </div>
-                    }
-                    style={{ margin: 0 }}
-                />
-
-                <div>
-                    <button className={spaceBetween("btn btn-primary")}>
-                        Sign up
-                    </button>
-                </div>
-
-                <Card className={spaceBetween("small", c.expectedLevel)}>
-                    {
-                        "Now you have 120 EXP, and you'll be Lv.2 if you make an account."
-                    }
-                </Card>
-            </div>
-        </CenterDialog>
+            }
+            characterComment={
+                "Receive the EXP by making a free lifetime account!"
+            }
+            buttonLabel={"Sign up"}
+        />
     );
 }
-const useResultDialogStyles = makeStyles(theme => ({
-    container: {
-        margin: "0 5px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: 263,
-    },
-    expectedLevel: {
-        backgroundColor: theme.palette.grey[200],
-        borderRadius: 13,
-    },
-}));
 
 function SignUpButton({
     kanaType,

@@ -103,9 +103,9 @@ const useResultDialogStyles = makeStyles(() => ({
     opacity1: { opacity: 1 },
     card: {
         width: "100%",
-        maxWidth: 300,
+        maxWidth: 350,
         height: "100%",
-        maxHeight: 300,
+        maxHeight: 350,
         backgroundColor: "white",
         borderRadius: 16,
     },
