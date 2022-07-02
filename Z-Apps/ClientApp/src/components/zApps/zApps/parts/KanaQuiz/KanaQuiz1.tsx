@@ -228,12 +228,12 @@ export function Quiz1({
                 </button>
             </Link>
             <ResultDialog
-                open={isResultDialogShown || true}
+                open={isResultDialogShown || true} // TODO: remove "true"
                 onClose={() => {
                     setResultDialogShown(false);
                 }}
-                // score={score}
-                // maxChar={maxChar}
+                // score={score} TODO: uncomment
+                // maxChar={maxChar} TODO: uncomment
                 score={9}
                 maxChar={10}
             />
