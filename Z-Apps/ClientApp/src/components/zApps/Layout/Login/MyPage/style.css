@@ -1,0 +1,28 @@
+.progressTable tr {
+    line-height: 2;
+}
+
+.progressTable td.alignRight {
+    text-align: right;
+}
+
+.progressTable .totalTr td {
+    padding-bottom: 5px;
+}
+
+.progressTitle {
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.progressCard a {
+    font-weight: bold;
+    padding-left: 7px;
+    font-size: x-large;
+}
+
+.progressCard .total {
+    font-weight: bold;
+    padding-left: 7px;
+    font-size: x-large;
+}

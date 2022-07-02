@@ -1,0 +1,156 @@
+.markdownArea:not(.exclude) {
+    text-align: left;
+    font-size: large;
+}
+
+.markdownArea li {
+    font-size: large;
+}
+
+.markdownArea em {
+    background-color: #ffff66;
+    font-style: normal;
+    text-shadow: initial;
+}
+
+.markdownArea blockquote {
+    font-size: 15px;
+    color: #6a737d;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 5px 10px;
+    border-left: 10px solid #eee;
+}
+.markdownArea blockquote span {
+    margin: 0 !important;
+}
+
+@media screen and (max-width: 599px) {
+    .markdownArea h2 {
+        margin: 55px 0 25px;
+        padding: 20px;
+        color: white;
+        background: linear-gradient(to top, #035c1d, #047c28);
+        border-radius: 5px;
+        text-shadow: initial;
+    }
+    .markdownArea h3 {
+        margin: 45px 0 20px;
+        border-left: solid 10px #035c1d;
+        border-bottom: solid 2px #035c1d;
+        padding: 8px;
+        border-radius: 2px;
+    }
+}
+@media screen and (min-width: 600px) {
+    .markdownArea h2 {
+        margin: 75px 0 25px;
+        padding: 20px;
+        color: white;
+        background: linear-gradient(to top, #035c1d, #047c28);
+        border-radius: 5px;
+        text-shadow: initial;
+    }
+    .markdownArea h3 {
+        margin: 65px 0 20px;
+        border-left: solid 10px #035c1d;
+        border-bottom: solid 2px #035c1d;
+        padding: 8px;
+        border-radius: 2px;
+    }
+}
+
+.markdownArea h4 {
+    margin: 45px 0 20px;
+    border-left: solid 8px #035c1d;
+    padding: 5px;
+    border-radius: 2px;
+}
+
+.markdownArea img.renderedImg {
+    display: inline-block;
+    margin: 0px auto 20px;
+    width: 100%;
+    max-height: 450px;
+    object-fit: contain;
+    position: relative;
+    filter: drop-shadow(0 0 3px white) drop-shadow(0 0 6px white)
+        drop-shadow(0 0 9px white) drop-shadow(0 0 10px white);
+}
+
+.markdownArea table:not(.exclude) {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background-color: white;
+    text-shadow: initial;
+}
+
+.markdownArea table:not(.exclude) th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.markdownArea table:not(.exclude) th:last-child {
+    border-top-right-radius: 10px;
+    border-right: 1px solid #035c1d;
+}
+
+.markdownArea table:not(.exclude) th {
+    text-align: center;
+    color: white;
+    background: linear-gradient(#035c1d, #047c28);
+    border-left: 1px solid #3c6690;
+    border-top: 1px solid #3c6690;
+    border-bottom: 1px solid #3c6690;
+    box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.3) inset;
+    padding: 10px 5px;
+}
+
+.markdownArea table:not(.exclude) td {
+    text-align: center;
+    border-left: 1px solid #a8b7c5;
+    border-bottom: 1px solid #a8b7c5;
+    border-top: none;
+    box-shadow: 0px -3px 5px 1px #eee inset;
+    padding: 10px 5px;
+}
+
+.markdownArea table:not(.exclude) td:last-child {
+    border-right: 1px solid #a8b7c5;
+}
+
+.markdownArea table:not(.exclude) tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+.markdownArea table:not(.exclude) tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+.markdownArea hr {
+    margin: 30px 0;
+}
+
+.markdownArea .greenBox {
+    position: relative;
+    padding: 24px 24px 12px 24px;
+    color: black;
+    border-radius: 10px;
+    background: #e3f5d8;
+    margin: 15px 1px 25px;
+    display: inline-block;
+    text-shadow: initial;
+}
+
+.markdownArea .answerBox {
+    position: relative;
+    padding: 24px 24px 12px 24px;
+    color: black;
+    border-radius: 0 10px 10px 10px;
+    background: #e3f5d8;
+    margin: 0;
+    display: inline-block;
+    text-shadow: initial;
+}

@@ -1,0 +1,131 @@
+import { EasyAudioPlayer } from "../../../../../common/util/Audio/EasyAudioPlayer";
+
+export type KanaType = "Hiragana" | "Katakana";
+
+export type KanaList = {
+    a: string;
+    i: string;
+    u: string;
+    e: string;
+    o: string;
+    ka: string;
+    ki: string;
+    ku: string;
+    ke: string;
+    ko: string;
+    sa: string;
+    shi: string;
+    su: string;
+    se: string;
+    so: string;
+    ta: string;
+    chi: string;
+    tsu: string;
+    te: string;
+    to: string;
+    na: string;
+    ni: string;
+    nu: string;
+    ne: string;
+    no: string;
+    ha: string;
+    hi: string;
+    fu: string;
+    he: string;
+    ho: string;
+    ma: string;
+    mi: string;
+    mu: string;
+    me: string;
+    mo: string;
+    ya: string;
+    yu: string;
+    yo: string;
+    ra: string;
+    ri: string;
+    ru: string;
+    re: string;
+    ro: string;
+    wa: string;
+    _wo: string;
+    n: string;
+    ga: string;
+    gi: string;
+    gu: string;
+    ge: string;
+    go: string;
+    za: string;
+    ji: string;
+    zu: string;
+    ze: string;
+    zo: string;
+    da: string;
+    _ji: string;
+    _zu: string;
+    de: string;
+    do: string;
+    ba: string;
+    bi: string;
+    bu: string;
+    be: string;
+    bo: string;
+    pa: string;
+    pi: string;
+    pu: string;
+    pe: string;
+    po: string;
+    kya: string;
+    kyu: string;
+    kyo: string;
+    sha: string;
+    shu: string;
+    sho: string;
+    cha: string;
+    chu: string;
+    cho: string;
+    nya: string;
+    nyu: string;
+    nyo: string;
+    hya: string;
+    hyu: string;
+    hyo: string;
+    mya: string;
+    myu: string;
+    myo: string;
+    rya: string;
+    ryu: string;
+    ryo: string;
+    gya: string;
+    gyu: string;
+    gyo: string;
+    ja: string;
+    ju: string;
+    jo: string;
+    bya: string;
+    byu: string;
+    byo: string;
+    pya: string;
+    pyu: string;
+    pyo: string;
+};
+
+export type Romaji = keyof KanaList;
+
+export type KanaSounds = {
+    [key in keyof KanaList]: EasyAudioPlayer;
+};
+
+export type KanaStatus = Partial<{
+    [key in keyof KanaList]: boolean;
+}>;
+
+export type KanaQuizConsts = {
+    KANA_TYPE: KanaType;
+    OTHER_KANA_TYPE: KanaType;
+    KANA_LIST: KanaList;
+    MARK_DOWN: string;
+};
+
+export type PageNum = 1 | 2 | 3;
+
+export type FontClassName = "ming-font" | "gothic-font";

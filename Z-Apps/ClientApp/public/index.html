@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@LingualNinja" />
+    <meta property="og:image" content="https://__url__/ogp-img.png" />
+    <meta property="og:url" content="__url__" />
+    <meta property="og:type" content="__content_type__" />
+    <meta property="og:title" content="__title__" />
+    <meta property="og:image:alt" content="__title__" />
+    <meta property="og:description" content="__description__" />
+    <meta property="og:site_name" content="__title__" />
+    <meta property="fb:app_id" content="217853132566874" />
+    <meta property="fb:page_id" content="491712431290062" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <base href="%PUBLIC_URL%/" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" async>
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" async>
+    <link rel="apple-touch-icon-precomposed" href="%PUBLIC_URL%/favicon.ico" async>
+    <title>__title__</title>
+</head>
+
+<body>
+    <noscript>
+        You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="loading-animation-before-js-loading">
+        <style>
+            #loading-animation-before-js-loading {
+                position: fixed;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 300ms;
+                font-weight: bold;
+                opacity: 1;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                animation-name: fontGrow;
+                animation-duration: 3s;
+                white-space: nowrap;
+            }
+
+            @media screen and (max-width: 600px) {
+                #loading-animation-before-js-loading {
+                    font-size: 4rem;
+                }
+                @keyframes fontGrow {
+                    from {
+                        font-size: 0rem;
+                    }
+
+                    to {
+                        font-size: 4rem;
+                    }
+                }
+            }
+
+            @media screen and (min-width: 600px) {
+                #loading-animation-before-js-loading {
+                    font-size: 8rem;
+                }
+                @keyframes fontGrow {
+                    from {
+                        font-size: 0rem;
+                    }
+
+                    to {
+                        font-size: 8rem;
+                    }
+                }
+            }
+        </style>
+        Lingual Ninja
+    </div>
+    <div id="root"></div>
+</body>
+
+</html>
