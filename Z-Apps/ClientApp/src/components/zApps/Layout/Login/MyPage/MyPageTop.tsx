@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { changeAppState } from "../../../../../common/appState";
 import { useScreenSize } from "../../../../../common/hooks/useScreenSize";
-import { useUser } from "../../../../../common/hooks/useUser";
+import { User, useUser } from "../../../../../common/hooks/useUser";
 import { ApplicationState } from "../../../../../store/configureStore";
 import * as vocabStore from "../../../../../store/VocabQuizStore";
 import { FullScreenShurikenProgress } from "../../../../shared/Animations/ShurikenProgress";
@@ -89,6 +89,7 @@ function Content() {
                     </div>
                 }
             />
+            <LevelCard user={user} />
             <Progress />
             <button
                 className="btn btn-dark btn-block logoutButton"
@@ -97,6 +98,34 @@ function Content() {
                 Logout
             </button>
         </div>
+    );
+}
+
+function LevelCard({ user }: { user: User }) {
+    return (
+        <Card
+            style={{
+                width: "100%",
+                fontSize: "large",
+                margin: "10px 0",
+                padding: 30,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+            }}
+            className="progressCard"
+        >
+            <h2 className="progressTitle">{"Current Status"}</h2>
+
+            <table className="progressTable">
+                <tbody>
+                    <tr className="totalTr">
+                        <td className="bold x-large">{"Japanese Level:"}</td>
+                        <td className="alignRight total">{user.level}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </Card>
     );
 }
 
