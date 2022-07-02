@@ -8,6 +8,7 @@ export type User = {
     name: string;
     email: string;
     progress: string | null;
+    level: number;
 };
 
 let isFetchUnnecessary = false;
