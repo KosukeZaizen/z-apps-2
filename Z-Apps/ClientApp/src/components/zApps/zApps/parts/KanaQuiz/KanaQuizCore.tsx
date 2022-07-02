@@ -12,7 +12,7 @@ import {
     KanaStatus,
     KanaType,
     PageNum,
-    Romaji,
+    Romaji
 } from "./types";
 
 export const BUTTON_PRIMARY = "btn btn-primary btn-lg btn-block hoverScale05";
@@ -59,8 +59,8 @@ export function QuizCore({ consts }: Props) {
             return (
                 <Quiz1
                     consts={consts}
-                    changePage={i => setPageNum(i)}
-                    setMaxChar={i => setMaxChar(i)}
+                    changePage={setPageNum}
+                    setMaxChar={setMaxChar}
                     kanaStatus={kanaStatus}
                     kanaSounds={kanaSounds}
                     isQuizResult={pageNum === 3}
@@ -75,7 +75,7 @@ export function QuizCore({ consts }: Props) {
                 <Quiz2
                     consts={consts}
                     maxChar={maxChar}
-                    changePage={i => setPageNum(i)}
+                    changePage={setPageNum}
                     kanaSounds={kanaSounds}
                     kanaStatus={kanaStatus}
                     changeKanaStatus={changeKanaStatus}
