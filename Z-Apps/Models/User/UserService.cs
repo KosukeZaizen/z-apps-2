@@ -36,7 +36,7 @@ INSERT INTO ZAppsUser (UserId, Name, Email, Password) VALUES
         public User GetUserByEmail(string Email)
         {
             string sql = @"
-SELECT UserId, Name, Email, Password, Progress, Exp
+SELECT UserId, Name, Email, Password, Progress, Xp
 FROM ZAppsUser
 WHERE Email = @Email;
 ";
@@ -56,14 +56,14 @@ WHERE Email = @Email;
                 Email = (string)result["Email"],
                 Password = (string)result["Password"],
                 Progress = (string)result["Progress"],
-                Exp = (long)result["Exp"],
+                Xp = (long)result["Xp"],
             };
         }
 
         public User GetUserById(int UserId)
         {
             string sql = @"
-SELECT UserId, Name, Email, Password, Progress, Exp
+SELECT UserId, Name, Email, Password, Progress, Xp
 FROM ZAppsUser
 WHERE UserId = @UserId;
 ";
@@ -83,7 +83,7 @@ WHERE UserId = @UserId;
                 Email = (string)result["Email"],
                 Password = (string)result["Password"],
                 Progress = (string)result["Progress"],
-                Exp = (long)result["Exp"],
+                Xp = (long)result["Xp"],
             };
         }
 
@@ -135,7 +135,7 @@ WHERE UserId = @UserId;
             return null;
         }
 
-        public static long GetMinimumExpForTheLevel(int level)
+        public static long GetMinimumXpForTheLevel(int level)
         {
             return (long)Math.Ceiling(
                 Enumerable
@@ -145,11 +145,11 @@ WHERE UserId = @UserId;
             );
         }
 
-        public static int GetLevelFromExp(long exp)
+        public static int GetLevelFromXp(long xp)
         {
             /**
                 *------------------
-                * Exp    |   Level
+                * XP    |   Level
                 *------------------
                 * 0      ->  1
                 * 100    ->  2
@@ -164,12 +164,12 @@ WHERE UserId = @UserId;
                 * 13779613 -> 101
                 **/
 
-            var _exp = exp > 0 ? exp : 0;
+            var _xp = xp > 0 ? xp : 0;
 
             int i = 1;
             while (true)
             {
-                if (UserService.GetMinimumExpForTheLevel(i + 1) > _exp)
+                if (UserService.GetMinimumXpForTheLevel(i + 1) > _xp)
                 {
                     return i;
                 }
@@ -177,23 +177,23 @@ WHERE UserId = @UserId;
             }
         }
 
-        public ExpProgress GetExpProgress(long exp)
+        public XpProgress GetXpProgress(long Xp)
         {
-            var currentLevel = GetLevelFromExp(exp);
+            var currentLevel = GetLevelFromXp(Xp);
             var nextLevel = currentLevel + 1;
-            var minimumExpForCurrentLevel = GetMinimumExpForTheLevel(currentLevel);
-            var expForNextLevel = GetMinimumExpForTheLevel(nextLevel);
+            var minimumXpForCurrentLevel = GetMinimumXpForTheLevel(currentLevel);
+            var xpForNextLevel = GetMinimumXpForTheLevel(nextLevel);
 
-            return new ExpProgress()
+            return new XpProgress()
             {
-                expProgress = exp - minimumExpForCurrentLevel,
-                necessaryExp = expForNextLevel - minimumExpForCurrentLevel
+                xpProgress = Xp - minimumXpForCurrentLevel,
+                necessaryXp = xpForNextLevel - minimumXpForCurrentLevel
             };
         }
-        public class ExpProgress
+        public class XpProgress
         {
-            public long expProgress { get; set; }
-            public long necessaryExp { get; set; }
+            public long xpProgress { get; set; }
+            public long necessaryXp { get; set; }
         }
     }
 }

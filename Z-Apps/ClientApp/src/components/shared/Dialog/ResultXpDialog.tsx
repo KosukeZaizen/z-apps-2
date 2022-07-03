@@ -5,10 +5,10 @@ import { spaceBetween } from "../../../common/util/Array/spaceBetween";
 import CharacterComment from "../CharacterComment";
 import { CenterDialog } from "./CenterDialog";
 
-export function ResultExpDialog({
+export function ResultXpDialog({
     open,
     onClose,
-    exp,
+    xp,
     topSmallMessage,
     characterComment,
     buttonLabel,
@@ -17,7 +17,7 @@ export function ResultExpDialog({
     onClose: () => void;
     score: number;
     maxChar: number;
-    exp: number;
+    xp: number;
     topSmallMessage: ReactNode;
     characterComment: ReactNode;
     buttonLabel: string;
@@ -31,7 +31,7 @@ export function ResultExpDialog({
                 <div>
                     {topSmallMessage}
                     <h2 className="bold">
-                        You got <span className={c.exp}>{exp}</span> EXP!
+                        You got <span className={c.xp}>{xp}</span> XP!
                     </h2>
                 </div>
                 <CharacterComment
@@ -49,7 +49,7 @@ export function ResultExpDialog({
 
                 <Card className={spaceBetween("small", c.expectedLevel)}>
                     {
-                        "Now you have 120 EXP, and you'll be Lv.2 if you make an account."
+                        "Now you have 120 XP, and you'll be Lv.2 if you make an account."
                     }
                 </Card>
             </div>
@@ -70,5 +70,5 @@ const useResultDialogStyles = makeStyles(theme => ({
         borderRadius: 10,
         padding: 5,
     },
-    exp: { color: theme.palette.secondary.main },
+    xp: { color: theme.palette.secondary.main },
 }));

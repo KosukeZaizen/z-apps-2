@@ -6,44 +6,44 @@ namespace UnitTest.UserTest
     public class UserTest
     {
         [TestMethod]
-        public void Level_NoExp()
+        public void Level_NoXp()
         {
             var user = new User();
             Assert.AreEqual(1, user.Level);
         }
 
         [TestMethod]
-        public void Level_MinusExp()
+        public void Level_MinusXp()
         {
             var user1 = new User()
             {
-                Exp = -1
+                Xp = -1
             };
             Assert.AreEqual(1, user1.Level);
 
             var user2 = new User()
             {
-                Exp = -1000
+                Xp = -1000
             };
             Assert.AreEqual(1, user2.Level);
         }
 
         [TestMethod]
-        public void Level_Exp0()
+        public void Level_Xp0()
         {
             var user = new User()
             {
-                Exp = 0
+                Xp = 0
             };
             Assert.AreEqual(1, user.Level);
         }
 
         [TestMethod]
-        public void Level_Exp1()
+        public void Level_Xp1()
         {
             var user = new User()
             {
-                Exp = 1
+                Xp = 1
             };
             Assert.AreEqual(1, user.Level);
         }
@@ -53,7 +53,7 @@ namespace UnitTest.UserTest
         {
             var user = new User()
             {
-                Exp = 99
+                Xp = 99
             };
             Assert.AreEqual(1, user.Level);
         }
@@ -63,13 +63,13 @@ namespace UnitTest.UserTest
         {
             var user1 = new User()
             {
-                Exp = 100
+                Xp = 100
             };
             Assert.AreEqual(2, user1.Level);
 
             var user2 = new User()
             {
-                Exp = 209
+                Xp = 209
             };
             Assert.AreEqual(2, user2.Level);
         }
@@ -79,13 +79,13 @@ namespace UnitTest.UserTest
         {
             var user1 = new User()
             {
-                Exp = 210
+                Xp = 210
             };
             Assert.AreEqual(3, user1.Level);
 
             var user2 = new User()
             {
-                Exp = 330
+                Xp = 330
             };
             Assert.AreEqual(3, user2.Level);
         }
@@ -95,13 +95,13 @@ namespace UnitTest.UserTest
         {
             var user1 = new User()
             {
-                Exp = 331
+                Xp = 331
             };
             Assert.AreEqual(4, user1.Level);
 
             var user2 = new User()
             {
-                Exp = 464
+                Xp = 464
             };
             Assert.AreEqual(4, user2.Level);
         }
@@ -111,13 +111,13 @@ namespace UnitTest.UserTest
         {
             var user1 = new User()
             {
-                Exp = 14863
+                Xp = 14863
             };
             Assert.AreEqual(29, user1.Level);
 
             var user2 = new User()
             {
-                Exp = 14864
+                Xp = 14864
             };
             Assert.AreEqual(30, user2.Level);
         }
@@ -127,13 +127,13 @@ namespace UnitTest.UserTest
         {
             var user1 = new User()
             {
-                Exp = 105718
+                Xp = 105718
             };
             Assert.AreEqual(49, user1.Level);
 
             var user2 = new User()
             {
-                Exp = 105719
+                Xp = 105719
             };
             Assert.AreEqual(50, user2.Level);
         }
@@ -143,13 +143,13 @@ namespace UnitTest.UserTest
         {
             var user1 = new User()
             {
-                Exp = 116390
+                Xp = 116390
             };
             Assert.AreEqual(50, user1.Level);
 
             var user2 = new User()
             {
-                Exp = 116391
+                Xp = 116391
             };
             Assert.AreEqual(51, user2.Level);
         }
@@ -159,13 +159,13 @@ namespace UnitTest.UserTest
         {
             var user1 = new User()
             {
-                Exp = 12526829
+                Xp = 12526829
             };
             Assert.AreEqual(99, user1.Level);
 
             var user2 = new User()
             {
-                Exp = 12526830
+                Xp = 12526830
             };
             Assert.AreEqual(100, user2.Level);
         }
@@ -175,13 +175,13 @@ namespace UnitTest.UserTest
         {
             var user1 = new User()
             {
-                Exp = 13779612
+                Xp = 13779612
             };
             Assert.AreEqual(100, user1.Level);
 
             var user2 = new User()
             {
-                Exp = 13779613
+                Xp = 13779613
             };
             Assert.AreEqual(101, user2.Level);
         }
@@ -191,17 +191,17 @@ namespace UnitTest.UserTest
         {
             for (int l = 2; l <= 100; l++)
             {
-                var minExp = UserService.GetMinimumExpForTheLevel(l);
+                var minXp = UserService.GetMinimumXpForTheLevel(l);
 
                 var user1 = new User()
                 {
-                    Exp = minExp - 1
+                    Xp = minXp - 1
                 };
                 Assert.AreEqual(l - 1, user1.Level);
 
                 var user2 = new User()
                 {
-                    Exp = minExp
+                    Xp = minXp
                 };
                 Assert.AreEqual(l, user2.Level);
             }

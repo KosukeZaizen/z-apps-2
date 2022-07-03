@@ -27,7 +27,7 @@ namespace Z_Apps.Models
         {
             get; set;
         }
-        public long Exp
+        public long Xp
         {
             get; set;
         }
@@ -35,7 +35,7 @@ namespace Z_Apps.Models
         {
             get
             {
-                return UserService.GetLevelFromExp(Exp);
+                return UserService.GetLevelFromXp(Xp);
             }
         }
     }

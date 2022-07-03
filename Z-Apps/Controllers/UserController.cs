@@ -15,9 +15,9 @@ namespace Z_Apps.Controllers
         }
 
         [HttpGet("[action]/")]
-        public ExpProgress GetExpProgress(long exp)
+        public XpProgress GetXpProgress(long exp)
         {
-            return userService.GetExpProgress(exp);
+            return userService.GetXpProgress(exp);
         }
     }
 }

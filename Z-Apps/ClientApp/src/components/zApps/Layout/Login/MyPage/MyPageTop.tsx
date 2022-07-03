@@ -118,7 +118,7 @@ function LevelCard({ user }: { user: User }) {
                 </tbody>
             </table>
 
-            <div className="small">Exp: 30/100</div>
+            <div className="small">Xp: 30/100</div>
             <LinearProgress
                 variant="determinate"
                 value={(30 / 100) * 100}

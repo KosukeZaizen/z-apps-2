@@ -91,7 +91,7 @@ namespace Z_Apps.Controllers
             {
                 get; set;
             }
-            public long InitialExp
+            public long InitialXp
             {
                 get; set;
             }

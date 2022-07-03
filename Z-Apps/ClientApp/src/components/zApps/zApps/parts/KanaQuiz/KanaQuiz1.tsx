@@ -7,7 +7,7 @@ import { useUser } from "../../../../../common/hooks/useUser";
 import { LazyExecutor, LazyLoad } from "../../../../../common/util/LazyLoad";
 import ShurikenProgress from "../../../../shared/Animations/ShurikenProgress";
 import { AuthorArea } from "../../../../shared/Author";
-import { ResultExpDialog } from "../../../../shared/Dialog/ResultExpDialog";
+import { ResultXpDialog } from "../../../../shared/Dialog/ResultXpDialog";
 import { AnchorLink } from "../../../../shared/HashScroll";
 import { Link } from "../../../../shared/Link/LinkWithYouTube";
 import { Markdown } from "../../../../shared/Markdown";
@@ -280,19 +280,19 @@ function ResultDialog({
     maxChar: number;
 }) {
     return (
-        <ResultExpDialog
+        <ResultXpDialog
             open={open}
             onClose={onClose}
             score={score}
             maxChar={maxChar}
-            exp={10 * score}
+            xp={10 * score}
             topSmallMessage={
                 <div>
                     Your Score: {score}/{maxChar}
                 </div>
             }
             characterComment={
-                "Receive the EXP by making a free lifetime account!"
+                "Receive the XP by making a free lifetime account!"
             }
             buttonLabel={"Sign up"}
         />
