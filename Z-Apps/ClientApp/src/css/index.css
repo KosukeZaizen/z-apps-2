@@ -72,15 +72,12 @@ abbr[title] {
 .small {
     font-size: small;
 }
-
 .large {
     font-size: large;
 }
-
 .x-large {
     font-size: x-large;
 }
-
 .xx-large {
     font-size: xx-large;
 }
@@ -104,4 +101,14 @@ abbr[title] {
 */
 .fullWidth {
     width: 100%;
+}
+
+/*
+    opacity
+*/
+.opacity0 {
+    opacity: 0;
+}
+.opacity1 {
+    opacity: 1;
 }

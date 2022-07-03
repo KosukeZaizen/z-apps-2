@@ -17,7 +17,7 @@ import {
     BUTTON_DANGER,
     BUTTON_DARK,
     BUTTON_PRIMARY,
-    BUTTON_SUCCESS
+    BUTTON_SUCCESS,
 } from "./KanaQuizCore";
 import {
     FontClassName,
@@ -27,7 +27,7 @@ import {
     KanaStatus,
     KanaType,
     PageNum,
-    Romaji
+    Romaji,
 } from "./types";
 
 interface Props {
@@ -228,14 +228,12 @@ export function Quiz1({
                 </button>
             </Link>
             <ResultDialog
-                open={isResultDialogShown || true} // TODO: remove "true"
+                open={isResultDialogShown}
                 onClose={() => {
                     setResultDialogShown(false);
                 }}
-                // score={score} TODO: uncomment
-                // maxChar={maxChar} TODO: uncomment
-                score={9}
-                maxChar={10}
+                score={score}
+                maxChar={maxChar}
                 kanaType={consts.KANA_TYPE}
             />
         </div>
@@ -312,7 +310,9 @@ function ResultDialog({
         open,
     });
 
-    const [buttonLabel, characterComment] = abTestKey ? abTestKey.split(keysSeparator): [undefined,undefined];
+    const [buttonLabel, characterComment] = abTestKey
+        ? abTestKey.split(keysSeparator)
+        : [undefined, undefined];
 
     return (
         <ResultXpDialog

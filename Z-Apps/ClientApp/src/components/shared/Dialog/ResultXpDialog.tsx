@@ -29,6 +29,13 @@ export function ResultXpDialog({
     const c = useResultDialogStyles();
     const { screenWidth } = useScreenSize();
 
+    const [xpBeforeSignUp, setXpBeforeSignUp] = useAppState("xpBeforeSignUp");
+    useEffect(() => {
+        if (open) {
+            setXpBeforeSignUp(xp + xpBeforeSignUp);
+        }
+    }, [open, xp]);
+
     return (
         <CenterDialog open={open} onClose={onClose}>
             <div className={c.container}>
@@ -71,7 +78,7 @@ export function ResultXpDialog({
                     </button>
                 </div>
 
-                <ExpectedLevelCard />
+                <ExpectedLevelCard xpBeforeSignUp={xpBeforeSignUp} />
             </div>
         </CenterDialog>
     );
@@ -88,12 +95,10 @@ const useResultDialogStyles = makeStyles(theme => ({
     xp: { color: theme.palette.secondary.main },
 }));
 
-function ExpectedLevelCard() {
+function ExpectedLevelCard({ xpBeforeSignUp }: { xpBeforeSignUp: number }) {
     const c = useExpectedLevelCard();
 
-    const [xpBeforeSignUp] = useAppState("xpBeforeSignUp");
-
-    const [expectedLevel, setExpectedLevel] = useState(1);
+    const [expectedLevel, setExpectedLevel] = useState(0);
     useEffect(() => {
         fetchLevelFromXp(xpBeforeSignUp).then(lvl => {
             setExpectedLevel(lvl);
@@ -101,7 +106,13 @@ function ExpectedLevelCard() {
     }, [xpBeforeSignUp]);
 
     return (
-        <Card className={spaceBetween("small", c.card)}>
+        <Card
+            className={spaceBetween(
+                "small",
+                c.card,
+                expectedLevel ? "opacity1" : "opacity0"
+            )}
+        >
             Now you have {xpBeforeSignUp} XP, and you'll be Lv.{expectedLevel}{" "}
             if you make an account.
         </Card>
@@ -112,6 +123,7 @@ const useExpectedLevelCard = makeStyles(theme => ({
         backgroundColor: theme.palette.grey[200],
         borderRadius: 10,
         padding: 5,
+        transition: "500ms",
     },
 }));
 
