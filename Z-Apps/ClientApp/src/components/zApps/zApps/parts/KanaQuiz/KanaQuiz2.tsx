@@ -589,7 +589,10 @@ function getStateToUpdate(
 
 function getUnusedKeys(keys: Romaji[], currentButtonLabels: ButtonLabels) {
     return keys.filter(
-        r => !Object.values(currentButtonLabels).some(romaji => romaji === r)
+        r =>
+            !Object.values(currentButtonLabels).some(
+                romaji => romaji.replace("_", "") === r.replace("_", "")
+            )
     );
 }
 
