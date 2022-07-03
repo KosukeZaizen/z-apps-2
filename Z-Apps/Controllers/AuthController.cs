@@ -56,6 +56,7 @@ namespace Z_Apps.Controllers
                     EmailService.SendToAdmin(
                         "New LN Account!",
                         "<h1>New user signed up!</h1><br/>" + param.Name
+                        + "<br/>Initial XP: " + param.InitialXp
                     );
                 });
 
@@ -81,9 +82,22 @@ namespace Z_Apps.Controllers
             {
                 get; set;
             }
-            public long InitialXp
+
+            private int _InitialXp;
+            public int InitialXp
             {
-                get; set;
+                get
+                {
+                    if (_InitialXp > 5000)
+                    {
+                        return 5000;
+                    }
+                    return _InitialXp;
+                }
+                set
+                {
+                    _InitialXp = value;
+                }
             }
         }
 

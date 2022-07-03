@@ -32,7 +32,7 @@ export function ResultXpDialog({
     const [xpBeforeSignUp, setXpBeforeSignUp] = useAppState("xpBeforeSignUp");
     useEffect(() => {
         if (open) {
-            setXpBeforeSignUp(xp + xpBeforeSignUp);
+            setXpBeforeSignUp(Math.min(xp + xpBeforeSignUp, 5000));
         }
     }, [open, xp]);
 
