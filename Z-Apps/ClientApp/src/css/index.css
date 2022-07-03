@@ -59,10 +59,16 @@ abbr[title] {
     z-index: 100;
 }
 
+/*
+    font-weight
+*/
 .bold {
     font-weight: bold;
 }
 
+/*
+    font-size
+*/
 .small {
     font-size: small;
 }
@@ -79,10 +85,23 @@ abbr[title] {
     font-size: xx-large;
 }
 
+/*
+    color
+*/
 .red {
     color: red;
 }
 
+/*
+    white-space
+*/
+.nowrap {
+    white-space: nowrap;
+}
+
+/*
+    width
+*/
 .fullWidth {
     width: 100%;
 }

@@ -147,17 +147,12 @@ function XpProgress() {
 
     return (
         <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                width: xpProgress ? 210 : 0,
-                transition: "width 500ms",
-                transitionDelay: "700ms", // For the timing of the panel open
-                overflow: "hidden",
-            }}
+            className={spaceBetween(
+                c.container,
+                xpProgress ? c.width210 : c.width0
+            )}
         >
-            <div className="small" style={{ whiteSpace: "nowrap" }}>
+            <div className="small nowrap">
                 XP: {xpProgress?.xpProgress}/{xpProgress?.necessaryXp}
             </div>
             <LinearProgress
@@ -173,6 +168,16 @@ function XpProgress() {
     );
 }
 const useXpProgressStyles = makeStyles(() => ({
+    container: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        transition: "width 500ms",
+        transitionDelay: "700ms", // For the timing of the panel open
+        overflow: "hidden",
+    },
+    width0: { width: 0 },
+    width210: { width: 210 },
     linearProgress: { width: 210, marginBottom: 10 },
 }));
 
