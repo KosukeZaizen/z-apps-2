@@ -17,7 +17,7 @@ import {
     BUTTON_DANGER,
     BUTTON_DARK,
     BUTTON_PRIMARY,
-    BUTTON_SUCCESS,
+    BUTTON_SUCCESS
 } from "./KanaQuizCore";
 import {
     FontClassName,
@@ -27,7 +27,7 @@ import {
     KanaStatus,
     KanaType,
     PageNum,
-    Romaji,
+    Romaji
 } from "./types";
 
 interface Props {
@@ -236,6 +236,7 @@ export function Quiz1({
                 // maxChar={maxChar} TODO: uncomment
                 score={9}
                 maxChar={10}
+                kanaType={consts.KANA_TYPE}
             />
         </div>
     );
@@ -268,17 +269,51 @@ const useStyles = makeStyles(() => ({
     positionRelative: { position: "relative" },
 }));
 
+const btnLabelAbTestKeys = [
+    "Create a free account",
+    "Free lifetime account",
+    "Save your progress",
+    "Sign up",
+    "Sign in",
+    "Lingual Ninja Account",
+    "Manage your progress",
+    "Check your Japanese level",
+    "Sign up free",
+    "Sign up for a free account",
+];
+const charCommentAbTestKeys = [
+    "Receive the XP by making a free lifetime account!",
+    "Receive the XP by making a Lingual Ninja Account!",
+];
+const keysSeparator = "__";
+
 function ResultDialog({
     open,
     onClose,
     score,
     maxChar,
+    kanaType,
 }: {
     open: boolean;
     onClose: () => void;
     score: number;
     maxChar: number;
+    kanaType: KanaType;
 }) {
+    const testNameHead = `${kanaType}Quiz-ResultXpDialog`;
+
+    const { abTestKey, abTestSuccess } = useAbTest({
+        testName: `${testNameHead}-ButtonLabel-and-CharacterComment`,
+        keys: btnLabelAbTestKeys.flatMap(btnKey =>
+            charCommentAbTestKeys.map(
+                commentKey => `${btnKey}${keysSeparator}${commentKey}`
+            )
+        ),
+        open,
+    });
+
+    const [buttonLabel, characterComment] = abTestKey ? abTestKey.split(keysSeparator): [undefined,undefined];
+
     return (
         <ResultXpDialog
             open={open}
@@ -291,10 +326,9 @@ function ResultDialog({
                     Your Score: {score}/{maxChar}
                 </div>
             }
-            characterComment={
-                "Receive the XP by making a free lifetime account!"
-            }
-            buttonLabel={"Sign up"}
+            characterComment={characterComment}
+            buttonLabel={buttonLabel}
+            onSuccess={abTestSuccess}
         />
     );
 }

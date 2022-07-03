@@ -1,7 +1,9 @@
 import { Card, makeStyles } from "@material-ui/core";
 import { ReactNode } from "react";
+import { changeAppState } from "../../../common/appState";
 import { useScreenSize } from "../../../common/hooks/useScreenSize";
 import { spaceBetween } from "../../../common/util/Array/spaceBetween";
+import ShurikenProgress from "../Animations/ShurikenProgress";
 import CharacterComment from "../CharacterComment";
 import { CenterDialog } from "./CenterDialog";
 
@@ -12,6 +14,7 @@ export function ResultXpDialog({
     topSmallMessage,
     characterComment,
     buttonLabel,
+    onSuccess,
 }: {
     open: boolean;
     onClose: () => void;
@@ -19,8 +22,9 @@ export function ResultXpDialog({
     maxChar: number;
     xp: number;
     topSmallMessage: ReactNode;
-    characterComment: ReactNode;
-    buttonLabel: string;
+    characterComment?: ReactNode;
+    buttonLabel?: string;
+    onSuccess: () => void;
 }) {
     const c = useResultDialogStyles();
     const { screenWidth } = useScreenSize();
@@ -34,16 +38,36 @@ export function ResultXpDialog({
                         You got <span className={c.xp}>{xp}</span> XP!
                     </h2>
                 </div>
+
                 <CharacterComment
                     imgNumber={1}
                     screenWidth={Math.min(300, screenWidth)}
-                    comment={<div className="large">{characterComment}</div>}
+                    comment={
+                        <div className="large">
+                            {characterComment || (
+                                <ShurikenProgress size="15%" />
+                            )}
+                        </div>
+                    }
                     style={{ margin: 0 }}
                 />
 
                 <div>
-                    <button className={"btn btn-primary btn-lg"}>
-                        {buttonLabel}
+                    <button
+                        className={"btn btn-primary btn-lg"}
+                        onClick={() => {
+                            changeAppState("signInPanelState", "signUp");
+                            onSuccess();
+                        }}
+                    >
+                        {buttonLabel || (
+                            <ShurikenProgress
+                                size="25%"
+                                style={{
+                                    width: 70,
+                                }}
+                            />
+                        )}
                     </button>
                 </div>
 
