@@ -18,20 +18,20 @@ namespace Z_Apps.Models
         public bool RegisterUser(string Name, string Email, string Password, int InitialXp)
         {
             string sql = @"
-INSERT INTO ZAppsUser (UserId, Name, Email, Password, InitialXp) VALUES
+INSERT INTO ZAppsUser (UserId, Name, Email, Password, Xp) VALUES
     (
         (select IsNULL(max(UserId),0)+1 from ZAppsUser),
         @Name,
         @Email,
         @Password,
-        @InitialXp
+        @Xp
     );
 ";
             return con.ExecuteUpdate(sql, new Dictionary<string, object[]> {
                 { "@Name", new object[2] { SqlDbType.NVarChar, Name } },
                 { "@Email", new object[2] { SqlDbType.NVarChar, Email } },
                 { "@Password", new object[2] { SqlDbType.NVarChar, Password } },
-                { "@InitialXp", new object[2] { SqlDbType.BigInt, InitialXp } },
+                { "@Xp", new object[2] { SqlDbType.BigInt, InitialXp } },
             });
         }
 
