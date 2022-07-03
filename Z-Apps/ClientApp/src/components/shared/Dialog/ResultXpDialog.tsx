@@ -1,7 +1,9 @@
 import { Card, makeStyles } from "@material-ui/core";
 import { ReactNode, useEffect, useState } from "react";
 import { changeAppState, useAppState } from "../../../common/appState";
+import { useAbTest } from "../../../common/hooks/useAbTest";
 import { useScreenSize } from "../../../common/hooks/useScreenSize";
+import { useUser } from "../../../common/hooks/useUser";
 import { spaceBetween } from "../../../common/util/Array/spaceBetween";
 import ShurikenProgress from "../Animations/ShurikenProgress";
 import CharacterComment from "../CharacterComment";
@@ -12,22 +14,79 @@ export function ResultXpDialog({
     onClose,
     xp,
     topSmallMessage,
-    characterComment,
-    buttonLabel,
-    onSuccess,
+    abTestName,
 }: {
     open: boolean;
     onClose: () => void;
-    score: number;
-    maxChar: number;
     xp: number;
     topSmallMessage: ReactNode;
-    characterComment?: ReactNode;
-    buttonLabel?: string;
-    onSuccess: () => void;
+    abTestName: string;
+}) {
+    const { user, isUserFetchDone } = useUser();
+
+    if (isUserFetchDone && !user) {
+        return (
+            <ResultXpDialog_GuestUser
+                open={open}
+                onClose={onClose}
+                xp={xp}
+                topSmallMessage={topSmallMessage}
+                abTestName={abTestName}
+            />
+        );
+    }
+    return null;
+}
+
+const btnLabelAbTestKeys = [
+    "Create a free account",
+    "Free lifetime account",
+    "Save your progress",
+    "Sign up",
+    "Sign in",
+    "Lingual Ninja Account",
+    "Manage your progress",
+    "Check your Japanese level",
+    "Sign up free",
+    "Sign up for a free account",
+];
+const charCommentAbTestKeys = [
+    "Receive the XP by making a free lifetime account!",
+    "Receive the XP by making a Lingual Ninja Account!",
+];
+const keysSeparator = "__";
+
+function ResultXpDialog_GuestUser({
+    open,
+    onClose,
+    xp,
+    topSmallMessage,
+    abTestName,
+}: {
+    open: boolean;
+    onClose: () => void;
+    xp: number;
+    topSmallMessage: ReactNode;
+    abTestName: string;
 }) {
     const c = useResultDialogStyles();
     const { screenWidth } = useScreenSize();
+
+    const { user } = useUser();
+
+    const { abTestKey, abTestSuccess } = useAbTest({
+        testName: `${abTestName}-ButtonLabel-and-CharacterComment`,
+        keys: btnLabelAbTestKeys.flatMap(btnKey =>
+            charCommentAbTestKeys.map(
+                commentKey => `${btnKey}${keysSeparator}${commentKey}`
+            )
+        ),
+        open,
+    });
+
+    const [buttonLabel, characterComment] = abTestKey
+        ? abTestKey.split(keysSeparator)
+        : [undefined, undefined];
 
     const [xpBeforeSignUp, setXpBeforeSignUp] = useAppState("xpBeforeSignUp");
     const [expectedLevel, setExpectedLevel] = useState(0);
@@ -74,7 +133,7 @@ export function ResultXpDialog({
                         className={"btn btn-primary btn-lg"}
                         onClick={() => {
                             changeAppState("signInPanelState", "signUp");
-                            onSuccess();
+                            abTestSuccess();
                         }}
                     >
                         {buttonLabel || (

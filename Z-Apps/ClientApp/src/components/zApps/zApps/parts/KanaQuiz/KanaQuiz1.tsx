@@ -227,14 +227,19 @@ export function Quiz1({
                     {consts.OTHER_KANA_TYPE} Quiz
                 </button>
             </Link>
-            <ResultDialog
+
+            <ResultXpDialog
                 open={isResultDialogShown}
                 onClose={() => {
                     setResultDialogShown(false);
                 }}
-                score={score}
-                maxChar={maxChar}
-                kanaType={consts.KANA_TYPE}
+                xp={10 * score}
+                topSmallMessage={
+                    <div>
+                        Your Score: {score}/{maxChar}
+                    </div>
+                }
+                abTestName={`${consts.KANA_TYPE}Quiz-ResultXpDialog`}
             />
         </div>
     );
@@ -266,72 +271,6 @@ const useStyles = makeStyles(() => ({
     marginTop20: { marginTop: 20 },
     positionRelative: { position: "relative" },
 }));
-
-const btnLabelAbTestKeys = [
-    "Create a free account",
-    "Free lifetime account",
-    "Save your progress",
-    "Sign up",
-    "Sign in",
-    "Lingual Ninja Account",
-    "Manage your progress",
-    "Check your Japanese level",
-    "Sign up free",
-    "Sign up for a free account",
-];
-const charCommentAbTestKeys = [
-    "Receive the XP by making a free lifetime account!",
-    "Receive the XP by making a Lingual Ninja Account!",
-];
-const keysSeparator = "__";
-
-function ResultDialog({
-    open,
-    onClose,
-    score,
-    maxChar,
-    kanaType,
-}: {
-    open: boolean;
-    onClose: () => void;
-    score: number;
-    maxChar: number;
-    kanaType: KanaType;
-}) {
-    const testNameHead = `${kanaType}Quiz-ResultXpDialog`;
-
-    const { abTestKey, abTestSuccess } = useAbTest({
-        testName: `${testNameHead}-ButtonLabel-and-CharacterComment`,
-        keys: btnLabelAbTestKeys.flatMap(btnKey =>
-            charCommentAbTestKeys.map(
-                commentKey => `${btnKey}${keysSeparator}${commentKey}`
-            )
-        ),
-        open,
-    });
-
-    const [buttonLabel, characterComment] = abTestKey
-        ? abTestKey.split(keysSeparator)
-        : [undefined, undefined];
-
-    return (
-        <ResultXpDialog
-            open={open}
-            onClose={onClose}
-            score={score}
-            maxChar={maxChar}
-            xp={10 * score}
-            topSmallMessage={
-                <div>
-                    Your Score: {score}/{maxChar}
-                </div>
-            }
-            characterComment={characterComment}
-            buttonLabel={buttonLabel}
-            onSuccess={abTestSuccess}
-        />
-    );
-}
 
 function SignUpButton({
     kanaType,
