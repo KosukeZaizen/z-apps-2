@@ -3,22 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using Z_Apps.Models;
-using Z_Apps.Models.Auth;
 
 namespace Z_Apps.Controllers
 {
     [Route("api/[controller]")]
-    public class AuthController : Controller
+    public class AuthController : _LNBaseController
     {
-        UserService userService;
-        JwtService jwtService;
-
-        public AuthController()
-        {
-            userService = new UserService();
-            jwtService = new JwtService();
-        }
-
         [HttpPost("[action]/")]
         public IActionResult Register([FromBody] RegisterParam param)
         {
@@ -152,9 +142,7 @@ namespace Z_Apps.Controllers
         {
             try
             {
-                int userId = GetUserIdFromCookies();
-                var user = userService.GetUserById(userId);
-                return Ok(user);
+                return Ok(GetUserFromCookies());
             }
             catch
             {
@@ -216,13 +204,6 @@ namespace Z_Apps.Controllers
             {
                 get; set;
             }
-        }
-
-        private int GetUserIdFromCookies()
-        {
-            var jwt = Request.Cookies["jwt"];
-            var token = jwtService.Verify(jwt);
-            return int.Parse(token.Issuer);
         }
     }
 }

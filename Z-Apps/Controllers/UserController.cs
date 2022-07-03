@@ -5,18 +5,17 @@ using static Z_Apps.Models.UserService;
 namespace Z_Apps.Controllers
 {
     [Route("api/[controller]")]
-    public class UserController : Controller
+    public class UserController : _LNBaseController
     {
-        UserService userService;
-
         public UserController()
         {
             userService = new UserService();
         }
 
         [HttpGet("[action]/")]
-        public XpProgress GetXpProgress(long xp)
+        public XpProgress GetXpProgress()
         {
+            var xp = GetUserFromCookies().Xp;
             return userService.GetXpProgress(xp);
         }
     }

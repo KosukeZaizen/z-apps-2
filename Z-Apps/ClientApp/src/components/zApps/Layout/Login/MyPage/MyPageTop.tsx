@@ -1,5 +1,6 @@
 import { Card, LinearProgress, makeStyles } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { changeAppState } from "../../../../../common/appState";
@@ -118,12 +119,7 @@ function LevelCard({ user }: { user: User }) {
                 </tbody>
             </table>
 
-            <div className="small">XP: 30/100</div>
-            <LinearProgress
-                variant="determinate"
-                value={(30 / 100) * 100}
-                className={c.linearProgress}
-            />
+            <XpProgress />
         </Card>
     );
 }
@@ -137,8 +133,57 @@ const useStatusCardStyles = makeStyles(() => ({
         flexDirection: "column",
         alignItems: "center",
     },
+}));
+
+function XpProgress() {
+    const c = useXpProgressStyles();
+
+    const [xpProgress, setXpProgress] = useState<XpProgress | null>(null);
+    useEffect(() => {
+        getXpProgress().then(x => {
+            setXpProgress(x);
+        });
+    }, []);
+
+    return (
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: xpProgress ? 210 : 0,
+                transition: "width 500ms",
+                transitionDelay: "700ms", // For the timing of the panel open
+                overflow: "hidden",
+            }}
+        >
+            <div className="small" style={{ whiteSpace: "nowrap" }}>
+                XP: {xpProgress?.xpProgress}/{xpProgress?.necessaryXp}
+            </div>
+            <LinearProgress
+                variant="determinate"
+                value={
+                    xpProgress
+                        ? 100 * (xpProgress.xpProgress / xpProgress.necessaryXp)
+                        : 0
+                }
+                className={c.linearProgress}
+            />
+        </div>
+    );
+}
+const useXpProgressStyles = makeStyles(() => ({
     linearProgress: { width: 210, marginBottom: 10 },
 }));
+
+async function getXpProgress(): Promise<XpProgress> {
+    const res = await fetch("api/User/GetXpProgress");
+    return res.json();
+}
+interface XpProgress {
+    xpProgress: number;
+    necessaryXp: number;
+}
 
 function logout() {
     changeAppState("signInPanelState", "signIn");

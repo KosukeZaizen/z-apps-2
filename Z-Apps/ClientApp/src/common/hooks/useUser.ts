@@ -9,6 +9,7 @@ export type User = {
     email: string;
     progress: string | null;
     level: number;
+    // XP will not be used in frontend. So, it's not written here. (Total XP cannot be used without the backend calculation.)
 };
 
 let isFetchUnnecessary = false;
