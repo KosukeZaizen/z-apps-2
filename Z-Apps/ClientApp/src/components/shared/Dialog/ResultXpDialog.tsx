@@ -1,10 +1,6 @@
 import { Card, makeStyles } from "@material-ui/core";
 import { ReactNode, useEffect, useState } from "react";
-import {
-    changeAppState,
-    getAppState,
-    useAppState,
-} from "../../../common/appState";
+import { changeAppState, useAppState } from "../../../common/appState";
 import { useAbTest } from "../../../common/hooks/useAbTest";
 import { useScreenSize } from "../../../common/hooks/useScreenSize";
 import { User, useUser } from "../../../common/hooks/useUser";
@@ -73,13 +69,12 @@ function ResultXpDialog_RegisteredUser({
     const [isLevelUp, setLevelUp] = useState(false);
     useEffect(() => {
         if (open) {
-            fetchAddXp(xpToAdd, user.userId).then(nextUser => {
-                const currentUser = getAppState().user;
-                if (currentUser && currentUser.level < nextUser.level) {
-                    setLevelUp(true);
+            fetchAddXp(xpToAdd, user.userId).then(
+                ({ user: nextUser, levelUp }) => {
+                    setLevelUp(levelUp);
+                    changeAppState("user", nextUser);
                 }
-                changeAppState("user", nextUser);
-            });
+            );
         }
     }, [open, xpToAdd, user.userId]);
 
@@ -155,7 +150,10 @@ const useRegisteredUserResultDialogStyles = makeStyles(theme => ({
     },
 }));
 
-async function fetchAddXp(xpToAdd: number, userId: number): Promise<User> {
+async function fetchAddXp(
+    xpToAdd: number,
+    userId: number
+): Promise<{ user: User; levelUp: boolean }> {
     const formData = new FormData();
     formData.append("xpToAdd", xpToAdd.toString());
     formData.append("userId", userId.toString());
@@ -164,8 +162,7 @@ async function fetchAddXp(xpToAdd: number, userId: number): Promise<User> {
         method: "POST",
         body: formData,
     });
-    const { user } = await res.json();
-    return user;
+    return res.json();
 }
 
 const btnLabelAbTestKeys = [

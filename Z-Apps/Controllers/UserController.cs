@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.Mvc;
 using Z_Apps.Models;
@@ -23,13 +24,15 @@ namespace Z_Apps.Controllers
         [HttpPost("[action]/")]
         public IActionResult AddXp(long xpToAdd, int userId)
         {
-            if (GetUserIdFromCookies() != userId)
+            var userFromCookies = GetUserFromCookies();
+            if (userFromCookies.UserId != userId)
             {
                 return Unauthorized();
             }
 
-            var result = userService.AddXp(xpToAdd, userId);
+            var previousLevel = userFromCookies.Level;
 
+            var result = userService.AddXp(xpToAdd, userId);
             if (!result)
             {
                 return BadRequest(new
@@ -38,9 +41,13 @@ namespace Z_Apps.Controllers
                 });
             }
 
+            var user = userService.GetUserById(userId);
+            bool levelUp = previousLevel < user.Level;
+
             return Ok(new
             {
-                user = userService.GetUserById(userId)
+                user = user,
+                levelUp = levelUp
             });
         }
     }
