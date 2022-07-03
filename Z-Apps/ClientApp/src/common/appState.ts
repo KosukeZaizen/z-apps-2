@@ -12,6 +12,7 @@ type AppState = {
     user?: User;
     isUserFetchDone: boolean;
     isMainMounted: boolean;
+    xpBeforeSignUp: number;
 };
 const appState: AppState = {
     headerHeight: 60,
@@ -25,6 +26,7 @@ const appState: AppState = {
     user: undefined,
     isUserFetchDone: false,
     isMainMounted: true,
+    xpBeforeSignUp: 0,
 };
 
 export function getAppState() {

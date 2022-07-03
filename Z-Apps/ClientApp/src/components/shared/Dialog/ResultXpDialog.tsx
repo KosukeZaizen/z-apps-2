@@ -1,6 +1,6 @@
 import { Card, makeStyles } from "@material-ui/core";
-import { ReactNode } from "react";
-import { changeAppState } from "../../../common/appState";
+import { ReactNode, useEffect, useState } from "react";
+import { changeAppState, useAppState } from "../../../common/appState";
 import { useScreenSize } from "../../../common/hooks/useScreenSize";
 import { spaceBetween } from "../../../common/util/Array/spaceBetween";
 import ShurikenProgress from "../Animations/ShurikenProgress";
@@ -90,9 +90,20 @@ const useResultDialogStyles = makeStyles(theme => ({
 
 function ExpectedLevelCard() {
     const c = useExpectedLevelCard();
+
+    const [xpBeforeSignUp] = useAppState("xpBeforeSignUp");
+
+    const [expectedLevel, setExpectedLevel] = useState(1);
+    useEffect(() => {
+        fetchLevelFromXp(xpBeforeSignUp).then(lvl => {
+            setExpectedLevel(lvl);
+        });
+    }, [xpBeforeSignUp]);
+
     return (
         <Card className={spaceBetween("small", c.card)}>
-            {"Now you have 120 XP, and you'll be Lv.2 if you make an account."}
+            Now you have {xpBeforeSignUp} XP, and you'll be Lv.{expectedLevel}{" "}
+            if you make an account.
         </Card>
     );
 }
@@ -103,3 +114,8 @@ const useExpectedLevelCard = makeStyles(theme => ({
         padding: 5,
     },
 }));
+
+async function fetchLevelFromXp(xp: number): Promise<number> {
+    const res = await fetch(`api/User/GetLevelFromXp?xp=${xp}`);
+    return res.json();
+}
