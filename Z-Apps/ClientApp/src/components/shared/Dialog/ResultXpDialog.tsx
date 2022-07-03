@@ -71,11 +71,7 @@ export function ResultXpDialog({
                     </button>
                 </div>
 
-                <Card className={spaceBetween("small", c.expectedLevel)}>
-                    {
-                        "Now you have 120 XP, and you'll be Lv.2 if you make an account."
-                    }
-                </Card>
+                <ExpectedLevelCard />
             </div>
         </CenterDialog>
     );
@@ -89,10 +85,21 @@ const useResultDialogStyles = makeStyles(theme => ({
         justifyContent: "space-between",
         height: 308,
     },
-    expectedLevel: {
+    xp: { color: theme.palette.secondary.main },
+}));
+
+function ExpectedLevelCard() {
+    const c = useExpectedLevelCard();
+    return (
+        <Card className={spaceBetween("small", c.card)}>
+            {"Now you have 120 XP, and you'll be Lv.2 if you make an account."}
+        </Card>
+    );
+}
+const useExpectedLevelCard = makeStyles(theme => ({
+    card: {
         backgroundColor: theme.palette.grey[200],
         borderRadius: 10,
         padding: 5,
     },
-    xp: { color: theme.palette.secondary.main },
 }));
