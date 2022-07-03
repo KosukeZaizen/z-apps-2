@@ -15,21 +15,23 @@ namespace Z_Apps.Models
             con = new DBCon(DBType.wiki_db);
         }
 
-        public bool RegisterUser(string Name, string Email, string Password)
+        public bool RegisterUser(string Name, string Email, string Password, int InitialXp)
         {
             string sql = @"
-INSERT INTO ZAppsUser (UserId, Name, Email, Password) VALUES
+INSERT INTO ZAppsUser (UserId, Name, Email, Password, InitialXp) VALUES
     (
         (select IsNULL(max(UserId),0)+1 from ZAppsUser),
         @Name,
         @Email,
-        @Password
+        @Password,
+        @InitialXp
     );
 ";
             return con.ExecuteUpdate(sql, new Dictionary<string, object[]> {
                 { "@Name", new object[2] { SqlDbType.NVarChar, Name } },
                 { "@Email", new object[2] { SqlDbType.NVarChar, Email } },
                 { "@Password", new object[2] { SqlDbType.NVarChar, Password } },
+                { "@InitialXp", new object[2] { SqlDbType.BigInt, InitialXp } },
             });
         }
 

@@ -35,7 +35,8 @@ namespace Z_Apps.Controllers
             bool result = userService.RegisterUser(
                 param.Name,
                 param.Email,
-                hashedPassword
+                hashedPassword,
+                param.InitialXp
             );
 
             if (result)
