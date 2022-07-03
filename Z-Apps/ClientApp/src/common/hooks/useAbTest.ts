@@ -45,6 +45,21 @@ async function fetchKey<T extends ReadonlyArray<string>>(
 ): Promise<T[number]> {
     try {
         if (isLocalHost) {
+            if (testName.length > 200) {
+                alert(
+                    "AB test error! Maximum length of testName is 200! It's because of the DB table's column setting!"
+                );
+            }
+            const tooLongKey = keys.find(k => k.length > 200);
+            if (tooLongKey) {
+                alert(
+                    "AB test error! A too long AB test key is included! Test Name:" +
+                        testName +
+                        "  Key:" +
+                        tooLongKey +
+                        "   It's because of the DB table's column setting!"
+                );
+            }
             return shuffle(keys)[0];
         }
 
