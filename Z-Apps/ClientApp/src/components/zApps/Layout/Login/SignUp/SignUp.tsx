@@ -16,9 +16,9 @@ import {
     SyntheticEvent,
     useEffect,
     useMemo,
-    useState
+    useState,
 } from "react";
-import { changeAppState } from "../../../../../common/appState";
+import { changeAppState, getAppState } from "../../../../../common/appState";
 import { sendPost } from "../../../../../common/functions";
 import { useAbTest } from "../../../../../common/hooks/useAbTest";
 import { useScreenSize } from "../../../../../common/hooks/useScreenSize";
@@ -82,6 +82,7 @@ export function SignUp({
                 name: name.trim() || email.split("@")[0],
                 email,
                 password,
+                initialXp: getAppState().xpBeforeSignUp,
             },
             "api/Auth/Register"
         );
