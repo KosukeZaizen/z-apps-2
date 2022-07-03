@@ -197,5 +197,18 @@ WHERE UserId = @UserId;
             public long xpProgress { get; set; }
             public long necessaryXp { get; set; }
         }
+
+        public bool AddXp(long XpToAdd, int UserId)
+        {
+            var sql = @"
+update ZAppsUser
+set Xp = Xp + @XpToAdd
+where UserId = @UserId;
+";
+            return con.ExecuteUpdate(sql, new Dictionary<string, object[]> {
+                { "@XpToAdd", new object[2] { SqlDbType.BigInt, XpToAdd } },
+                { "@UserId", new object[2] { SqlDbType.Int, UserId } },
+            });
+        }
     }
 }

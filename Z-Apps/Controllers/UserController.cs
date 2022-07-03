@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Z_Apps.Models;
 using static Z_Apps.Models.UserService;
@@ -8,9 +9,8 @@ namespace Z_Apps.Controllers
     public class UserController : _LNBaseController
     {
         [HttpGet("[action]/")]
-        public XpProgress GetXpProgress()
+        public XpProgress GetXpProgress(long xp)
         {
-            var xp = GetUserFromCookies().Xp;
             return userService.GetXpProgress(xp);
         }
 
@@ -18,6 +18,30 @@ namespace Z_Apps.Controllers
         public int GetLevelFromXp(long xp)
         {
             return UserService.GetLevelFromXp(xp);
+        }
+
+        [HttpPost("[action]/")]
+        public IActionResult AddXp(long xpToAdd, int userId)
+        {
+            if (GetUserIdFromCookies() != userId)
+            {
+                return Unauthorized();
+            }
+
+            var result = userService.AddXp(xpToAdd, userId);
+
+            if (!result)
+            {
+                return BadRequest(new
+                {
+                    error = "no data updated"
+                });
+            }
+
+            return Ok(new
+            {
+                user = userService.GetUserById(userId)
+            });
         }
     }
 }

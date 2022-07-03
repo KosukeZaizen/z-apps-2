@@ -1,10 +1,15 @@
 import { Card, makeStyles } from "@material-ui/core";
 import { ReactNode, useEffect, useState } from "react";
-import { changeAppState, useAppState } from "../../../common/appState";
+import {
+    changeAppState,
+    getAppState,
+    useAppState,
+} from "../../../common/appState";
 import { useAbTest } from "../../../common/hooks/useAbTest";
 import { useScreenSize } from "../../../common/hooks/useScreenSize";
-import { useUser } from "../../../common/hooks/useUser";
+import { User, useUser } from "../../../common/hooks/useUser";
 import { spaceBetween } from "../../../common/util/Array/spaceBetween";
+import { XpProgressArea } from "../../zApps/Layout/Login/MyPage/components/XpProgressBar";
 import ShurikenProgress from "../Animations/ShurikenProgress";
 import CharacterComment from "../CharacterComment";
 import { CenterDialog } from "./CenterDialog";
@@ -12,30 +17,155 @@ import { CenterDialog } from "./CenterDialog";
 export function ResultXpDialog({
     open,
     onClose,
-    xp,
+    xpToAdd,
     topSmallMessage,
     abTestName,
 }: {
     open: boolean;
     onClose: () => void;
-    xp: number;
+    xpToAdd: number;
     topSmallMessage: ReactNode;
     abTestName: string;
 }) {
     const { user, isUserFetchDone } = useUser();
 
-    if (isUserFetchDone && !user) {
+    if (!isUserFetchDone) {
+        return null;
+    }
+
+    if (user) {
         return (
-            <ResultXpDialog_GuestUser
+            <ResultXpDialog_RegisteredUser
                 open={open}
                 onClose={onClose}
-                xp={xp}
+                xpToAdd={xpToAdd}
                 topSmallMessage={topSmallMessage}
-                abTestName={abTestName}
+                user={user}
             />
         );
     }
-    return null;
+    return (
+        <ResultXpDialog_GuestUser
+            open={open}
+            onClose={onClose}
+            xpToAdd={xpToAdd}
+            topSmallMessage={topSmallMessage}
+            abTestName={abTestName}
+        />
+    );
+}
+
+function ResultXpDialog_RegisteredUser({
+    open,
+    onClose,
+    xpToAdd,
+    topSmallMessage,
+    user,
+}: {
+    open: boolean;
+    onClose: () => void;
+    xpToAdd: number;
+    topSmallMessage: ReactNode;
+    user: User;
+}) {
+    const c = useRegisteredUserResultDialogStyles();
+
+    const [isLevelUp, setLevelUp] = useState(false);
+    useEffect(() => {
+        if (open) {
+            fetchAddXp(xpToAdd, user.userId).then(nextUser => {
+                const currentUser = getAppState().user;
+                if (currentUser && currentUser.level < nextUser.level) {
+                    setLevelUp(true);
+                }
+                changeAppState("user", nextUser);
+            });
+        }
+    }, [open, xpToAdd, user.userId]);
+
+    return (
+        <CenterDialog
+            open={open}
+            onClose={onClose}
+            transitionMilliseconds={500}
+        >
+            <div className={c.container}>
+                {isLevelUp && (
+                    <Card className={spaceBetween("bold nowrap", c.levelUp)}>
+                        LEVEL UP!
+                    </Card>
+                )}
+
+                <div>
+                    {topSmallMessage}
+                    <h2 className="bold">
+                        You got <span className={c.xp}>{xpToAdd}</span> XP!
+                    </h2>
+                </div>
+
+                <Card className={c.progressCard}>
+                    <h2 className={c.level}>Level: {user.level}</h2>
+                    <XpProgressArea />
+                </Card>
+
+                <div>
+                    <button
+                        className={"btn btn-dark btn-lg"}
+                        style={{ width: 270 }}
+                        onClick={onClose}
+                    >
+                        OK
+                    </button>
+                </div>
+            </div>
+        </CenterDialog>
+    );
+}
+const useRegisteredUserResultDialogStyles = makeStyles(theme => ({
+    container: {
+        margin: "0 10px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+        height: 288,
+        position: "relative",
+    },
+    xp: { color: theme.palette.secondary.main, marginBottom: 0 },
+    progressCard: {
+        padding: "20px 30px 30px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-around",
+        position: "relative",
+        bottom: 5,
+    },
+    level: {
+        marginBottom: 10,
+    },
+    levelUp: {
+        position: "absolute",
+        top: -20,
+        left: -5,
+        backgroundColor: theme.palette.secondary.main,
+        color: "white",
+        padding: 5,
+        transform: "rotate(-15deg)",
+    },
+}));
+
+async function fetchAddXp(xpToAdd: number, userId: number): Promise<User> {
+    const formData = new FormData();
+    formData.append("xpToAdd", xpToAdd.toString());
+    formData.append("userId", userId.toString());
+
+    const res = await fetch("api/User/AddXp", {
+        method: "POST",
+        body: formData,
+    });
+    const { user } = await res.json();
+    return user;
 }
 
 const btnLabelAbTestKeys = [
@@ -59,20 +189,18 @@ const keysSeparator = "__";
 function ResultXpDialog_GuestUser({
     open,
     onClose,
-    xp,
+    xpToAdd,
     topSmallMessage,
     abTestName,
 }: {
     open: boolean;
     onClose: () => void;
-    xp: number;
+    xpToAdd: number;
     topSmallMessage: ReactNode;
     abTestName: string;
 }) {
-    const c = useResultDialogStyles();
+    const c = useGuestResultDialogStyles();
     const { screenWidth } = useScreenSize();
-
-    const { user } = useUser();
 
     const { abTestKey, abTestSuccess } = useAbTest({
         testName: `${abTestName}-ButtonLabel-and-CharacterComment`,
@@ -92,14 +220,14 @@ function ResultXpDialog_GuestUser({
     const [expectedLevel, setExpectedLevel] = useState(0);
     useEffect(() => {
         if (open) {
-            const nextXpBeforeSignUp = Math.min(xp + xpBeforeSignUp, 5000);
+            const nextXpBeforeSignUp = Math.min(xpToAdd + xpBeforeSignUp, 5000);
 
             setXpBeforeSignUp(nextXpBeforeSignUp);
             fetchLevelFromXp(nextXpBeforeSignUp).then(lvl => {
                 setExpectedLevel(lvl);
             });
         }
-    }, [open, xp]);
+    }, [open, xpToAdd]);
 
     return (
         <CenterDialog
@@ -111,7 +239,7 @@ function ResultXpDialog_GuestUser({
                 <div>
                     {topSmallMessage}
                     <h2 className="bold">
-                        You got <span className={c.xp}>{xp}</span> XP!
+                        You got <span className={c.xp}>{xpToAdd}</span> XP!
                     </h2>
                 </div>
 
@@ -155,7 +283,7 @@ function ResultXpDialog_GuestUser({
         </CenterDialog>
     );
 }
-const useResultDialogStyles = makeStyles(theme => ({
+const useGuestResultDialogStyles = makeStyles(theme => ({
     container: {
         margin: "0 10px",
         display: "flex",

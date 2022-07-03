@@ -233,7 +233,7 @@ export function Quiz1({
                 onClose={() => {
                     setResultDialogShown(false);
                 }}
-                xp={10 * score}
+                xpToAdd={10 * score}
                 topSmallMessage={
                     <div>
                         Your Score: {score}/{maxChar}

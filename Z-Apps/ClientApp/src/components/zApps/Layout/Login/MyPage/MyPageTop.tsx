@@ -1,6 +1,5 @@
-import { Card, LinearProgress, makeStyles } from "@material-ui/core";
+import { Card, makeStyles } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
-import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { changeAppState } from "../../../../../common/appState";
@@ -14,6 +13,7 @@ import CharacterComment from "../../../../shared/CharacterComment";
 import { Link } from "../../../../shared/Link/LinkWithYouTube";
 import { signInPanelWidth } from "../Panel";
 import { useOpenState, useStyles } from "../SignUp/SignUp";
+import { XpProgressArea } from "./components/XpProgressBar";
 import { clearLocalStorageData } from "./progressManager";
 import "./style.css";
 import { useProgress } from "./useProgress";
@@ -119,7 +119,7 @@ function LevelCard({ user }: { user: User }) {
                 </tbody>
             </table>
 
-            <XpProgress />
+            <XpProgressArea />
         </Card>
     );
 }
@@ -134,61 +134,6 @@ const useStatusCardStyles = makeStyles(() => ({
         alignItems: "center",
     },
 }));
-
-function XpProgress() {
-    const c = useXpProgressStyles();
-
-    const [xpProgress, setXpProgress] = useState<XpProgress | null>(null);
-    useEffect(() => {
-        getXpProgress().then(x => {
-            setXpProgress(x);
-        });
-    }, []);
-
-    return (
-        <div
-            className={spaceBetween(
-                c.container,
-                xpProgress ? c.width210 : c.width0
-            )}
-        >
-            <div className="small nowrap">
-                XP: {xpProgress?.xpProgress}/{xpProgress?.necessaryXp}
-            </div>
-            <LinearProgress
-                variant="determinate"
-                value={
-                    xpProgress
-                        ? 100 * (xpProgress.xpProgress / xpProgress.necessaryXp)
-                        : 0
-                }
-                className={c.linearProgress}
-            />
-        </div>
-    );
-}
-const useXpProgressStyles = makeStyles(() => ({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        transition: "width 500ms",
-        transitionDelay: "700ms", // For the timing of the panel open
-        overflow: "hidden",
-    },
-    width0: { width: 0 },
-    width210: { width: 210 },
-    linearProgress: { width: 210, marginBottom: 10 },
-}));
-
-async function getXpProgress(): Promise<XpProgress> {
-    const res = await fetch("api/User/GetXpProgress");
-    return res.json();
-}
-interface XpProgress {
-    xpProgress: number;
-    necessaryXp: number;
-}
 
 function logout() {
     changeAppState("signInPanelState", "signIn");
