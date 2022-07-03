@@ -36,7 +36,7 @@ INSERT INTO ZAppsUser (UserId, Name, Email, Password) VALUES
         public User GetUserByEmail(string Email)
         {
             string sql = @"
-SELECT UserId, Name, Email, Password, Progress, Exp
+SELECT UserId, Name, Email, Password, Progress, Xp
 FROM ZAppsUser
 WHERE Email = @Email;
 ";
@@ -56,14 +56,14 @@ WHERE Email = @Email;
                 Email = (string)result["Email"],
                 Password = (string)result["Password"],
                 Progress = (string)result["Progress"],
-                Exp = (long)result["Exp"],
+                Exp = (long)result["Xp"],
             };
         }
 
         public User GetUserById(int UserId)
         {
             string sql = @"
-SELECT UserId, Name, Email, Password, Progress, Exp
+SELECT UserId, Name, Email, Password, Progress, Xp
 FROM ZAppsUser
 WHERE UserId = @UserId;
 ";
@@ -83,7 +83,7 @@ WHERE UserId = @UserId;
                 Email = (string)result["Email"],
                 Password = (string)result["Password"],
                 Progress = (string)result["Progress"],
-                Exp = (long)result["Exp"],
+                Exp = (long)result["Xp"],
             };
         }
 

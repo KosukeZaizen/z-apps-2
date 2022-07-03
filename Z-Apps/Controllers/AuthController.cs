@@ -91,10 +91,6 @@ namespace Z_Apps.Controllers
             {
                 get; set;
             }
-            public long InitialExp
-            {
-                get; set;
-            }
         }
 
         [HttpPost("[action]/")]
