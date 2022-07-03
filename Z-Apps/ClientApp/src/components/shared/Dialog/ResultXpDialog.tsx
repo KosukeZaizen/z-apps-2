@@ -115,7 +115,7 @@ function ExpectedLevelCard({
     xpBeforeSignUp: number;
     expectedLevel: number;
 }) {
-    const c = useExpectedLevelCard();
+    const c = useExpectedLevelCardStyles();
 
     return (
         <Card
@@ -130,7 +130,7 @@ function ExpectedLevelCard({
         </Card>
     );
 }
-const useExpectedLevelCard = makeStyles(theme => ({
+const useExpectedLevelCardStyles = makeStyles(theme => ({
     card: {
         backgroundColor: theme.palette.grey[200],
         borderRadius: 10,
