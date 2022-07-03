@@ -30,14 +30,24 @@ export function ResultXpDialog({
     const { screenWidth } = useScreenSize();
 
     const [xpBeforeSignUp, setXpBeforeSignUp] = useAppState("xpBeforeSignUp");
+    const [expectedLevel, setExpectedLevel] = useState(0);
     useEffect(() => {
         if (open) {
-            setXpBeforeSignUp(Math.min(xp + xpBeforeSignUp, 5000));
+            const nextXpBeforeSignUp = Math.min(xp + xpBeforeSignUp, 5000);
+
+            setXpBeforeSignUp(nextXpBeforeSignUp);
+            fetchLevelFromXp(nextXpBeforeSignUp).then(lvl => {
+                setExpectedLevel(lvl);
+            });
         }
     }, [open, xp]);
 
     return (
-        <CenterDialog open={open} onClose={onClose}>
+        <CenterDialog
+            open={open}
+            onClose={onClose}
+            transitionMilliseconds={500}
+        >
             <div className={c.container}>
                 <div>
                     {topSmallMessage}
@@ -78,7 +88,10 @@ export function ResultXpDialog({
                     </button>
                 </div>
 
-                <ExpectedLevelCard xpBeforeSignUp={xpBeforeSignUp} />
+                <ExpectedLevelCard
+                    xpBeforeSignUp={xpBeforeSignUp}
+                    expectedLevel={expectedLevel}
+                />
             </div>
         </CenterDialog>
     );
@@ -95,15 +108,14 @@ const useResultDialogStyles = makeStyles(theme => ({
     xp: { color: theme.palette.secondary.main },
 }));
 
-function ExpectedLevelCard({ xpBeforeSignUp }: { xpBeforeSignUp: number }) {
+function ExpectedLevelCard({
+    xpBeforeSignUp,
+    expectedLevel,
+}: {
+    xpBeforeSignUp: number;
+    expectedLevel: number;
+}) {
     const c = useExpectedLevelCard();
-
-    const [expectedLevel, setExpectedLevel] = useState(0);
-    useEffect(() => {
-        fetchLevelFromXp(xpBeforeSignUp).then(lvl => {
-            setExpectedLevel(lvl);
-        });
-    }, [xpBeforeSignUp]);
 
     return (
         <Card
