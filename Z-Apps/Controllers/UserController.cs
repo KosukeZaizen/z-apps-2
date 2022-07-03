@@ -44,6 +44,20 @@ namespace Z_Apps.Controllers
             var user = userService.GetUserById(userId);
             bool levelUp = previousLevel < user.Level;
 
+            if (levelUp)
+            {
+                Task.Run(async () =>
+                {
+                    await Task.Delay(1000);
+                    EmailService.SendToAdmin(
+                        "Level up!",
+                        @$"{user.Name} got {xpToAdd} XP and leveled up!<br/>
+                    Level: {previousLevel} -> {user.Level}<br/>
+                    UserId: {user.UserId}"
+                    );
+                });
+            }
+
             return Ok(new
             {
                 user = user,

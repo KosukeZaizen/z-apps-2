@@ -82,7 +82,7 @@ function ResultXpDialog_RegisteredUser({
         <CenterDialog
             open={open}
             onClose={onClose}
-            transitionMilliseconds={500}
+            transitionMilliseconds={300}
         >
             <div className={c.container}>
                 {isLevelUp && (
