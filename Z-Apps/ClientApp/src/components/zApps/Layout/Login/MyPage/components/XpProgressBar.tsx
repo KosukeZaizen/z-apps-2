@@ -10,7 +10,7 @@ export function XpProgressArea() {
 
     const [xpProgress, setXpProgress] = useState<XpProgress | null>(null);
     useEffect(() => {
-        if (user?.xp) {
+        if (user) {
             getXpProgress(user.xp).then(x => {
                 setXpProgress(x);
             });
