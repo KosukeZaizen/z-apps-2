@@ -97,10 +97,13 @@ abbr[title] {
 }
 
 /*
-    width
+    width, height
 */
 .fullWidth {
     width: 100%;
+}
+.fullHeight {
+    height: 100%;
 }
 
 /*

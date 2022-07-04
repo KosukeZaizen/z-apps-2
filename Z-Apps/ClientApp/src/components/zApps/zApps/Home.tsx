@@ -1,5 +1,6 @@
+import { makeStyles } from "@material-ui/core/styles";
 import { Location } from "history";
-import { CSSProperties, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Button from "reactstrap/lib/Button";
 import Card from "reactstrap/lib/Card";
@@ -8,6 +9,7 @@ import CardTitle from "reactstrap/lib/CardTitle";
 import { bindActionCreators } from "redux";
 import { ARTICLES_URL } from "../../../common/consts";
 import { useScreenSize } from "../../../common/hooks/useScreenSize";
+import { spaceBetween } from "../../../common/util/Array/spaceBetween";
 import { cFetch } from "../../../common/util/cFetch";
 import "../../../css/Home.css";
 import { ApplicationState } from "../../../store/configureStore";
@@ -24,12 +26,6 @@ import { ATargetBlank } from "../../shared/Link/ATargetBlank";
 import { Link } from "../../shared/Link/LinkWithYouTube";
 import { useProgress } from "../Layout/Login/MyPage/useProgress";
 
-const cardTitleStyle: CSSProperties = {
-    fontSize: "x-large",
-};
-const cardTextStyle: CSSProperties = { position: "relative", top: 5 };
-const cardMargin = 5;
-
 type Props = {
     location: Location;
 };
@@ -40,6 +36,7 @@ function Home({}: Props) {
     const { screenWidth } = useScreenSize();
     const [articles, setArticles] = useState<Page[]>([]);
     const [allAuthors, setAllAuthors] = useState<Author[]>([]);
+    const c = useCardsStyles();
 
     const isWide = screenWidth > 991;
 
@@ -94,60 +91,44 @@ function Home({}: Props) {
                             flexDirection: isWide ? "row" : "column",
                         }}
                     >
-                        <Link
-                            to="/kanji-converter"
-                            style={{
-                                margin: cardMargin,
-                                flex: 1,
-                                textDecoration: "none",
-                            }}
-                        >
+                        <Link to="/kanji-converter" className={c.cardLink}>
                             <Card
                                 body
                                 inverse
                                 color="primary"
-                                style={{ height: "100%" }}
-                                className="hoverScale05"
+                                className="hoverScale05 fullHeight"
                             >
-                                <CardTitle style={cardTitleStyle}>
+                                <CardTitle className={c.cardTitle}>
                                     Kanji Converter
                                 </CardTitle>
-                                <CardText style={cardTextStyle}>
+                                <CardText className={c.cardText}>
                                     A converter to change Kanji to Hiragana and
                                     Romaji. Use to know how to read Kanji!
                                 </CardText>
                                 <Button
                                     color="secondary"
-                                    style={{ marginTop: "auto" }}
+                                    className={c.marginTopAuto}
                                 >
                                     Try!
                                 </Button>
                             </Card>
                         </Link>
 
-                        <Link
-                            to="/romaji-converter"
-                            style={{
-                                margin: cardMargin,
-                                flex: 1,
-                                textDecoration: "none",
-                            }}
-                        >
+                        <Link to="/romaji-converter" className={c.cardLink}>
                             <Card
                                 body
                                 inverse
                                 color="success"
-                                style={{ height: "100%" }}
-                                className="hoverScale05"
+                                className="hoverScale05 fullHeight"
                             >
-                                <CardTitle style={cardTitleStyle}>
+                                <CardTitle className={c.cardTitle}>
                                     Romaji Converter
                                 </CardTitle>
-                                <CardText style={cardTextStyle}>
+                                <CardText className={c.cardText}>
                                     A converter to change Hiragana and Katakana
                                     to Romaji. Use when you need to know Romaji!
                                 </CardText>
-                                <Button style={{ marginTop: "auto" }}>
+                                <Button className={c.marginTopAuto}>
                                     Try!
                                 </Button>
                             </Card>
@@ -229,261 +210,146 @@ const Cards = connect(
         actionGameProgress,
     } = useProgress(loadAllGenres, allGenres);
 
+    const c = useCardsStyles();
+
     return (
-        <div
-            style={{
-                marginTop: 30,
-                marginBottom: isWide ? 50 : 35,
-            }}
-        >
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: isWide ? "row" : "column",
-                }}
-            >
-                <Link
-                    to="/hiragana-katakana"
-                    style={{
-                        margin: cardMargin,
-                        flex: 1,
-                        textDecoration: "none",
-                    }}
-                >
+        <div className={isWide ? c.wideContainer : c.container}>
+            <div className={isWide ? c.wideCardsGroup : c.cardsGroup}>
+                <Link to="/hiragana-katakana" className={c.cardLink}>
                     <Card
                         body
-                        style={{
-                            backgroundColor: "#333",
-                            borderColor: "#333",
-                            color: "white",
-                            height: "100%",
-                        }}
-                        className="hoverScale05"
+                        className={spaceBetween("hoverScale05", c.kanaCard)}
                     >
-                        <CardTitle style={cardTitleStyle}>
+                        <CardTitle className={c.cardTitle}>
                             Hiragana / Katakana
                         </CardTitle>
-                        <CardText style={cardTextStyle}>
+                        <CardText className={c.cardText}>
                             A web app to remember Hiragana and Katakana! Let's
                             test your memory of Hiragana and Katakana!
                         </CardText>
-                        <div
-                            style={{
-                                fontSize: "large",
-                                marginBottom: 25,
-                            }}
-                        >
+                        <div className={c.progressContainer}>
                             {"Your progress:"}
                             <wbr />
-                            <span
-                                style={{
-                                    fontWeight: "bold",
-                                    paddingLeft: 7,
-                                    fontSize: "x-large",
-                                }}
-                            >
+                            <span className={c.progressNumber}>
                                 {kanaProgress}%
                             </span>
                         </div>
-                        <Button color="secondary" style={{ marginTop: "auto" }}>
+                        <Button color="secondary" className={c.marginTopAuto}>
                             Try!
                         </Button>
                     </Card>
                 </Link>
 
-                <Link
-                    to="/vocabulary-list"
-                    style={{
-                        margin: cardMargin,
-                        flex: 1,
-                        textDecoration: "none",
-                    }}
-                >
+                <Link to="/vocabulary-list" className={c.cardLink}>
                     <Card
                         body
                         inverse
                         color="primary"
-                        style={{ height: "100%" }}
-                        className="hoverScale05"
+                        className="hoverScale05 fullHeight"
                     >
-                        <CardTitle style={cardTitleStyle}>
+                        <CardTitle className={c.cardTitle}>
                             Japanese Vocab List
                         </CardTitle>
-                        <CardText style={cardTextStyle}>
+                        <CardText className={c.cardText}>
                             Basic Japanese Vocabulary List! Try to memorize all
                             the vocabulary by using the quizzes!
                         </CardText>
-                        <div
-                            style={{
-                                fontSize: "large",
-                                marginBottom: 25,
-                            }}
-                        >
+                        <div className={c.progressContainer}>
                             {"Your progress:"}
                             <wbr />
-                            <span
-                                style={{
-                                    fontWeight: "bold",
-                                    paddingLeft: 7,
-                                    fontSize: "x-large",
-                                }}
-                            >
+                            <span className={c.progressNumber}>
                                 {vocabAndKanjiProgress}%
                             </span>
                         </div>
-                        <Button color="secondary" style={{ marginTop: "auto" }}>
+                        <Button color="secondary" className={c.marginTopAuto}>
                             Try!
                         </Button>
                     </Card>
                 </Link>
             </div>
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: isWide ? "row" : "column",
-                }}
-            >
-                <Link
-                    to="/vocabulary-quiz"
-                    style={{
-                        margin: cardMargin,
-                        flex: 1,
-                        textDecoration: "none",
-                    }}
-                >
+            <div className={isWide ? c.wideCardsGroup : c.cardsGroup}>
+                <Link to="/vocabulary-quiz" className={c.cardLink}>
                     <Card
                         body
                         inverse
                         color="success"
-                        style={{ height: "100%" }}
-                        className="hoverScale05"
+                        className="hoverScale05 fullHeight"
                     >
-                        <CardTitle style={cardTitleStyle}>
+                        <CardTitle className={c.cardTitle}>
                             Japanese Vocab Quiz
                         </CardTitle>
-                        <CardText style={cardTextStyle}>
+                        <CardText className={c.cardText}>
                             A web app to learn basic Japanese vocabulary!
                             {!isWide &&
                                 " Try to get a perfect score on all the quizzes!"}
                         </CardText>
-                        <div
-                            style={{
-                                fontSize: "large",
-                                marginBottom: 25,
-                            }}
-                        >
+                        <div className={c.progressContainer}>
                             {"Your progress:"}
                             <wbr />
-                            <span
-                                style={{
-                                    fontWeight: "bold",
-                                    paddingLeft: 7,
-                                    fontSize: "x-large",
-                                }}
-                            >
+                            <span className={c.progressNumber}>
                                 {vocabProgress}%
                             </span>
                         </div>
-                        <Button style={{ marginTop: "auto" }} color="secondary">
+                        <Button className={c.marginTopAuto} color="secondary">
                             Try!
                         </Button>
                     </Card>
                 </Link>
 
-                <Link
-                    to="/kanji-quiz"
-                    style={{
-                        margin: cardMargin,
-                        flex: 1,
-                        textDecoration: "none",
-                    }}
-                >
+                <Link to="/kanji-quiz" className={c.cardLink}>
                     <Card
                         body
                         inverse
                         color="danger"
-                        style={{ height: "100%" }}
-                        className="hoverScale05"
+                        className="hoverScale05 fullHeight"
                     >
-                        <CardTitle style={cardTitleStyle}>
+                        <CardTitle className={c.cardTitle}>
                             Japanese Kanji Quiz
                         </CardTitle>
-                        <CardText style={cardTextStyle}>
+                        <CardText className={c.cardText}>
                             A web app to learn Japanese Kanji characters!
                             {!isWide &&
                                 " Try to get a perfect score on all the quizzes!"}
                         </CardText>
-                        <div
-                            style={{
-                                fontSize: "large",
-                                marginBottom: 25,
-                            }}
-                        >
+                        <div className={c.progressContainer}>
                             {"Your progress:"}
                             <wbr />
-                            <span
-                                style={{
-                                    fontWeight: "bold",
-                                    paddingLeft: 7,
-                                    fontSize: "x-large",
-                                }}
-                            >
+                            <span className={c.progressNumber}>
                                 {kanjiProgress}%
                             </span>
                         </div>
-                        <Button color="secondary" style={{ marginTop: "auto" }}>
+                        <Button color="secondary" className={c.marginTopAuto}>
                             Try!
                         </Button>
                     </Card>
                 </Link>
 
-                <Link
-                    to="/ninja"
-                    style={{
-                        margin: cardMargin,
-                        flex: 1,
-                        textDecoration: "none",
-                    }}
-                >
+                <Link to="/ninja" className={c.cardLink}>
                     <Card
                         body
-                        style={{
-                            backgroundColor: "#333",
-                            borderColor: "#333",
-                            color: "white",
-                            height: "100%",
-                        }}
-                        className="hoverScale05"
+                        className={spaceBetween(
+                            "hoverScale05",
+                            c.actionGameCard
+                        )}
                     >
-                        <CardTitle style={cardTitleStyle}>
+                        <CardTitle className={c.cardTitle}>
                             Action Game
                         </CardTitle>
-                        <CardText style={cardTextStyle}>
+                        <CardText className={c.cardText}>
                             Action game! Be a Ninja, and collect the scrolls in
                             Japan!
                             {!isWide &&
                                 " Save the village by defeating the enemies!"}
                         </CardText>
-                        <div style={{ marginTop: "auto" }}>
-                            <div
-                                style={{
-                                    fontSize: "large",
-                                    marginBottom: 25,
-                                }}
-                            >
+                        <div className={c.marginTopAuto}>
+                            <div className={c.progressContainer}>
                                 {"Your progress:"}
                                 <wbr />
-                                <span
-                                    style={{
-                                        fontWeight: "bold",
-                                        paddingLeft: 7,
-                                        fontSize: "x-large",
-                                    }}
-                                >
+                                <span className={c.progressNumber}>
                                     {`${actionGameProgress}/3`}
                                 </span>
                             </div>
-                            <Button color="secondary">Play!</Button>
+                            <Button color="secondary fullWidth">Play!</Button>
                         </div>
                     </Card>
                 </Link>
@@ -491,6 +357,56 @@ const Cards = connect(
         </div>
     );
 });
+
+const useCardsStyles = makeStyles(() => ({
+    container: {
+        marginTop: 30,
+        marginBottom: 35,
+    },
+    wideContainer: {
+        marginTop: 30,
+        marginBottom: 50,
+    },
+    cardsGroup: {
+        display: "flex",
+        flexDirection: "column",
+    },
+    wideCardsGroup: {
+        display: "flex",
+        flexDirection: "row",
+    },
+    cardLink: {
+        margin: 5,
+        flex: 1,
+        textDecoration: "none",
+    },
+    kanaCard: {
+        backgroundColor: "#333",
+        borderColor: "#333",
+        color: "white",
+        height: "100%",
+    },
+    cardTitle: {
+        fontSize: "x-large",
+    },
+    actionGameCard: {
+        backgroundColor: "#333",
+        borderColor: "#333",
+        color: "white",
+        height: "100%",
+    },
+    cardText: { position: "relative", top: 5 },
+    marginTopAuto: { marginTop: "auto" },
+    progressNumber: {
+        fontWeight: "bold",
+        paddingLeft: 7,
+        fontSize: "x-large",
+    },
+    progressContainer: {
+        fontSize: "large",
+        marginBottom: 25,
+    },
+}));
 
 function getImgNumber() {
     const today = new Date();
