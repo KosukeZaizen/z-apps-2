@@ -49,7 +49,7 @@ const useXpProgressStyles = makeStyles(() => ({
         flexDirection: "column",
         alignItems: "center",
         transition: "width 500ms",
-        transitionDelay: "700ms", // For the timing of the panel open
+        transitionDelay: "100ms",
         overflow: "hidden",
     },
     width0: { width: 0 },
