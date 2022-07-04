@@ -115,3 +115,10 @@ abbr[title] {
 .opacity1 {
     opacity: 1;
 }
+
+/*
+    display
+*/
+.inline-block {
+    display: inline-block;
+}

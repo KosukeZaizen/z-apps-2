@@ -37,6 +37,7 @@ function Home({}: Props) {
     const [articles, setArticles] = useState<Page[]>([]);
     const [allAuthors, setAllAuthors] = useState<Author[]>([]);
     const c = useCardsStyles();
+    const hc = useHomeStyles();
 
     const isWide = screenWidth > 991;
 
@@ -51,12 +52,10 @@ function Home({}: Props) {
                 desc="Free applications to learn Japanese, made by Kosuke Zaizen! I hope you enjoy!"
                 isHome={true}
             />
-            <div style={{ textAlign: "center" }}>
-                <h1 className="whiteShadow" style={{ lineHeight: 1.3 }}>
+            <div className={hc.alignCenter}>
+                <h1 className={spaceBetween("whiteShadow", hc.lineHeight1_3)}>
                     Welcome to{" "}
-                    <span style={{ display: "inline-block" }}>
-                        Lingual Ninja!
-                    </span>
+                    <span className="inline-block">Lingual Ninja!</span>
                 </h1>
                 <CharacterComment
                     screenWidth={screenWidth}
@@ -86,10 +85,11 @@ function Home({}: Props) {
                     />
 
                     <div
-                        style={{
-                            display: "flex",
-                            flexDirection: isWide ? "row" : "column",
-                        }}
+                        className={
+                            isWide
+                                ? hc.wideConvertersContainer
+                                : hc.convertersContainer
+                        }
                     >
                         <Link to="/kanji-converter" className={c.cardLink}>
                             <Card
@@ -142,16 +142,12 @@ function Home({}: Props) {
                 hoverScale
             />
             <hr />
-            <section
-                style={{
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    maxWidth: 900,
-                }}
-            >
+            <section className={hc.articlesSection}>
                 <h2
-                    className="markdownH2"
-                    style={{ marginBottom: 55, textAlign: "center" }}
+                    className={spaceBetween(
+                        "markdownH2",
+                        hc.articlesAboutJapanTitle
+                    )}
                 >
                     Articles about Japan
                 </h2>
@@ -161,7 +157,7 @@ function Home({}: Props) {
                     screenWidth={screenWidth}
                     allAuthors={allAuthors}
                 />
-                <div style={{ textAlign: "center", marginBottom: 50 }}>
+                <div className={hc.moreArticlesContainer}>
                     <ATargetBlank
                         href={ARTICLES_URL}
                         style={{
@@ -177,6 +173,25 @@ function Home({}: Props) {
         </div>
     );
 }
+const useHomeStyles = makeStyles(() => ({
+    alignCenter: { textAlign: "center" },
+    lineHeight1_3: { lineHeight: "1.3 !important" },
+    convertersContainer: {
+        display: "flex",
+        flexDirection: "column",
+    },
+    wideConvertersContainer: {
+        display: "flex",
+        flexDirection: "row",
+    },
+    articlesSection: {
+        marginLeft: "auto",
+        marginRight: "auto",
+        maxWidth: 900,
+    },
+    articlesAboutJapanTitle: { marginBottom: 55, textAlign: "center" },
+    moreArticlesContainer: { textAlign: "center", marginBottom: 50 },
+}));
 
 async function fetchArticles(
     setArticles: (articles: Page[]) => void,
