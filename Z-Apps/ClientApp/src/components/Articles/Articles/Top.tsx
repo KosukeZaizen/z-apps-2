@@ -1,6 +1,7 @@
-import * as React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { Page } from ".";
+import { spaceBetween } from "../../../common/util/Array/spaceBetween";
 import { LazyLoad } from "../../../common/util/LazyLoad";
 import ShurikenProgress from "../../shared/Animations/ShurikenProgress";
 import { Author, AuthorCard } from "../../shared/Author";
@@ -72,76 +73,57 @@ function ArticleScroll({
     isWide: boolean;
     imgSize: CSSProperties;
 } & Omit<ArticlesListProps, "articles">) {
+    const c = useStyles();
+
     return (
-        <article
-            key={page.title}
-            style={{
-                marginBottom: 45,
-                textAlign: "left",
-                maxWidth: 900,
-            }}
-        >
+        <article key={page.title} className={c.article}>
             <ScrollBox style={isWide ? { padding: 15 } : { padding: 10 }}>
                 <div
-                    style={{
-                        display: "flex",
-                        flexDirection: isWide ? "row" : "column",
-                    }}
-                    className="cancelCenter"
+                    className={spaceBetween(
+                        "cancelCenter",
+                        isWide ? c.wideDivInScroll : c.divInScroll
+                    )}
                 >
                     {page.imgPath && (
-                        <div
-                            style={{
-                                display: "block",
-                                flex: 1,
-                                maxHeight: 250,
-                                overflow: "hidden",
-                            }}
-                        >
+                        <div className={c.imgContainer}>
                             <LinkOrA href={`${url}/${page.url}`}>
                                 <ArticleImg page={page} imgSize={imgSize} />
                             </LinkOrA>
                         </div>
                     )}
                     <div
-                        style={{
-                            flex: 1,
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                            margin: isWide ? "0 0 10px 20px" : "10px 5px",
-                            alignItems: isWide ? "flex-end" : "flex-start",
-                        }}
+                        className={
+                            isWide ? c.wideArticleInfoBlock : c.articleInfoBlock
+                        }
                     >
                         <div>
                             <LinkOrA href={`${url}/${page.url}`}>
                                 {titleH === "h3" ? (
                                     <h3
-                                        style={{
-                                            fontSize: isWide
-                                                ? "27px"
-                                                : "x-large",
-                                        }}
+                                        className={
+                                            isWide
+                                                ? c.widePageTitle
+                                                : c.pageTitle
+                                        }
                                     >
                                         {page.title}
                                     </h3>
                                 ) : (
                                     <h2
-                                        style={{
-                                            fontSize: isWide
-                                                ? "27px"
-                                                : "x-large",
-                                        }}
+                                        className={
+                                            isWide
+                                                ? c.widePageTitle
+                                                : c.pageTitle
+                                        }
                                     >
                                         {page.title}
                                     </h2>
                                 )}
                             </LinkOrA>
                             <p
-                                style={{
-                                    fontSize: isWide ? undefined : "medium",
-                                    margin: 0,
-                                }}
+                                className={
+                                    isWide ? c.wideDescription : c.description
+                                }
                             >
                                 {page.description.length > 200
                                     ? page.description.slice(0, 200) + "..."
@@ -149,13 +131,11 @@ function ArticleScroll({
                             </p>
                         </div>
                         <div
-                            style={{
-                                position: "relative",
-                                top: 10,
-                                left: isWide ? 0 : -5,
-                                display: "flex",
-                                justifyContent: "flex-start",
-                            }}
+                            className={
+                                isWide
+                                    ? c.wideAuthorCardContainer
+                                    : c.authorCardContainer
+                            }
                         >
                             <AuthorCard
                                 author={allAuthors.find(
@@ -171,6 +151,70 @@ function ArticleScroll({
         </article>
     );
 }
+const useStyles = makeStyles(() => ({
+    article: {
+        marginBottom: 45,
+        textAlign: "left",
+        maxWidth: 900,
+    },
+    divInScroll: {
+        display: "flex",
+        flexDirection: "column",
+    },
+    wideDivInScroll: {
+        display: "flex",
+        flexDirection: "row",
+    },
+    imgContainer: {
+        display: "block",
+        flex: 1,
+        maxHeight: 250,
+        overflow: "hidden",
+    },
+    articleInfoBlock: {
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        margin: "10px 5px",
+        alignItems: "flex-start",
+    },
+    wideArticleInfoBlock: {
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        margin: "0 0 10px 20px",
+        alignItems: "flex-end",
+    },
+    pageTitle: {
+        fontSize: "x-large",
+    },
+    widePageTitle: {
+        fontSize: 27,
+    },
+    description: {
+        fontSize: "medium",
+        margin: 0,
+    },
+    wideDescription: {
+        margin: 0,
+    },
+    authorCardContainer: {
+        position: "relative",
+        top: 10,
+        left: -5,
+        display: "flex",
+        justifyContent: "flex-start",
+    },
+    wideAuthorCardContainer: {
+        position: "relative",
+        top: 10,
+        left: 0,
+        display: "flex",
+        justifyContent: "flex-start",
+    },
+}));
 
 function ArticleImg({ page, imgSize }: { page: Page; imgSize: CSSProperties }) {
     if (
