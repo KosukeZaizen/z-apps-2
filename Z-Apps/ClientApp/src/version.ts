@@ -1,1 +1,1 @@
-export const APP_VERSION: number = 802;
+export const APP_VERSION: number = 803;
