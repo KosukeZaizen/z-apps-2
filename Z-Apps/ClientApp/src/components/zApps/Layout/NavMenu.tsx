@@ -21,8 +21,7 @@ import { Tooltip } from "../../shared/Tooltip";
 import "./NavMenu.css";
 
 const links: { name: string; url: string }[] = [
-    { name: "Hiragana", url: "/hiragana-quiz" },
-    { name: "Katakana", url: "/katakana-quiz" },
+    { name: "Hiragana / Katakana", url: "/hiragana-katakana" },
     { name: "Vocab", url: "/vocabulary-quiz" },
     { name: "Folktales", url: "/folktales" },
     { name: "Articles", url: ARTICLES_URL },
