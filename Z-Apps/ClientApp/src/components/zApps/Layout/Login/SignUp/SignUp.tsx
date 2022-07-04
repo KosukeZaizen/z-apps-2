@@ -100,6 +100,7 @@ export function SignUp({
         abTestSuccess();
         await loginSuccess(user);
         setSubmitting(false);
+        changeAppState("xpBeforeSignUp", 0);
     };
 
     const { partiallyOpened, completelyOpened } = useOpenState(chosen);
