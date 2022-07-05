@@ -32,7 +32,7 @@ export default function CharacterComment(props: TProps) {
             ref={containerRef}
             className="characterCommentContainer"
         >
-            <div style={{ flex: 1 }}>
+            <div className="ninjaPicContainer">
                 <Collapse
                     in={imgIn}
                     timeout={500}

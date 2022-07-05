@@ -36,6 +36,10 @@
     flex: 3;
 }
 
+.ninjaPicContainer {
+    flex: 1;
+}
+
 .ninjaPic {
     animation: 10s linear infinite ninjaCommentAnime;
     animation-delay: 1s;
