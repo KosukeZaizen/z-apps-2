@@ -122,3 +122,13 @@ abbr[title] {
 .inline-block {
     display: inline-block;
 }
+
+/*
+    transition
+*/
+.t500ms {
+    transition: all 500ms;
+}
+.t1s {
+    transition: all 1s;
+}

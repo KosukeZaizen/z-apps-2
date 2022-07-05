@@ -17,6 +17,7 @@ import {
 import { ARTICLES_URL } from "../../../common/consts";
 import { useScreenSize } from "../../../common/hooks/useScreenSize";
 import { useUser } from "../../../common/hooks/useUser";
+import { spaceBetween } from "../../../common/util/Array/spaceBetween";
 import { DarkLayer } from "../../shared/DarkLayer";
 import { A, Link } from "../../shared/Link/LinkWithYouTube";
 import { Tooltip } from "../../shared/Tooltip";
@@ -64,6 +65,7 @@ function NavigationItems(props: { closeToggle: () => void }) {
 const topOverFlow = 50;
 
 export default function NavMenu() {
+    const c = useNavMenuStyles();
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef<HTMLElement>(null);
     const headerHeight = useHeaderHeight(ref.current);
@@ -105,11 +107,10 @@ export default function NavMenu() {
                             }}
                         >
                             <span
-                                style={{
-                                    whiteSpace: "nowrap",
-                                    fontWeight: "bold",
-                                }}
-                                className="z-apps-title text-light"
+                                className={spaceBetween(
+                                    "z-apps-title text-light",
+                                    c.titleContainer
+                                )}
                             >
                                 Lingual Ninja
                             </span>
@@ -130,6 +131,12 @@ export default function NavMenu() {
         </>
     );
 }
+const useNavMenuStyles = makeStyles(() => ({
+    titleContainer: {
+        whiteSpace: "nowrap",
+        fontWeight: "bold",
+    },
+}));
 
 function Menus({
     isOpen,
@@ -138,17 +145,12 @@ function Menus({
     isOpen: boolean;
     setIsOpen: (open: boolean) => void;
 }) {
+    const c = useMenusStyles();
     const { screenWidth } = useScreenSize();
     const isHamburger = screenWidth < 768;
     return (
         <>
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
-                }}
-            >
+            <div className={c.iconsArea}>
                 <NavbarToggler
                     onClick={() => {
                         setIsOpen(!isOpen);
@@ -157,18 +159,12 @@ function Menus({
                 />
                 {isHamburger && (
                     <LoginIcon
-                        iconStyle={{
-                            width: isOpen ? 0 : 40,
-                            height: 40,
-                            color: "white",
-                            cursor: "pointer",
-                            transition: "all 500ms",
-                        }}
                         containerStyle={{
                             marginLeft: screenWidth / 30,
                             display: isOpen ? "none" : "block",
-                            transition: "all 500ms",
                         }}
+                        isHamburger={isHamburger}
+                        isOpenHamburger={isOpen && isHamburger}
                     />
                 )}
             </div>
@@ -185,33 +181,37 @@ function Menus({
             </Collapse>
             {!isHamburger && (
                 <LoginIcon
-                    iconStyle={{
-                        width: 40,
-                        height: 40,
-                        color: "white",
-                        cursor: "pointer",
-                        transition: "all 1s",
-                    }}
                     containerStyle={{
                         marginLeft: screenWidth / 30,
-                        transition: "all 500ms",
                     }}
+                    isHamburger={isHamburger}
                 />
             )}
         </>
     );
 }
+const useMenusStyles = makeStyles(() => ({
+    iconsArea: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+    },
+}));
 
 function LoginIcon({
-    iconStyle,
     containerStyle,
+    isHamburger,
+    isOpenHamburger,
 }: {
-    iconStyle: CSSProperties;
     containerStyle: CSSProperties;
+    isHamburger: boolean;
+    isOpenHamburger?: boolean;
 }) {
     const c = useLoginIconStyles();
     const { user } = useUser();
     const [isTooltipOpened, setTooltipOpened] = useState(false);
+
+    const transitionClass = isHamburger ? "t500ms" : "t1s";
 
     return (
         <Tooltip
@@ -226,11 +226,8 @@ function LoginIcon({
             }}
         >
             <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    ...containerStyle,
-                }}
+                style={containerStyle}
+                className={spaceBetween(c.container, transitionClass)}
                 onClick={() => {
                     if (user) {
                         changeAppState("signInPanelState", "myPageTop");
@@ -239,13 +236,18 @@ function LoginIcon({
                     changeAppState("signInPanelState", "signUp");
                 }}
             >
-                <PersonIcon style={iconStyle} />
+                <PersonIcon
+                    className={spaceBetween(
+                        isOpenHamburger ? c.iconForOpenHamburger : c.icon,
+                        transitionClass
+                    )}
+                />
                 <div
-                    className={c.levelCardContainer}
-                    style={{
-                        opacity: isTooltipOpened ? 0 : 1,
-                        transition: "all 500ms",
-                    }}
+                    className={spaceBetween(
+                        c.levelCardContainer,
+                        transitionClass,
+                        isTooltipOpened ? "opacity0" : "opacity1"
+                    )}
                 >
                     <Card className={c.levelCard}>Lv.12</Card>
                 </div>
@@ -255,6 +257,7 @@ function LoginIcon({
 }
 const useLoginIconStyles = makeStyles(theme => ({
     tooltip: { zIndex: 999999999999 },
+    container: { display: "flex", flexDirection: "column" },
     levelCard: {
         backgroundColor: theme.palette.grey[800],
         color: "white",
@@ -270,6 +273,18 @@ const useLoginIconStyles = makeStyles(theme => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+    },
+    icon: {
+        width: 40,
+        height: 40,
+        color: "white",
+        cursor: "pointer",
+    },
+    iconForOpenHamburger: {
+        width: 0,
+        height: 40,
+        color: "white",
+        cursor: "pointer",
     },
 }));
 
