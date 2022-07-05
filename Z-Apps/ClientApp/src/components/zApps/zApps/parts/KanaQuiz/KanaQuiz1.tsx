@@ -60,12 +60,11 @@ export function Quiz1({
     const { user, isUserFetchDone } = useUser();
     const [isResultDialogShown, setResultDialogShown] = useState(false);
 
+    const chartReplacedHash = `${consts.KANA_TYPE}-chart`;
     useEffect(() => {
         if (isQuizResult) {
             setResultDialogShown(true);
-
-            const replacedHash = `${consts.KANA_TYPE}-chart`;
-            scrollToElement(document.getElementById(replacedHash));
+            scrollToElement(document.getElementById(chartReplacedHash));
         }
     }, [isQuizResult, consts]);
 
@@ -232,6 +231,9 @@ export function Quiz1({
                 open={isResultDialogShown}
                 onClose={() => {
                     setResultDialogShown(false);
+                    document
+                        .getElementById(chartReplacedHash)
+                        ?.scrollIntoView(true);
                 }}
                 xpToAdd={10 * score}
                 topSmallMessage={
