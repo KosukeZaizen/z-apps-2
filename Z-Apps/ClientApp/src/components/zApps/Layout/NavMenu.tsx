@@ -164,8 +164,8 @@ function Menus({
                         containerStyle={{
                             marginLeft: screenWidth / 30,
                         }}
-                        isHamburger={isHamburger}
                         isOpenHamburger={isOpen && isHamburger}
+                        transitionClass={"t500ms"}
                     />
                 )}
             </div>
@@ -185,7 +185,7 @@ function Menus({
                     containerStyle={{
                         marginLeft: screenWidth / 30,
                     }}
-                    isHamburger={isHamburger}
+                    transitionClass={"t1s"}
                 />
             )}
         </>
@@ -201,20 +201,18 @@ const useMenusStyles = makeStyles(() => ({
 
 function LoginIcon({
     containerStyle,
-    isHamburger,
     isOpenHamburger,
+    transitionClass,
 }: {
     containerStyle: CSSProperties;
-    isHamburger: boolean;
     isOpenHamburger?: boolean;
+    transitionClass: "t500ms" | "t1s";
 }) {
     const c = useLoginIconStyles();
     const { user } = useUser();
     const [isTooltipOpened, setTooltipOpened] = useState(false);
 
     const { level } = useLevel();
-
-    const transitionClass = isHamburger ? "t500ms" : "t1s";
 
     return (
         <Tooltip
