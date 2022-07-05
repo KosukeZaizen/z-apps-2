@@ -1,3 +1,5 @@
+import Card from "@material-ui/core/Card";
+import { makeStyles } from "@material-ui/core/styles";
 import PersonIcon from "@material-ui/icons/Person";
 import "bootstrap/dist/css/bootstrap.css";
 import { CSSProperties, useEffect, useRef, useState } from "react";
@@ -155,12 +157,16 @@ function Menus({
                 />
                 {isHamburger && (
                     <LoginIcon
-                        style={{
+                        iconStyle={{
                             width: isOpen ? 0 : 40,
                             height: 40,
                             color: "white",
                             cursor: "pointer",
+                            transition: "all 500ms",
+                        }}
+                        containerStyle={{
                             marginLeft: screenWidth / 30,
+                            display: isOpen ? "none" : "block",
                             transition: "all 500ms",
                         }}
                     />
@@ -179,13 +185,16 @@ function Menus({
             </Collapse>
             {!isHamburger && (
                 <LoginIcon
-                    style={{
+                    iconStyle={{
                         width: 40,
                         height: 40,
                         color: "white",
                         cursor: "pointer",
-                        marginLeft: screenWidth / 30,
                         transition: "all 1s",
+                    }}
+                    containerStyle={{
+                        marginLeft: screenWidth / 30,
+                        transition: "all 500ms",
                     }}
                 />
             )}
@@ -193,16 +202,35 @@ function Menus({
     );
 }
 
-function LoginIcon({ style }: { style: CSSProperties }) {
+function LoginIcon({
+    iconStyle,
+    containerStyle,
+}: {
+    iconStyle: CSSProperties;
+    containerStyle: CSSProperties;
+}) {
+    const c = useLoginIconStyles();
     const { user } = useUser();
+    const [isTooltipOpened, setTooltipOpened] = useState(false);
 
     return (
         <Tooltip
             title={user?.name || "Sign up"}
             placement="bottom"
-            style={{ zIndex: 999999999999 }}
+            className={c.tooltip}
+            onOpen={() => {
+                setTooltipOpened(true);
+            }}
+            onClose={() => {
+                setTooltipOpened(false);
+            }}
         >
-            <PersonIcon
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    ...containerStyle,
+                }}
                 onClick={() => {
                     if (user) {
                         changeAppState("signInPanelState", "myPageTop");
@@ -210,11 +238,40 @@ function LoginIcon({ style }: { style: CSSProperties }) {
                     }
                     changeAppState("signInPanelState", "signUp");
                 }}
-                style={style}
-            />
+            >
+                <PersonIcon style={iconStyle} />
+                <div
+                    className={c.levelCardContainer}
+                    style={{
+                        opacity: isTooltipOpened ? 0 : 1,
+                        transition: "all 500ms",
+                    }}
+                >
+                    <Card className={c.levelCard}>Lv.12</Card>
+                </div>
+            </div>
         </Tooltip>
     );
 }
+const useLoginIconStyles = makeStyles(theme => ({
+    tooltip: { zIndex: 999999999999 },
+    levelCard: {
+        backgroundColor: theme.palette.grey[800],
+        color: "white",
+        position: "absolute",
+        top: -5,
+        padding: "0 5px",
+        fontWeight: "bold",
+        cursor: "pointer",
+    },
+    levelCardContainer: {
+        height: 0,
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+}));
 
 function useHeaderHeight(headerElement: HTMLElement | null) {
     const [headerHeight, setHeaderHeight] = useAppState("headerHeight");
