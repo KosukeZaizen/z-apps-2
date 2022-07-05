@@ -1,8 +1,5 @@
-import Collapse from "@material-ui/core/Collapse";
 import * as React from "react";
-import { useState } from "react";
 import * as consts from "../../../common/consts";
-import { spaceBetween } from "../../../common/util/Array/spaceBetween";
 import "./CharacterComment.css";
 
 type TProps = {
@@ -24,8 +21,6 @@ export default function CharacterComment(props: TProps) {
         imgStyle,
         containerRef,
     } = props;
-    const [imgIn, setImgIn] = useState(false);
-
     return (
         <div
             style={style}
@@ -33,28 +28,15 @@ export default function CharacterComment(props: TProps) {
             className="characterCommentContainer"
         >
             <div className="ninjaPicContainer">
-                <Collapse
-                    in={imgIn}
-                    timeout={500}
-                    className="characterCommentImgCollapse"
-                >
-                    <img
-                        src={`${consts.BLOB_URL}/vocabulary-quiz/img/ninja${imgNumber}.png`}
-                        alt="Japanese ninja"
-                        style={{
-                            width: (screenWidth * 2) / 10,
-                            ...imgStyle,
-                        }}
-                        className={spaceBetween(
-                            "ninjaPic",
-                            "t500ms",
-                            imgIn ? "opacity1" : "opacity0"
-                        )}
-                        onLoad={() => {
-                            setImgIn(true);
-                        }}
-                    />
-                </Collapse>
+                <img
+                    src={`${consts.BLOB_URL}/vocabulary-quiz/img/ninja${imgNumber}.png`}
+                    alt="Japanese ninja"
+                    style={{
+                        width: (screenWidth * 2) / 10,
+                        ...imgStyle,
+                    }}
+                    className="ninjaPic"
+                />
             </div>
             <div className="chatting">
                 <div
