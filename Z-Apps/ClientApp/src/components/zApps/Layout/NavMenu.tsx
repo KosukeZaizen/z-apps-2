@@ -12,7 +12,7 @@ import NavLink from "reactstrap/lib/NavLink";
 import {
     changeAppState,
     getAppState,
-    useAppState,
+    useAppState
 } from "../../../common/appState";
 import { ARTICLES_URL } from "../../../common/consts";
 import { useScreenSize } from "../../../common/hooks/useScreenSize";
@@ -210,6 +210,18 @@ function LoginIcon({
     const c = useLoginIconStyles();
     const { user } = useUser();
     const [isTooltipOpened, setTooltipOpened] = useState(false);
+    const [xpBeforeSignUp] = useAppState("xpBeforeSignUp");
+    const [level, setLevel] = useState(user?.level || 1);
+
+    useEffect(() => {
+        if (user) {
+            setLevel(user.level);
+            return;
+        }
+        fetchLevelForXp(xpBeforeSignUp).then(l => {
+            setLevel(l);
+        });
+    }, [user?.level, xpBeforeSignUp]);
 
     const transitionClass = isHamburger ? "t500ms" : "t1s";
 
@@ -249,7 +261,7 @@ function LoginIcon({
                         isTooltipOpened ? "opacity0" : "opacity1"
                     )}
                 >
-                    <Card className={c.levelCard}>Lv.12</Card>
+                    <Card className={c.levelCard}>Lv.{level}</Card>
                 </div>
             </div>
         </Tooltip>
@@ -287,6 +299,10 @@ const useLoginIconStyles = makeStyles(theme => ({
         cursor: "pointer",
     },
 }));
+async function fetchLevelForXp(xp: number) {
+    const res = await fetch(`api/User/GetLevelFromXp?xp=${xp}`);
+    return res.json();
+}
 
 function useHeaderHeight(headerElement: HTMLElement | null) {
     const [headerHeight, setHeaderHeight] = useAppState("headerHeight");
