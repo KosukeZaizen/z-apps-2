@@ -1,3 +1,9 @@
+.characterCommentContainer {
+    display: flex;
+    max-width: 600px;
+    margin: auto;
+}
+
 .says {
     display: inline-block;
     position: relative;
@@ -5,6 +11,7 @@
     padding: 17px 13px;
     border-radius: 12px;
     background: antiquewhite;
+    max-width: 420px;
 }
 
 .says:after {
@@ -22,9 +29,19 @@
     padding: 0;
 }
 
+.chatting {
+    height: auto;
+    display: flex;
+    align-items: center;
+    flex: 3;
+}
+
 .ninjaPic {
     animation: 10s linear infinite ninjaCommentAnime;
     animation-delay: 1s;
+    max-width: 120px;
+    height: auto;
+    vertical-align: top;
 }
 @keyframes ninjaCommentAnime {
     0% {
@@ -45,4 +62,8 @@
     100% {
         transform: translate3d(0px, 0px, 0px);
     }
+}
+
+.characterCommentImgCollapse {
+    overflow: visible;
 }

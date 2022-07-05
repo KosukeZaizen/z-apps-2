@@ -126,9 +126,9 @@ abbr[title] {
 /*
     transition
 */
-.t500ms {
-    transition: all 500ms !important;
-}
 .t1s {
     transition: all 1s !important;
+}
+.t500ms {
+    transition: all 500ms !important;
 }

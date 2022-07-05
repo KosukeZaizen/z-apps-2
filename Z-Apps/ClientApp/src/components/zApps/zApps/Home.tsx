@@ -57,6 +57,7 @@ function Home({}: Props) {
                     Welcome to{" "}
                     <span className="inline-block">Lingual Ninja!</span>
                 </h1>
+
                 <CharacterComment
                     screenWidth={screenWidth}
                     imgNumber={imgNumber}
@@ -69,6 +70,7 @@ function Home({}: Props) {
                         </span>
                     }
                 />
+
                 <div>
                     <Cards isWide={isWide} />
 

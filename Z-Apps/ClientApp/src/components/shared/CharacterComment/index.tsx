@@ -1,5 +1,8 @@
+import Collapse from "@material-ui/core/Collapse";
 import * as React from "react";
+import { useState } from "react";
 import * as consts from "../../../common/consts";
+import { spaceBetween } from "../../../common/util/Array/spaceBetween";
 import "./CharacterComment.css";
 
 type TProps = {
@@ -21,39 +24,39 @@ export default function CharacterComment(props: TProps) {
         imgStyle,
         containerRef,
     } = props;
+    const [imgIn, setImgIn] = useState(false);
+
     return (
         <div
-            style={{
-                display: "flex",
-                maxWidth: 600,
-                margin: "auto",
-                ...style,
-            }}
+            style={style}
             ref={containerRef}
+            className="characterCommentContainer"
         >
             <div style={{ flex: 1 }}>
-                <img
-                    src={`${consts.BLOB_URL}/vocabulary-quiz/img/ninja${imgNumber}.png`}
-                    alt="Japanese ninja"
-                    style={{
-                        width: (screenWidth * 2) / 10,
-                        maxWidth: 120,
-                        height: "auto",
-                        verticalAlign: "top",
-                        ...imgStyle,
-                    }}
-                    className="ninjaPic"
-                />
+                <Collapse
+                    in={imgIn}
+                    timeout={500}
+                    className="characterCommentImgCollapse"
+                >
+                    <img
+                        src={`${consts.BLOB_URL}/vocabulary-quiz/img/ninja${imgNumber}.png`}
+                        alt="Japanese ninja"
+                        style={{
+                            width: (screenWidth * 2) / 10,
+                            ...imgStyle,
+                        }}
+                        className={spaceBetween(
+                            "ninjaPic",
+                            "t500ms",
+                            imgIn ? "opacity1" : "opacity0"
+                        )}
+                        onLoad={() => {
+                            setImgIn(true);
+                        }}
+                    />
+                </Collapse>
             </div>
-            <div
-                className="chatting"
-                style={{
-                    height: "auto",
-                    display: "flex",
-                    alignItems: "center",
-                    flex: 3,
-                }}
-            >
+            <div className="chatting">
                 <div
                     className="says"
                     style={{
@@ -61,7 +64,6 @@ export default function CharacterComment(props: TProps) {
                             screenWidth > 767
                                 ? (screenWidth * 7) / 10 - 15
                                 : "100%",
-                        maxWidth: 420,
                         ...commentStyle,
                     }}
                 >
