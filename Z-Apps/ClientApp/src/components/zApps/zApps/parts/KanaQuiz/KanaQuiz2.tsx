@@ -13,6 +13,7 @@ import { EasyAudioPlayer } from "../../../../../common/util/Audio/EasyAudioPlaye
 import { LazyLoad } from "../../../../../common/util/LazyLoad";
 import ShurikenProgress from "../../../../shared/Animations/ShurikenProgress";
 import { AuthorArea } from "../../../../shared/Author";
+import { HideFooter } from "../../../../shared/HideHeaderAndFooter/HideFooter";
 import { scrollToElement } from "../../../Layout/NavMenu";
 import {
     FontClassName,
@@ -284,6 +285,7 @@ export class Quiz2 extends React.Component<Props, State> {
                         font={font}
                     />
                 </div>
+                <HideFooter />
             </div>
         );
     }

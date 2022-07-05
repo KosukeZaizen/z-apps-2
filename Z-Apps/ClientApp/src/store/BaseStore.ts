@@ -16,6 +16,13 @@ interface showFooter {
     type: "BASE_SHOW_FOOTER";
 }
 
+type KnownAction =
+    | initializeType
+    | hideHeader
+    | showHeader
+    | hideFooter
+    | showFooter;
+
 const initialState = {
     isHeaderShown: true,
     isFooterShown: true,
@@ -25,13 +32,6 @@ export interface BaseState {
     isHeaderShown: boolean;
     isFooterShown: boolean;
 }
-
-type KnownAction =
-    | initializeType
-    | hideHeader
-    | showHeader
-    | hideFooter
-    | showFooter;
 
 interface IActionCreators {
     showHeaderAndFooter: () => AppThunkAction<KnownAction>;
