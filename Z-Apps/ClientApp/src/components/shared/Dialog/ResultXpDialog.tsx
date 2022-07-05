@@ -215,6 +215,7 @@ function ResultXpDialog_GuestUser({
 
     const [xpBeforeSignUp, setXpBeforeSignUp] = useAppState("xpBeforeSignUp");
     const [expectedLevel, setExpectedLevel] = useState(0);
+    const [previousLevel, setPreviousLevel] = useState(1);
     useEffect(() => {
         if (open) {
             const nextXpBeforeSignUp = Math.min(xpToAdd + xpBeforeSignUp, 5000);
@@ -222,6 +223,9 @@ function ResultXpDialog_GuestUser({
             setXpBeforeSignUp(nextXpBeforeSignUp);
             fetchLevelFromXp(nextXpBeforeSignUp).then(lvl => {
                 setExpectedLevel(lvl);
+            });
+            fetchLevelFromXp(xpBeforeSignUp).then(pLvl => {
+                setPreviousLevel(pLvl);
             });
         }
     }, [open, xpToAdd]);
@@ -233,6 +237,11 @@ function ResultXpDialog_GuestUser({
             transitionMilliseconds={500}
         >
             <div className={c.container}>
+                {previousLevel < expectedLevel && (
+                    <Card className={spaceBetween("bold nowrap", c.levelUp)}>
+                        LEVEL UP!
+                    </Card>
+                )}
                 <div>
                     {topSmallMessage}
                     <h2 className="bold">
@@ -288,8 +297,18 @@ const useGuestResultDialogStyles = makeStyles(theme => ({
         alignItems: "center",
         justifyContent: "space-between",
         height: 308,
+        position: "relative",
     },
     xp: { color: theme.palette.secondary.main },
+    levelUp: {
+        position: "absolute",
+        top: -20,
+        left: -5,
+        backgroundColor: theme.palette.secondary.main,
+        color: "white",
+        padding: 5,
+        transform: "rotate(-15deg)",
+    },
 }));
 
 function ExpectedLevelCard({

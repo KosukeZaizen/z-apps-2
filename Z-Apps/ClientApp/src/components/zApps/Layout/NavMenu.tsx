@@ -249,7 +249,9 @@ function LoginIcon({
                     className={spaceBetween(
                         c.levelCardContainer,
                         transitionClass,
-                        isTooltipOpened ? "opacity0" : "opacity1"
+                        level == null || isTooltipOpened
+                            ? "opacity0"
+                            : "opacity1"
                     )}
                 >
                     <Card className={c.levelCard}>Lv.{level}</Card>
