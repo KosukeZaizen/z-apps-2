@@ -15,6 +15,7 @@ import {
     useAppState,
 } from "../../../common/appState";
 import { ARTICLES_URL } from "../../../common/consts";
+import { sleepAsync } from "../../../common/functions";
 import { useLevel } from "../../../common/hooks/useLevel";
 import { useScreenSize } from "../../../common/hooks/useScreenSize";
 import { useUser } from "../../../common/hooks/useUser";
@@ -354,11 +355,13 @@ function useHideAppBar() {
     };
 
     useEffect(() => {
-        const scrollHandler = () => {
+        const scrollHandler = async () => {
+            await sleepAsync(10); // In case where starting point's scrollY is 0
+
             const isRapidScroll = window.scrollY > previousScrollY + 500;
             previousScrollY = window.scrollY;
 
-            if (window.scrollY < 100) {
+            if (window.scrollY <= 0) {
                 setHideAppBar(false);
                 return;
             }

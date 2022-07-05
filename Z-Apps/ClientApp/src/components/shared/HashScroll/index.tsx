@@ -1,5 +1,5 @@
 import { Location } from "history";
-import React, { AnchorHTMLAttributes, useEffect } from "react";
+import { AnchorHTMLAttributes, useEffect } from "react";
 import { scrollToElement } from "../../zApps/Layout/NavMenu";
 
 /**
@@ -40,12 +40,10 @@ export function AnchorLink({
             onClick={ev => {
                 ev.preventDefault();
 
-                if (isSmooth) {
-                    scrollToElement(document.getElementById(replacedHash));
-                    return;
-                }
-
-                document.getElementById(replacedHash)?.scrollIntoView(true);
+                scrollToElement(
+                    document.getElementById(replacedHash),
+                    !isSmooth
+                );
             }}
             {...rest}
         />
