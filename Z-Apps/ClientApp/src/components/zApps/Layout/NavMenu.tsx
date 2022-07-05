@@ -307,26 +307,52 @@ function useHeaderHeight(headerElement: HTMLElement | null) {
 
 export function scrollToElement(
     element: HTMLElement | null,
-    noSmooth?: boolean
+    noSmooth?: boolean,
+    headerShown?: boolean
 ) {
-    if (noSmooth) {
-        element?.scrollIntoView(true);
+    if (headerShown) {
+        const { headerHeight } = getAppState();
+        const elementTop = element?.getBoundingClientRect()?.top || 0;
+
+        window.scrollTo({
+            top: window.scrollY + elementTop - headerHeight,
+            behavior: noSmooth ? undefined : "smooth",
+        });
         return;
     }
 
-    const { headerHeight } = getAppState();
-    const elementTop = element?.getBoundingClientRect()?.top || 0;
-    window.scrollTo({
-        top: window.scrollY + elementTop - headerHeight,
-        behavior: "smooth",
-    });
+    hideHeaderTemporarily();
+    element?.scrollIntoView(
+        noSmooth
+            ? true
+            : {
+                  behavior: "smooth",
+              }
+    );
 }
+
+export let hideHeaderTemporarily: () => void = () => {};
 
 let previousScrollY = 0;
 let isHidden = false;
+let appBarTimer = 0;
 
 function useHideAppBar() {
     const [hideAppBar, setHideAppBar] = useState(false);
+
+    hideHeaderTemporarily = () => {
+        setHideAppBar(true);
+        isHidden = true;
+
+        if (appBarTimer > 0) {
+            clearTimeout(appBarTimer);
+        }
+        appBarTimer = window.setTimeout(() => {
+            setHideAppBar(false);
+            isHidden = false;
+        }, 5000);
+    };
+
     useEffect(() => {
         const scrollHandler = () => {
             const isRapidScroll = window.scrollY > previousScrollY + 500;
@@ -345,12 +371,7 @@ function useHideAppBar() {
                 return;
             }
 
-            setHideAppBar(true);
-            isHidden = true;
-            setTimeout(() => {
-                setHideAppBar(false);
-                isHidden = false;
-            }, 5000);
+            hideHeaderTemporarily();
         };
 
         window.addEventListener("scroll", scrollHandler);

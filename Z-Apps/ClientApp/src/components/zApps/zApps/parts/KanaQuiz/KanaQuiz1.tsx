@@ -231,9 +231,10 @@ export function Quiz1({
                 open={isResultDialogShown}
                 onClose={() => {
                     setResultDialogShown(false);
-                    document
-                        .getElementById(chartReplacedHash)
-                        ?.scrollIntoView(true);
+                    scrollToElement(
+                        document.getElementById(chartReplacedHash),
+                        true
+                    );
                 }}
                 xpToAdd={10 * score}
                 topSmallMessage={

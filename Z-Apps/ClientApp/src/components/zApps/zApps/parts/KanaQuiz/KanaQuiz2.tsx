@@ -99,7 +99,7 @@ export class Quiz2 extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        scrollToElement(this.ref.current);
+        scrollToElement(this.ref.current, false, true);
     }
 
     onClickBtn = async (i: ButtonIndex) => {
