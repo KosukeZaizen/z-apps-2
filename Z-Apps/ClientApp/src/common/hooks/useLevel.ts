@@ -3,33 +3,28 @@ import { useAppState } from "../appState";
 import { useUser } from "./useUser";
 
 let previousFetchedXp: number = 0;
-let previousLevelBeforeSignUp: number | undefined = undefined;
 
 export function useLevel() {
-    const { user } = useUser();
-    const [levelBeforeSignUp, setLevelBeforeSignUp] = useState(
-        previousLevelBeforeSignUp
-    );
+    const { user, isUserFetchDone } = useUser();
+    const [levelBeforeSignUp, setLevelBeforeSignUp] = useState(1);
     const [xpBeforeSignUp] = useAppState("xpBeforeSignUp");
 
     useEffect(() => {
         if (user?.level != null) {
             return;
         }
-        if (
-            previousFetchedXp !== xpBeforeSignUp ||
-            previousLevelBeforeSignUp == null
-        ) {
+        if (previousFetchedXp !== xpBeforeSignUp) {
             previousFetchedXp = xpBeforeSignUp;
             fetchLevelForXp(xpBeforeSignUp).then(l => {
-                previousLevelBeforeSignUp = l;
                 setLevelBeforeSignUp(l);
             });
             return;
         }
-        setLevelBeforeSignUp(previousLevelBeforeSignUp);
     }, [user?.level, xpBeforeSignUp]);
 
+    if (!isUserFetchDone) {
+        return { level: undefined };
+    }
     return { level: user?.level ?? levelBeforeSignUp };
 }
 
