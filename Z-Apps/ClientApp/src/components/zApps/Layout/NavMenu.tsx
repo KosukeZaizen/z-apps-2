@@ -162,7 +162,6 @@ function Menus({
                     <LoginIcon
                         containerStyle={{
                             marginLeft: screenWidth / 30,
-                            display: isOpen ? "none" : "block",
                         }}
                         isHamburger={isHamburger}
                         isOpenHamburger={isOpen && isHamburger}
@@ -245,17 +244,19 @@ function LoginIcon({
                         transitionClass
                     )}
                 />
-                <div
-                    className={spaceBetween(
-                        c.levelCardContainer,
-                        transitionClass,
-                        level == null || isTooltipOpened
-                            ? "opacity0"
-                            : "opacity1"
-                    )}
-                >
-                    <Card className={c.levelCard}>Lv.{level}</Card>
-                </div>
+                {!isOpenHamburger && (
+                    <div
+                        className={spaceBetween(
+                            c.levelCardContainer,
+                            transitionClass,
+                            level == null || isTooltipOpened
+                                ? "opacity0"
+                                : "opacity1"
+                        )}
+                    >
+                        <Card className={c.levelCard}>Lv.{level}</Card>
+                    </div>
+                )}
             </div>
         </Tooltip>
     );
