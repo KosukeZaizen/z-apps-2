@@ -15,6 +15,17 @@ namespace Z_Apps.Controllers
             var validationResult = userService.Validate(param.Name, param.Email, param.Password);
             if (validationResult != null)
             {
+                Task.Run(async () =>
+                {
+                    await Task.Delay(1000);
+                    EmailService.SendToAdmin("Strange server-side validation error during signing up!", @$"
+                    Error: {validationResult}<br/>
+                    Name: {param.Name}<br/>Email: {param.Email}<br/>Password: {param.Password}<br/>
+                    Server-side error should not happen because it supposed to be prevented by front-end validation.<br/>
+                    This is not good because we lost an opportunity to get a new user."
+                    );
+                });
+
                 return BadRequest(new
                 {
                     error = validationResult
