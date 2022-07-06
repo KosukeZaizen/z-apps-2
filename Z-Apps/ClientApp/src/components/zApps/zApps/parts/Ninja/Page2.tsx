@@ -2519,9 +2519,15 @@ function onTouchScrollOpener(ninja: Ninja) {
     }
     //読み終えたリストの中に該当の巻物を追加
     //@ts-ignore
-    ninja.readScroll.push(this.openTargetTitle);
+    if (!ninja.readScroll.includes(this.openTargetTitle)) {
+        //@ts-ignore
+        ninja.readScroll.push(this.openTargetTitle);
+    }
     //@ts-ignore
-    void ninja.game?.props.readElementScroll.push(this.openTargetTitle);
+    if (!ninja.game?.props.readElementScroll.includes(this.openTargetTitle)) {
+        //@ts-ignore
+        ninja.game?.props.readElementScroll.push(this.openTargetTitle);
+    }
 }
 
 //=======================================
@@ -2671,3 +2677,4 @@ function onTouchJizo(ninja: Ninja) {
 }
 
 export { Page2 };
+
