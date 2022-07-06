@@ -1,4 +1,3 @@
-import * as React from "react";
 import { lazy, Suspense } from "react";
 import { Route, Switch } from "react-router";
 import ScrollMemory from "react-router-scroll-memory";

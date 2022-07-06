@@ -11,7 +11,6 @@ import { ReturnToLocalMenu } from "../LocalDebug/App";
 import FooterAnimation from "../shared/Animations/FooterAnimation";
 import ShurikenProgress from "../shared/Animations/ShurikenProgress";
 import { ReMountMain } from "../shared/Remount";
-import { PopupAd } from "../shared/YouTubeAd/Popup";
 import Layout from "./Layout";
 
 const Home = lazy(() => import("./zApps/Home"));
@@ -272,7 +271,7 @@ export function App() {
                 </Suspense>
             </ReMountMain>
             <FooterAnimation />
-            <PopupAd />
+            {/* <PopupAd /> */}
         </Layout>
     );
 }

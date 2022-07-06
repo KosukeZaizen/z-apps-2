@@ -13,9 +13,6 @@ import * as commonFncs from "./common/functions";
 import { checkAppVersion } from "./common/functions";
 import { useUnmounted } from "./common/hooks/useUnmounted";
 import { GOOGLE_ANALYTICS } from "./common/privateConsts";
-import {
-    setNoYouTubeAdMode
-} from "./common/util/setNoYouTubeAdMode";
 import { Articles } from "./components/Articles";
 import { Game } from "./components/Game";
 import { LocalDebugMenu } from "./components/LocalDebug";
@@ -161,6 +158,6 @@ function getScreenSize() {
 //     checkPastNoYouTubeAd() ||
 //     window.navigator.userAgent.toLowerCase().includes("bot")
 // ) {
-    // NoYouTubeAdMode
-    setNoYouTubeAdMode();
+// NoYouTubeAdMode
+// setNoYouTubeAdMode();
 // }
