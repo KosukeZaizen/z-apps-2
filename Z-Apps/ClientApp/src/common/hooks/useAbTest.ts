@@ -37,14 +37,15 @@ export function useAbTest<T extends ReadonlyArray<string>>({
     };
 }
 
-const isLocalHost = location.href.includes("://localhost");
+const noFetch =
+    location.href.includes("://localhost") || localStorage.getItem("isAdmin");
 
 async function fetchKey<T extends ReadonlyArray<string>>(
     testName: string,
     keys: T
 ): Promise<T[number]> {
     try {
-        if (isLocalHost) {
+        if (noFetch) {
             if (testName.length > 200) {
                 alert(
                     "AB test error! Maximum length of testName is 200! It's because of the DB table's column setting!"
@@ -77,7 +78,7 @@ async function fetchKey<T extends ReadonlyArray<string>>(
 }
 
 function fetchSuccess(testName: string, key: string) {
-    if (isLocalHost) {
+    if (noFetch) {
         return;
     }
     sendPost(

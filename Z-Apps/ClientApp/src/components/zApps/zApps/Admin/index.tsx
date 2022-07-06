@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import { useIsAdmin } from "../../../../common/hooks/useIsAdmin";
 import Helmet from "../../../shared/Helmet";
 
 export default function Admin() {
+    useIsAdmin();
+
     return (
         <div>
             <Helmet title="admin" noindex />

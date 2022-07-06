@@ -1,8 +1,11 @@
 import { Card } from "@material-ui/core";
 import { useEffect, useState } from "react";
+import { useIsAdmin } from "../../../../common/hooks/useIsAdmin";
 import Helmet from "../../../shared/Helmet";
 
 export default function AbTestResult() {
+    useIsAdmin();
+
     const [testNames, setTestNames] = useState<string[]>([]);
 
     useEffect(() => {
