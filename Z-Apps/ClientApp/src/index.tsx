@@ -158,6 +158,6 @@ function getScreenSize() {
 //     checkPastNoYouTubeAd() ||
 //     window.navigator.userAgent.toLowerCase().includes("bot")
 // ) {
-// NoYouTubeAdMode
+// // NoYouTubeAdMode
 // setNoYouTubeAdMode();
 // }
