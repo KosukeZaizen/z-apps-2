@@ -62,13 +62,18 @@ namespace Z_Apps.Controllers
                     MaxAge = TimeSpan.MaxValue,
                 });
 
+                string referer = Request.Headers["Referer"].ToString();
                 Task.Run(async () =>
                 {
                     await Task.Delay(2000);
                     EmailService.SendToAdmin(
                         "New LN Account!",
-                        "<h1>New user signed up!</h1><br/>" + param.Name
-                        + "<br/>Initial XP: " + param.InitialXp
+                        @$"<h1>New user signed up!</h1><br/>
+                        User Name: {user.Name}<br/>
+                        User Id: {user.UserId}<br/>
+                        Initial XP: {user.Xp}<br/>
+                        Initial Level: {user.Level}<br/><br/>
+                        URL: {referer}"
                     );
                 });
 

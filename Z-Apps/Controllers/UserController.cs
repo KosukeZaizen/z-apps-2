@@ -46,14 +46,16 @@ namespace Z_Apps.Controllers
 
             if (levelUp)
             {
+                string referer = Request.Headers["Referer"].ToString();
                 Task.Run(async () =>
                 {
                     await Task.Delay(1000);
                     EmailService.SendToAdmin(
                         "Level up!",
                         @$"{user.Name} got {xpToAdd} XP and leveled up!<br/>
-                    Level: {previousLevel} -> {user.Level}<br/>
-                    UserId: {user.UserId}"
+                        Level: {previousLevel} -> {user.Level}<br/>
+                        UserId: {user.UserId}<br/><br/>
+                        URL: {referer}"
                     );
                 });
             }
