@@ -53,7 +53,7 @@ async function importPanels() {
         import("./Login/Panel"),
     ].map(async (p, i) => {
         const { default: Component } = await p;
-        return <Component key={i} />;
+        return <Component key={`panel${i}`} />;
     });
 
     return await Promise.all(PanelComponents);
@@ -66,7 +66,7 @@ async function lateImportPanels() {
         import("../../shared/Dialog/ResultXpDialog/RegisteredUser"),
     ].map(async (p, i) => {
         const { default: Component } = await p;
-        return <Component key={i} />;
+        return <Component key={`latePanel${i}`} />;
     });
 
     return await Promise.all(PanelComponents);

@@ -29,7 +29,7 @@ export async function addGuestXp(params: AddXpParams) {
 
     const [previousLevel, expectedLevel] = await Promise.all([
         fetchLevelFromXp(previousXp),
-        fetchLevelFromXp(xpBeforeSignUp),
+        fetchLevelFromXp(nextXp),
     ]);
 
     setGuestResultDialogState({
@@ -149,7 +149,7 @@ function ResultXpDialog_GuestUser({
                         LEVEL UP!
                     </Card>
                 )}
-                <div>
+                <div className="center">
                     {topSmallMessage}
                     <h2 className="bold">
                         You got <span className={c.xp}>{xpToAdd}</span> XP!
@@ -160,7 +160,7 @@ function ResultXpDialog_GuestUser({
                     imgNumber={1}
                     screenWidth={Math.min(300, screenWidth)}
                     comment={
-                        <div className="large">
+                        <div className={spaceBetween("large", "center")}>
                             {characterComment || (
                                 <ShurikenProgress size="15%" />
                             )}
@@ -229,7 +229,8 @@ function ExpectedLevelCard({ expectedLevel }: { expectedLevel?: number }) {
                 expectedLevel ? "opacity1" : "opacity0"
             )}
         >
-            Now you have {xpBeforeSignUp} XP, and you'll be Lv.{expectedLevel}{" "}
+            Now you have {xpBeforeSignUp} XP, and you'll be Lv.{expectedLevel}
+            <br />
             if you make an account.
         </Card>
     );
@@ -238,8 +239,10 @@ const useExpectedLevelCardStyles = makeStyles(theme => ({
     card: {
         backgroundColor: theme.palette.grey[200],
         borderRadius: 10,
-        padding: 5,
+        padding: "5px 10px",
         transition: "500ms",
+        textAlign: "center",
+        width: "100%",
     },
 }));
 
