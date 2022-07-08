@@ -23,7 +23,11 @@ function Layout({ children, isHeaderShown, isFooterShown }: InnerProps) {
     useEffect(() => {
         (async () => {
             await sleepAsync(500);
-            setPanels(await importPanels());
+            const panels = await importPanels();
+            setPanels(panels);
+
+            await sleepAsync(1000);
+            setPanels([...panels, ...(await lateImportPanels())]);
         })();
     }, []);
 
@@ -47,7 +51,19 @@ async function importPanels() {
     const PanelComponents = [
         import("../../shared/Author"),
         import("./Login/Panel"),
-        import("../../shared/Dialog/ResultXpDialog"),
+    ].map(async (p, i) => {
+        const { default: Component } = await p;
+        return <Component key={i} />;
+    });
+
+    return await Promise.all(PanelComponents);
+}
+
+async function lateImportPanels() {
+    // Dynamic import panels
+    const PanelComponents = [
+        import("../../shared/Dialog/ResultXpDialog/GuestUser"),
+        import("../../shared/Dialog/ResultXpDialog/RegisteredUser"),
     ].map(async (p, i) => {
         const { default: Component } = await p;
         return <Component key={i} />;

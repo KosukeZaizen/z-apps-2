@@ -5,7 +5,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import React, { ReactNode, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import Button from "reactstrap/lib/Button";
@@ -21,7 +21,7 @@ import { SeasonAnimation } from "../../../shared/Animations/SeasonAnimation";
 import ShurikenProgress from "../../../shared/Animations/ShurikenProgress";
 import { AuthorArea } from "../../../shared/Author";
 import CharacterComment from "../../../shared/CharacterComment";
-import { ResultXpDialog } from "../../../shared/Dialog/ResultXpDialog";
+import { addXp } from "../../../shared/Dialog/ResultXpDialog/addXp";
 import FB from "../../../shared/FaceBook";
 import { FolktaleMenu } from "../../../shared/FolktaleMenu";
 import Head from "../../../shared/Helmet";
@@ -143,7 +143,7 @@ class VocabQuiz extends React.Component<Props, State> {
             (vocabGenre && vocabGenre.genreName) || this.state.genreName || "";
         const titleToShowUpper: string = genreName
             .split("_")
-            .map(t => t && t[0].toUpperCase() + t.substr(1))
+            .map(t => t && t[0].toUpperCase() + t.substring(1))
             .join(" ");
         const titleToShowLower: string = genreName.split("_").join(" ");
 
@@ -158,6 +158,7 @@ class VocabQuiz extends React.Component<Props, State> {
                         imgNumber={imgNumber}
                         correctSounds={this.correctSounds}
                         vocabSounds={vocabSounds?.map(a => a.audio)}
+                        genreName={genreName}
                     />
                 );
                 break;
@@ -581,6 +582,7 @@ interface Page2Props {
     imgNumber: number;
     correctSounds: HTMLAudioElement[];
     vocabSounds: HTMLAudioElement[];
+    genreName: string;
 }
 class Page2 extends React.Component<
     Page2Props,
@@ -708,8 +710,14 @@ class Page2 extends React.Component<
     };
 
     render() {
-        const { vocabList, screenWidth, imgNumber, vocabSounds, changePage } =
-            this.props;
+        const {
+            vocabList,
+            screenWidth,
+            imgNumber,
+            vocabSounds,
+            changePage,
+            genreName,
+        } = this.props;
         const {
             correctIds,
             incorrectIds,
@@ -922,7 +930,15 @@ class Page2 extends React.Component<
                                     },
                                 ]);
 
-                                changePage(3);
+                                addXp({
+                                    xpToAdd: getUnitXp(genreName) * cr,
+                                    topSmallMessage: (
+                                        <div>Your Score: {percentage}%</div>
+                                    ),
+                                    abTestName: `VocabQuiz-ResultXpDialog`,
+                                }).then(() => {
+                                    changePage(3);
+                                });
                                 return;
                             }
                             if (
@@ -961,6 +977,20 @@ class Page2 extends React.Component<
         }
         return content;
     }
+}
+
+function getUnitXp(genreName: string) {
+    const lowerGenreName = genreName.toLowerCase();
+    if (lowerGenreName.startsWith("jlpt_n5_")) {
+        return 70;
+    }
+    if (lowerGenreName.startsWith("jlpt_n4_")) {
+        return 150;
+    }
+    if (lowerGenreName.startsWith("jlpt_n3_")) {
+        return 300;
+    }
+    return 50;
 }
 
 type TPage3Props = {
@@ -1211,53 +1241,7 @@ function Page3(props: TPage3Props) {
                     <Button color="secondary">Try Kanji Quiz</Button>
                 </Card>
             </Link>
-
-            <XpDialog
-                xpToAdd={
-                    getUnitXp(vocabGenre.genreName) *
-                    (vocabList.length - (incorrectIds?.length ?? 0))
-                }
-                topSmallMessage={<div>Your Score: {percentage}%</div>}
-                abTestName={`VocabQuiz-ResultXpDialog`}
-            />
         </>
-    );
-}
-
-function getUnitXp(genreName: string) {
-    const lowerGenreName = genreName.toLowerCase();
-    if (lowerGenreName.startsWith("jlpt_n5_")) {
-        return 70;
-    }
-    if (lowerGenreName.startsWith("jlpt_n4_")) {
-        return 150;
-    }
-    if (lowerGenreName.startsWith("jlpt_n3_")) {
-        return 300;
-    }
-    return 50;
-}
-
-function XpDialog({
-    xpToAdd,
-    topSmallMessage,
-    abTestName,
-}: {
-    xpToAdd: number;
-    topSmallMessage: ReactNode;
-    abTestName: string;
-}) {
-    const [isResultDialogShown, setResultDialogShown] = useState(true);
-    return (
-        <ResultXpDialog
-            open={isResultDialogShown}
-            onClose={() => {
-                setResultDialogShown(false);
-            }}
-            xpToAdd={xpToAdd}
-            topSmallMessage={topSmallMessage}
-            abTestName={abTestName}
-        />
     );
 }
 

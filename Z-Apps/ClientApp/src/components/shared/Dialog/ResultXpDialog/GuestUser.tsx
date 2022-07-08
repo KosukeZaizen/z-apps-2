@@ -13,9 +13,9 @@ import CharacterComment from "../../CharacterComment";
 import { CenterDialog } from "../CenterDialog";
 import { AddXpParams, GuestUserXpDialogState } from "./types";
 
-export let setGuestResultDialogState = (_state: GuestUserXpDialogState) => {};
+let setGuestResultDialogState = (_state: GuestUserXpDialogState) => {};
 
-export async function addGuestXp(params: Exclude<AddXpParams, "close">) {
+export async function addGuestXp(params: AddXpParams) {
     setGuestResultDialogState({
         ...params,
     });
@@ -27,10 +27,15 @@ export async function addGuestXp(params: Exclude<AddXpParams, "close">) {
 
     changeAppState("xpBeforeSignUp", nextXp);
 
+    const [previousLevel, expectedLevel] = await Promise.all([
+        fetchLevelFromXp(previousXp),
+        fetchLevelFromXp(xpBeforeSignUp),
+    ]);
+
     setGuestResultDialogState({
         ...params,
-        previousLevel: await fetchLevelFromXp(previousXp),
-        expectedLevel: await fetchLevelFromXp(xpBeforeSignUp),
+        previousLevel,
+        expectedLevel,
     });
 }
 

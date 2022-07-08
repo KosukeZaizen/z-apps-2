@@ -1,13 +1,11 @@
 import { ReactNode } from "react";
 
-export type AddXpParams =
-    | {
-          onCloseCallBack?: () => void;
-          xpToAdd: number;
-          topSmallMessage: ReactNode;
-          abTestName: string;
-      }
-    | "close";
+export type AddXpParams = {
+    onCloseCallBack?: () => void;
+    xpToAdd: number;
+    topSmallMessage: ReactNode;
+    abTestName: string;
+};
 
 export type RegisteredUserXpDialogState =
     | {

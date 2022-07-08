@@ -13,7 +13,7 @@ import { EasyAudioPlayer } from "../../../../../common/util/Audio/EasyAudioPlaye
 import { LazyLoad } from "../../../../../common/util/LazyLoad";
 import ShurikenProgress from "../../../../shared/Animations/ShurikenProgress";
 import { AuthorArea } from "../../../../shared/Author";
-import { addXp } from "../../../../shared/Dialog/ResultXpDialog";
+import { addXp } from "../../../../shared/Dialog/ResultXpDialog/addXp";
 import { HideFooter } from "../../../../shared/HideHeaderAndFooter/HideFooter";
 import { scrollToElement } from "../../../Layout/NavMenu";
 import {
@@ -189,7 +189,6 @@ export class Quiz2 extends React.Component<Props, State> {
         const gameCount = newCorrect + Object.keys(newIncorrectList).length;
         if (gameCount === maxChar) {
             // Finish the game
-            changePage(3);
             addXp({
                 xpToAdd: 10 * newCorrect,
                 topSmallMessage: (
@@ -204,6 +203,8 @@ export class Quiz2 extends React.Component<Props, State> {
                         true
                     );
                 },
+            }).then(() => {
+                changePage(3);
             });
             return;
         }

@@ -7,14 +7,11 @@ import { XpProgressArea } from "../../../zApps/Layout/Login/MyPage/components/Xp
 import { CenterDialog } from "../CenterDialog";
 import { AddXpParams, RegisteredUserXpDialogState } from "./types";
 
-export let setRegisteredUserResultDialogState = (
+let setRegisteredUserResultDialogState = (
     _state: RegisteredUserXpDialogState
 ) => {};
 
-export async function addRegisteredUserXp(
-    params: Exclude<AddXpParams, "close">,
-    user: User
-) {
+export async function addRegisteredUserXp(params: AddXpParams, user: User) {
     setRegisteredUserResultDialogState(params);
 
     // Check isLevelUp
