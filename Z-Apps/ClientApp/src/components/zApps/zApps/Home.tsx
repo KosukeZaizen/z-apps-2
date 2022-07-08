@@ -72,7 +72,7 @@ function Home({}: Props) {
                     }
                 />
 
-                <LevelRanking />
+                <LevelRanking screenWidth={screenWidth} />
 
                 <div>
                     <Cards isWide={isWide} />
