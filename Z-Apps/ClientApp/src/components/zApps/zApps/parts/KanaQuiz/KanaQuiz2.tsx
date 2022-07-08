@@ -13,6 +13,7 @@ import { EasyAudioPlayer } from "../../../../../common/util/Audio/EasyAudioPlaye
 import { LazyLoad } from "../../../../../common/util/LazyLoad";
 import ShurikenProgress from "../../../../shared/Animations/ShurikenProgress";
 import { AuthorArea } from "../../../../shared/Author";
+import { addXp } from "../../../../shared/Dialog/ResultXpDialog";
 import { HideFooter } from "../../../../shared/HideHeaderAndFooter/HideFooter";
 import { scrollToElement } from "../../../Layout/NavMenu";
 import {
@@ -50,7 +51,6 @@ interface Props {
     changeKanaStatus: (romaji: keyof KanaList, result: boolean) => void;
     font: FontClassName;
     screenWidth: number;
-    setScore: (score: number) => void;
 }
 interface State {
     dialogState: DialogState;
@@ -152,9 +152,8 @@ export class Quiz2 extends React.Component<Props, State> {
             maxChar,
             kanaStatus,
             changePage,
-            consts: { KANA_LIST },
+            consts: { KANA_LIST, KANA_TYPE },
             kanaSounds,
-            setScore,
         } = this.props;
 
         if (dialogState === "closed") {
@@ -190,8 +189,22 @@ export class Quiz2 extends React.Component<Props, State> {
         const gameCount = newCorrect + Object.keys(newIncorrectList).length;
         if (gameCount === maxChar) {
             // Finish the game
-            setScore(newCorrect);
             changePage(3);
+            addXp({
+                xpToAdd: 10 * newCorrect,
+                topSmallMessage: (
+                    <div>
+                        Your Score: {newCorrect}/{maxChar}
+                    </div>
+                ),
+                abTestName: `${KANA_TYPE}Quiz-ResultXpDialog`,
+                onCloseCallBack: () => {
+                    scrollToElement(
+                        document.getElementById(`${KANA_TYPE}-chart`),
+                        true
+                    );
+                },
+            });
             return;
         }
 

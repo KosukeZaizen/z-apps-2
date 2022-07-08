@@ -1,5 +1,5 @@
 import { Card, makeStyles, MenuItem, Select } from "@material-ui/core";
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useEffect } from "react";
 import { changeAppState } from "../../../../../common/appState";
 import { BLOB_URL } from "../../../../../common/consts";
 import { useAbTest } from "../../../../../common/hooks/useAbTest";
@@ -7,7 +7,6 @@ import { useUser } from "../../../../../common/hooks/useUser";
 import { LazyExecutor, LazyLoad } from "../../../../../common/util/LazyLoad";
 import ShurikenProgress from "../../../../shared/Animations/ShurikenProgress";
 import { AuthorArea } from "../../../../shared/Author";
-import { ResultXpDialog } from "../../../../shared/Dialog/ResultXpDialog";
 import { AnchorLink } from "../../../../shared/HashScroll";
 import { Link } from "../../../../shared/Link/LinkWithYouTube";
 import { Markdown } from "../../../../shared/Markdown";
@@ -40,8 +39,6 @@ interface Props {
     setFont: (font: FontClassName) => void;
     font: FontClassName;
     screenWidth: number;
-    score: number;
-    maxChar: number;
 }
 export function Quiz1({
     consts,
@@ -53,17 +50,13 @@ export function Quiz1({
     setFont,
     font,
     screenWidth,
-    score,
-    maxChar,
 }: Props) {
     const c = useStyles();
     const { user, isUserFetchDone } = useUser();
-    const [isResultDialogShown, setResultDialogShown] = useState(false);
 
-    const chartReplacedHash = `${consts.KANA_TYPE}-chart`;
     useEffect(() => {
+        const chartReplacedHash = `${consts.KANA_TYPE}-chart`;
         if (isQuizResult) {
-            setResultDialogShown(true);
             scrollToElement(document.getElementById(chartReplacedHash));
         }
     }, [isQuizResult, consts]);
@@ -226,24 +219,6 @@ export function Quiz1({
                     {consts.OTHER_KANA_TYPE} Quiz
                 </button>
             </Link>
-
-            <ResultXpDialog
-                open={isResultDialogShown}
-                onClose={() => {
-                    setResultDialogShown(false);
-                    scrollToElement(
-                        document.getElementById(chartReplacedHash),
-                        true
-                    );
-                }}
-                xpToAdd={10 * score}
-                topSmallMessage={
-                    <div>
-                        Your Score: {score}/{maxChar}
-                    </div>
-                }
-                abTestName={`${consts.KANA_TYPE}Quiz-ResultXpDialog`}
-            />
         </div>
     );
 }

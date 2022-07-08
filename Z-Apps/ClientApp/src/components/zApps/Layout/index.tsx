@@ -47,6 +47,7 @@ async function importPanels() {
     const PanelComponents = [
         import("../../shared/Author"),
         import("./Login/Panel"),
+        import("../../shared/Dialog/ResultXpDialog"),
     ].map(async (p, i) => {
         const { default: Component } = await p;
         return <Component key={i} />;

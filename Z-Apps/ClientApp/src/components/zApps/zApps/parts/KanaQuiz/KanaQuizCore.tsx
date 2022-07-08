@@ -33,7 +33,6 @@ export function QuizCore({ consts }: Props) {
             ? "ming-font"
             : "gothic-font"
     );
-    const [score, setScore] = useState(0);
 
     const { kanaStatus, changeKanaStatus } = useKanaStatus(consts.KANA_TYPE);
 
@@ -68,8 +67,6 @@ export function QuizCore({ consts }: Props) {
                     font={font}
                     setFont={setFont}
                     screenWidth={screenWidth}
-                    score={score}
-                    maxChar={maxChar}
                 />
             );
         }
@@ -84,7 +81,6 @@ export function QuizCore({ consts }: Props) {
                     changeKanaStatus={changeKanaStatus}
                     font={font}
                     screenWidth={screenWidth}
-                    setScore={setScore}
                 />
             );
         }
