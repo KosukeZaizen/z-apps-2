@@ -25,6 +25,7 @@ import Helmet from "../../shared/Helmet";
 import { ATargetBlank } from "../../shared/Link/ATargetBlank";
 import { Link } from "../../shared/Link/LinkWithYouTube";
 import { useProgress } from "../Layout/Login/MyPage/useProgress";
+import { LevelRanking } from "./parts/Ranking/LevelRanking";
 
 type Props = {
     location: Location;
@@ -70,6 +71,8 @@ function Home({}: Props) {
                         </span>
                     }
                 />
+
+                <LevelRanking />
 
                 <div>
                     <Cards isWide={isWide} />
