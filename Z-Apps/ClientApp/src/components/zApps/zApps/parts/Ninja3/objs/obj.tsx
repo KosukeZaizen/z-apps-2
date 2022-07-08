@@ -2,6 +2,7 @@ import * as React from "react";
 import { addXp } from "../../../../../shared/Dialog/ResultXpDialog/addXp";
 import { Link } from "../../../../../shared/Link/LinkWithYouTube";
 import { setLocalStorageAndDb } from "../../../../Layout/Login/MyPage/progressManager";
+import { hideHeaderTemporarily } from "../../../../Layout/NavMenu";
 import * as Consts from "../Consts";
 
 export default class Obj extends React.Component<any, any> {
@@ -216,6 +217,7 @@ function CloseElement(props: any) {
             <Link
                 to="/ninja"
                 onClick={() => {
+                    hideHeaderTemporarily();
                     void addXp({
                         xpToAdd: 3000,
                         topSmallMessage: <div>Congratulations!</div>,

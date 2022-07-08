@@ -2,6 +2,7 @@ import * as React from "react";
 import { addXp } from "../../../../../shared/Dialog/ResultXpDialog/addXp";
 import { Link } from "../../../../../shared/Link/LinkWithYouTube";
 import { setLocalStorageAndDb } from "../../../../Layout/Login/MyPage/progressManager";
+import { hideHeaderTemporarily } from "../../../../Layout/NavMenu";
 import { Game } from "../Page2";
 
 interface Props {
@@ -307,6 +308,7 @@ function CloseElement(props: {
             <Link
                 to="/ninja2"
                 onClick={() => {
+                    hideHeaderTemporarily();
                     void addXp({
                         xpToAdd: 3000,
                         topSmallMessage: <div>Congratulations!</div>,
