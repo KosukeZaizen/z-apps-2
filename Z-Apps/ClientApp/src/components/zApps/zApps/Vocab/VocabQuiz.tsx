@@ -930,14 +930,13 @@ class Page2 extends React.Component<
                                     },
                                 ]);
 
-                                addXp({
+                                changePage(3);
+                                void addXp({
                                     xpToAdd: getUnitXp(genreName) * cr,
                                     topSmallMessage: (
                                         <div>Your Score: {percentage}%</div>
                                     ),
                                     abTestName: `VocabQuiz-ResultXpDialog`,
-                                }).then(() => {
-                                    changePage(3);
                                 });
                                 return;
                             }

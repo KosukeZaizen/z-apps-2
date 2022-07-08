@@ -189,7 +189,8 @@ export class Quiz2 extends React.Component<Props, State> {
         const gameCount = newCorrect + Object.keys(newIncorrectList).length;
         if (gameCount === maxChar) {
             // Finish the game
-            addXp({
+            changePage(3);
+            void addXp({
                 xpToAdd: 10 * newCorrect,
                 topSmallMessage: (
                     <div>
@@ -203,8 +204,6 @@ export class Quiz2 extends React.Component<Props, State> {
                         true
                     );
                 },
-            }).then(() => {
-                changePage(3);
             });
             return;
         }

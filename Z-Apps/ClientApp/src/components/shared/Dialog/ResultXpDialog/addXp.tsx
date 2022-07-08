@@ -7,9 +7,9 @@ export async function addXp(dialogState: AddXpParams) {
     const user = getAppState().user;
     if (user) {
         // already logged in
-        await addRegisteredUserXp(dialogState, user);
+        void addRegisteredUserXp(dialogState, user);
         return;
     }
     // still not logged in
-    await addGuestXp(dialogState);
+    void addGuestXp(dialogState);
 }
