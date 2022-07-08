@@ -1,6 +1,7 @@
 import { Card, makeStyles } from "@material-ui/core";
 import { ReactNode, useEffect, useState } from "react";
 import { changeAppState } from "../../../../common/appState";
+import { sleepAsync } from "../../../../common/functions";
 import { User, useUser } from "../../../../common/hooks/useUser";
 import { spaceBetween } from "../../../../common/util/Array/spaceBetween";
 import { XpProgressArea } from "../../../zApps/Layout/Login/MyPage/components/XpProgressBar";
@@ -23,21 +24,36 @@ export async function addRegisteredUserXp(params: AddXpParams, user: User) {
     setRegisteredUserResultDialogState({ ...params, isLevelUp: levelUp });
 }
 
+const initialState = {
+    onCloseCallBack: undefined,
+    xpToAdd: 0,
+    topSmallMessage: "",
+    isLevelUp: false,
+};
+
 export default function ResultXpDialogWrapper() {
     const [_state, setState] = useState<RegisteredUserXpDialogState>("close");
-    const open = _state !== "close";
-    const { onCloseCallBack, xpToAdd, topSmallMessage, isLevelUp } = open
-        ? _state
-        : {
-              onCloseCallBack: undefined,
-              xpToAdd: 0,
-              topSmallMessage: "",
-              isLevelUp: false,
-          };
-
     useEffect(() => {
         setRegisteredUserResultDialogState = setState;
     }, [setState]);
+
+    const open = _state !== "close";
+
+    const [lazyState, setLazyState] =
+        useState<Exclude<RegisteredUserXpDialogState, "close">>(initialState);
+
+    useEffect(() => {
+        if (open) {
+            setLazyState(_state);
+            return;
+        }
+        sleepAsync(500).then(() => {
+            // Wait until the animation finishes
+            setLazyState(initialState);
+        });
+    }, [_state]);
+
+    const { onCloseCallBack, xpToAdd, topSmallMessage, isLevelUp } = lazyState;
 
     return (
         <ResultXpDialog_RegisteredUser
@@ -82,7 +98,7 @@ function ResultXpDialog_RegisteredUser({
                     </Card>
                 )}
 
-                <div>
+                <div className="center">
                     {topSmallMessage}
                     <h2 className="bold">
                         You got <span className={c.xp}>{xpToAdd}</span> XP!

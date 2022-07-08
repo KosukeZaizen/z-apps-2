@@ -5,6 +5,7 @@ import {
     getAppState,
     useAppState,
 } from "../../../../common/appState";
+import { sleepAsync } from "../../../../common/functions";
 import { useAbTest } from "../../../../common/hooks/useAbTest";
 import { useScreenSize } from "../../../../common/hooks/useScreenSize";
 import { spaceBetween } from "../../../../common/util/Array/spaceBetween";
@@ -39,9 +40,37 @@ export async function addGuestXp(params: AddXpParams) {
     });
 }
 
+const initialState = {
+    onCloseCallBack: undefined,
+    xpToAdd: 0,
+    topSmallMessage: "",
+    abTestName: "",
+    previousLevel: undefined,
+    expectedLevel: undefined,
+};
+
 export default function ResultXpDialogWrapper() {
     const [_state, setState] = useState<GuestUserXpDialogState>("close");
+    useEffect(() => {
+        setGuestResultDialogState = setState;
+    }, [setState]);
+
     const open = _state !== "close";
+
+    const [lazyState, setLazyState] =
+        useState<Exclude<GuestUserXpDialogState, "close">>(initialState);
+
+    useEffect(() => {
+        if (open) {
+            setLazyState(_state);
+            return;
+        }
+        sleepAsync(500).then(() => {
+            // Wait until the animation finishes
+            setLazyState(initialState);
+        });
+    }, [_state]);
+
     const {
         onCloseCallBack,
         xpToAdd,
@@ -49,20 +78,7 @@ export default function ResultXpDialogWrapper() {
         abTestName,
         previousLevel,
         expectedLevel,
-    } = open
-        ? _state
-        : {
-              onCloseCallBack: undefined,
-              xpToAdd: 0,
-              topSmallMessage: "",
-              abTestName: "",
-              previousLevel: undefined,
-              expectedLevel: undefined,
-          };
-
-    useEffect(() => {
-        setGuestResultDialogState = setState;
-    }, [setState]);
+    } = lazyState;
 
     return (
         <ResultXpDialog_GuestUser
