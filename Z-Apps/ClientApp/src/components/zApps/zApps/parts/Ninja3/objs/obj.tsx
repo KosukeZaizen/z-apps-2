@@ -1,4 +1,5 @@
 import * as React from "react";
+import { addXp } from "../../../../../shared/Dialog/ResultXpDialog/addXp";
 import { Link } from "../../../../../shared/Link/LinkWithYouTube";
 import { setLocalStorageAndDb } from "../../../../Layout/Login/MyPage/progressManager";
 import * as Consts from "../Consts";
@@ -212,7 +213,16 @@ function CloseElement(props: any) {
         clearInterval(props.game.timerId);
 
         return (
-            <Link to="/ninja">
+            <Link
+                to="/ninja"
+                onClick={() => {
+                    void addXp({
+                        xpToAdd: 3000,
+                        topSmallMessage: <div>Congratulations!</div>,
+                        abTestName: `ActionGame3-ResultXpDialog`,
+                    });
+                }}
+            >
                 <button
                     className={"btn btn-dark btn-lg btn-block"}
                     style={props.styleBtnClose}

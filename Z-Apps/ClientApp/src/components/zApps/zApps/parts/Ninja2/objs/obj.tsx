@@ -1,4 +1,5 @@
 import * as React from "react";
+import { addXp } from "../../../../../shared/Dialog/ResultXpDialog/addXp";
 import { Link } from "../../../../../shared/Link/LinkWithYouTube";
 import { setLocalStorageAndDb } from "../../../../Layout/Login/MyPage/progressManager";
 
@@ -218,7 +219,16 @@ function CloseElement(props: any) {
 
         //全クリ時のメッセージ
         return (
-            <Link to="/ninja3">
+            <Link
+                to="/ninja3"
+                onClick={() => {
+                    void addXp({
+                        xpToAdd: 3000,
+                        topSmallMessage: <div>Congratulations!</div>,
+                        abTestName: `ActionGame2-ResultXpDialog`,
+                    });
+                }}
+            >
                 <button
                     className={"btn btn-dark btn-lg btn-block"}
                     style={props.styleBtnClose}
