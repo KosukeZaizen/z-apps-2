@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { changeAppState, useAppState } from "../../../../common/appState";
 import { RightPanel } from "../../../shared/Panel/RightPanel";
 import { MyPageTop } from "./MyPage/MyPageTop";
@@ -40,8 +40,13 @@ function PanelContent({ type }: { type: SignInPanelState }) {
 
     const panelClosed = type === "close";
 
+    const containerRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        containerRef.current?.scrollIntoView(true);
+    }, [type]);
+
     return (
-        <div style={{ position: "relative" }}>
+        <div className="relative" ref={containerRef}>
             <SignUp
                 chosen={type === "signUp"}
                 panelClosed={panelClosed}
