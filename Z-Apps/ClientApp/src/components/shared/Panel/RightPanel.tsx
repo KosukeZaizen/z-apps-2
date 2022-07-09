@@ -73,7 +73,7 @@ export function RightPanel({
                     bottom: 0,
                     right: isCompletelyOpened ? 0 : -(screenWidth + 20),
                     borderRadius: "20px 0 0 0",
-                    padding: "38px 0 5px 5px",
+                    padding: "38px 0 0 5px",
                     transitionDuration,
                     transitionProperty: "right",
                     zIndex: 10001,
@@ -101,7 +101,7 @@ export function RightPanel({
                 </button>
                 <div
                     style={{
-                        height: "calc(100% + 5px)",
+                        height: "100%",
                         overflowY: "auto",
                         overflowX: "hidden",
                         paddingRight: 5,

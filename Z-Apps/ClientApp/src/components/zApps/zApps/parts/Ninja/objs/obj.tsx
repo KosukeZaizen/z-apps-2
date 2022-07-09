@@ -1,6 +1,8 @@
 import * as React from "react";
+import { addXp } from "../../../../../shared/Dialog/ResultXpDialog/addXp";
 import { Link } from "../../../../../shared/Link/LinkWithYouTube";
 import { setLocalStorageAndDb } from "../../../../Layout/Login/MyPage/progressManager";
+import { hideHeaderTemporarily } from "../../../../Layout/NavMenu";
 import { Game } from "../Page2";
 
 interface Props {
@@ -303,7 +305,17 @@ function CloseElement(props: {
 
         //全クリ時のメッセージ
         return (
-            <Link to="/ninja2">
+            <Link
+                to="/ninja2"
+                onClick={() => {
+                    hideHeaderTemporarily();
+                    void addXp({
+                        xpToAdd: 3000,
+                        topSmallMessage: <div>Congratulations!</div>,
+                        abTestName: `ActionGame1-ResultXpDialog`,
+                    });
+                }}
+            >
                 <button
                     className={"btn btn-dark btn-lg btn-block"}
                     style={props.styleBtnClose}
