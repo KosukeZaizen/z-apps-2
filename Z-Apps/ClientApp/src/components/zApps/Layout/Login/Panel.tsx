@@ -46,7 +46,7 @@ function PanelContent({ type }: { type: SignInPanelState }) {
     }, [type]);
 
     return (
-        <div className="relative" ref={containerRef}>
+        <div className={"relative"} ref={containerRef}>
             <SignUp
                 chosen={type === "signUp"}
                 panelClosed={panelClosed}
