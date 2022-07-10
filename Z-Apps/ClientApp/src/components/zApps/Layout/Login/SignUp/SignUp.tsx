@@ -1,12 +1,13 @@
-import { Collapse } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
+import Collapse from "@material-ui/core/Collapse";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import PencilIcon from "@material-ui/icons/Create";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -28,7 +29,11 @@ import ShurikenProgress from "../../../../shared/Animations/ShurikenProgress";
 import CharacterComment from "../../../../shared/CharacterComment";
 import { loginSuccess } from "../MyPage/loginSuccess";
 import { signInPanelWidth } from "../Panel";
-import { realTimeValidate, submissionValidate } from "./validation";
+import {
+    emailValidate,
+    realTimeValidate,
+    submissionValidate,
+} from "./validation";
 
 export function SignUp({
     chosen,
@@ -48,16 +53,9 @@ export function SignUp({
     const classes = useStyles();
     const { screenWidth } = useScreenSize();
     const { getAbTestedComment, abTestSuccess } = useAbTestedComment(chosen);
-    const {
-        abTestKey: abTestKey_UserNameShown,
-        abTestSuccess: abTestSuccess_UserNameShown,
-    } = useAbTest({
-        testName: "SignUpPanel-UserNameFieldVisible",
-        keys: ["hidden", "shown"] as const,
-        open: chosen,
-    });
 
     const [name, setName] = useState("");
+    const nameFromEmail = getUserNameFromEmail(email);
 
     const [submissionError, setSubmissionError] = useState<ReactNode>(null);
     const realTimeError = useMemo<ReactNode>(
@@ -79,7 +77,7 @@ export function SignUp({
         setSubmitting(true);
         const user: FetchResult<User> = await sendPost(
             {
-                name: name.trim() || email.split("@")[0],
+                name: name.trim() || nameFromEmail,
                 email,
                 password,
                 initialXp: getAppState().xpBeforeSignUp,
@@ -141,16 +139,11 @@ export function SignUp({
                     }
                 />
 
-                {error && <div className={classes.errorContainer}>{error}</div>}
+                <Collapse in={!!error} timeout={500}>
+                    <div className={classes.errorContainer}>{error}</div>
+                </Collapse>
 
                 <form className={classes.form} onSubmit={onSubmit}>
-                    <UserNameField
-                        setName={setName}
-                        setSubmissionError={setSubmissionError}
-                        name={name}
-                        abTestKey={abTestKey_UserNameShown}
-                    />
-
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -164,6 +157,20 @@ export function SignUp({
                             setSubmissionError(null);
                         }}
                         value={email}
+                        helperText={
+                            <UserNameFromEmailField
+                                email={email}
+                                name={name}
+                                setName={setName}
+                                nameFromEmail={nameFromEmail}
+                            />
+                        }
+                    />
+
+                    <UserNameField
+                        setName={setName}
+                        setSubmissionError={setSubmissionError}
+                        name={name}
                     />
 
                     <PasswordField
@@ -179,7 +186,6 @@ export function SignUp({
                         chosen={chosen}
                         error={error}
                         className={classes.submit}
-                        success={abTestSuccess_UserNameShown}
                     />
 
                     <Grid container justifyContent="flex-end">
@@ -204,22 +210,21 @@ export function SignUp({
     );
 }
 
+function getUserNameFromEmail(email: string) {
+    return email.split("@")[0].replaceAll(".", " ");
+}
+
 function UserNameField({
     setName,
     setSubmissionError,
     name,
-    abTestKey,
 }: {
     setName: (name: string) => void;
     setSubmissionError: (error: ReactNode) => void;
     name: string;
-    abTestKey?: "hidden" | "shown";
 }) {
-    if (abTestKey === "hidden") {
-        return null;
-    }
     return (
-        <Collapse in={abTestKey === "shown"}>
+        <Collapse in={!!name} timeout={500}>
             <TextField
                 variant="outlined"
                 margin="normal"
@@ -237,18 +242,67 @@ function UserNameField({
     );
 }
 
+function UserNameFromEmailField({
+    email,
+    name,
+    nameFromEmail,
+    setName,
+}: {
+    email: string;
+    name: string;
+    nameFromEmail: string;
+    setName: (name: string) => void;
+}) {
+    const c = useUserNameFromEmailFieldStyles();
+    return (
+        <Collapse
+            in={!name && !emailValidate(email) && !!nameFromEmail}
+            timeout={500}
+        >
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                }}
+                className={c.container}
+            >
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                    }}
+                >
+                    User Name: <wbr />
+                    {nameFromEmail}
+                </div>
+                <IconButton
+                    onClick={() => {
+                        setName(nameFromEmail); // Change the mode into edit-mode by setting "name"
+                    }}
+                    style={{ padding: 5 }}
+                >
+                    <PencilIcon />
+                </IconButton>
+            </div>
+        </Collapse>
+    );
+}
+const useUserNameFromEmailFieldStyles = makeStyles(theme => ({
+    container: {
+        fontSize: theme.typography.fontSize,
+    },
+}));
+
 function SubmitButton({
     submitting,
     chosen,
     error,
     className,
-    success,
 }: {
     submitting: boolean;
     chosen: boolean;
     error?: ReactNode;
     className: string;
-    success: () => void;
 }) {
     const { abTestKey, abTestSuccess } = useAbTest({
         testName: "SignUpPanel-SubmitButtonMessage",
@@ -272,7 +326,6 @@ function SubmitButton({
             disabled={!!error || submitting}
             onClick={() => {
                 abTestSuccess();
-                success();
             }}
         >
             {!abTestKey || submitting ? (

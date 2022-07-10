@@ -74,6 +74,11 @@ async function lateImportPanels() {
 
 const theme = createTheme({
     palette: { primary: { main: "#007BFF" }, secondary: { main: "#dc3545" } },
+    typography: {
+        button: {
+            textTransform: "none",
+        },
+    },
 });
 
 export default compose<InnerProps, OuterProps>(
