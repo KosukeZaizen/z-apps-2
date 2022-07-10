@@ -17,9 +17,7 @@ import { AddXpParams, GuestUserXpDialogState } from "./types";
 let setGuestResultDialogState = (_state: GuestUserXpDialogState) => {};
 
 export async function addGuestXp(params: AddXpParams) {
-    setGuestResultDialogState({
-        ...params,
-    });
+    setGuestResultDialogState(params);
 
     const { xpBeforeSignUp } = getAppState();
 
@@ -40,7 +38,7 @@ export async function addGuestXp(params: AddXpParams) {
     });
 }
 
-const initialState = {
+const closedState = {
     onCloseCallBack: undefined,
     xpToAdd: 0,
     topSmallMessage: "",
@@ -58,7 +56,7 @@ export default function ResultXpDialogWrapper() {
     const open = _state !== "close";
 
     const [lazyState, setLazyState] =
-        useState<Exclude<GuestUserXpDialogState, "close">>(initialState);
+        useState<Exclude<GuestUserXpDialogState, "close">>(closedState);
 
     useEffect(() => {
         if (open) {
@@ -67,7 +65,7 @@ export default function ResultXpDialogWrapper() {
         }
         sleepAsync(500).then(() => {
             // Wait until the animation finishes
-            setLazyState(initialState);
+            setLazyState(closedState);
         });
     }, [_state]);
 
@@ -82,7 +80,7 @@ export default function ResultXpDialogWrapper() {
 
     return (
         <ResultXpDialog_GuestUser
-            open={open}
+            open={open && !!abTestName} // Also check abTestName's existence to prevent to send a request to AB Test API without abTestName
             onClose={() => {
                 setGuestResultDialogState("close");
                 onCloseCallBack?.();
@@ -113,6 +111,11 @@ const charCommentAbTestKeys = [
     "Receive the XP by making a Lingual Ninja Account!",
 ];
 const keysSeparator = "__";
+const abTestKeys = btnLabelAbTestKeys.flatMap(btnKey =>
+    charCommentAbTestKeys.map(
+        commentKey => `${btnKey}${keysSeparator}${commentKey}`
+    )
+);
 
 function ResultXpDialog_GuestUser({
     open,
@@ -136,11 +139,7 @@ function ResultXpDialog_GuestUser({
 
     const { abTestKey, abTestSuccess } = useAbTest({
         testName: `${abTestName}-ButtonLabel-and-CharacterComment`,
-        keys: btnLabelAbTestKeys.flatMap(btnKey =>
-            charCommentAbTestKeys.map(
-                commentKey => `${btnKey}${keysSeparator}${commentKey}`
-            )
-        ),
+        keys: abTestKeys,
         open,
     });
 
