@@ -1,8 +1,11 @@
+import { Avatar, makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import { useEffect, useState } from "react";
+import { spaceBetween } from "../../../../../../common/util/Array/spaceBetween";
 import { UserForRanking } from "./types";
 
 export function LevelRanking({ screenWidth }: { screenWidth: number }) {
+    const c = useStyles();
     const [users, setUsers] = useState<UserForRanking[]>([]);
     useEffect(() => {
         fetchUsersForRanking().then(u => {
@@ -13,18 +16,64 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
     const isWide = screenWidth > 767;
 
     return (
-        <Card>
+        <Card className={spaceBetween("large", c.card)}>
             <BasicRanking users={users} />
         </Card>
     );
 }
 
+const useStyles = makeStyles(theme => ({
+    card: { marginTop: 10, backgroundColor: theme.palette.grey[100] },
+}));
+
 function BasicRanking({ users }: { users: UserForRanking[] }) {
     return (
         <>
-            {users.map(u => (
-                <Card key={u.userId} style={{ margin: 10 }}>
-                    {u.name}
+            {users.map((u, i) => (
+                <Card
+                    key={u.userId}
+                    style={{
+                        margin: 5,
+                        display: "flex",
+                        padding: 5,
+                    }}
+                >
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            marginLeft: 10,
+                            marginRight: 20,
+                        }}
+                    >
+                        <div style={{ marginRight: 10 }}>{i + 1}.</div>
+                        <Avatar>
+                            <img
+                                src={
+                                    "https://lingualninja.blob.core.windows.net/lingual-storage/articles/_authors/1.jpg"
+                                }
+                                style={{
+                                    width: 40,
+                                    height: 40,
+                                    objectFit: "cover",
+                                    objectPosition: "50% 50%",
+                                }}
+                                alt={u.name}
+                                title={u.name}
+                            />
+                        </Avatar>
+                    </div>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-around",
+                            width: "100%",
+                        }}
+                    >
+                        <div style={{ flex: 1 }}>{u.name}</div>
+                        <div style={{ flex: 1 }}>Lv. {u.level}</div>
+                    </div>
                 </Card>
             ))}
         </>
@@ -49,4 +98,3 @@ async function fetchUsersForRanking(): Promise<UserForRanking[]> {
         { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
     ];
 }
-
