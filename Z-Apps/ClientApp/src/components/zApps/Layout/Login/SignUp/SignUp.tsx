@@ -56,11 +56,12 @@ export function SignUp({
 
     const [name, setName] = useState("");
     const nameFromEmail = getUserNameFromEmail(email);
+    const nameToSend = name.trim() || nameFromEmail;
 
     const [submissionError, setSubmissionError] = useState<ReactNode>(null);
     const realTimeError = useMemo<ReactNode>(
-        () => realTimeValidate(name, email, password),
-        [name, email, password]
+        () => realTimeValidate(nameToSend, email, password),
+        [nameToSend, email, password]
     );
     const [submitting, setSubmitting] = useState(false);
     const error = submissionError || realTimeError;
@@ -68,7 +69,6 @@ export function SignUp({
     const onSubmit = async (ev: SyntheticEvent) => {
         ev.preventDefault();
 
-        const nameToSend = name.trim() || nameFromEmail;
         const sError = submissionValidate(nameToSend, email, password);
         if (sError) {
             setSubmissionError(sError);
