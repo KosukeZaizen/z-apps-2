@@ -15,18 +15,8 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
 
     const isWide = screenWidth > 767;
 
-    const { topUsers, normalUsers } = users.reduce(
-        ({ topUsers, normalUsers }, user, i) => {
-            if (i < 3) {
-                return { topUsers: [...topUsers, user], normalUsers };
-            }
-            return { topUsers, normalUsers: [...normalUsers, user] };
-        },
-        {
-            topUsers: [] as UserForRanking[],
-            normalUsers: [] as UserForRanking[],
-        }
-    );
+    const [user1, user2, user3, ...normalUsers] = users;
+    const topUsers = user3 ? [user1, user2, user3] : [];
 
     return (
         <div
