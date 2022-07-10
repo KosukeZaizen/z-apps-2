@@ -68,7 +68,8 @@ export function SignUp({
     const onSubmit = async (ev: SyntheticEvent) => {
         ev.preventDefault();
 
-        const sError = submissionValidate(name, email, password);
+        const nameToSend = name.trim() || nameFromEmail;
+        const sError = submissionValidate(nameToSend, email, password);
         if (sError) {
             setSubmissionError(sError);
             return;
@@ -77,7 +78,7 @@ export function SignUp({
         setSubmitting(true);
         const user: FetchResult<User> = await sendPost(
             {
-                name: name.trim() || nameFromEmail,
+                name: nameToSend,
                 email,
                 password,
                 initialXp: getAppState().xpBeforeSignUp,
