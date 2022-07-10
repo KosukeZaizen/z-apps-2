@@ -260,19 +260,8 @@ function UserNameFromEmailField({
             in={!name && !emailValidate(email) && !!nameFromEmail}
             timeout={500}
         >
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                }}
-                className={c.container}
-            >
-                <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                    }}
-                >
+            <div className={c.container}>
+                <div className={c.nameFromEmail}>
                     Username: <wbr />
                     {nameFromEmail}
                 </div>
@@ -280,7 +269,7 @@ function UserNameFromEmailField({
                     onClick={() => {
                         setName(nameFromEmail); // Change the mode into edit-mode by setting "name"
                     }}
-                    style={{ padding: 5 }}
+                    className={c.iconButton}
                 >
                     <PencilIcon />
                 </IconButton>
@@ -291,7 +280,14 @@ function UserNameFromEmailField({
 const useUserNameFromEmailFieldStyles = makeStyles(theme => ({
     container: {
         fontSize: theme.typography.fontSize,
+        display: "flex",
+        alignItems: "center",
     },
+    nameFromEmail: {
+        display: "flex",
+        alignItems: "center",
+    },
+    iconButton: { padding: 5 },
 }));
 
 function SubmitButton({
