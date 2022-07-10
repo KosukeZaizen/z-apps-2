@@ -33,6 +33,7 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
             style={{
                 display: "flex",
                 flexDirection: isWide ? "row" : "column",
+                marginTop: 5,
             }}
         >
             <Card className={spaceBetween("large", c.card)}>
@@ -44,13 +45,7 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
                     />
                 ))}
             </Card>
-            <Card
-                className={spaceBetween(
-                    "large",
-                    c.card,
-                    isWide ? c.marginLeft5 : null
-                )}
-            >
+            <Card className={spaceBetween("large", c.card)}>
                 {normalUsers.map((user, i) => (
                     <BasicRankingRecord
                         user={user}
@@ -65,13 +60,12 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
 
 const useStyles = makeStyles(theme => ({
     card: {
-        marginTop: 10,
+        margin: 5,
         backgroundColor: theme.palette.grey[100],
         height: 335,
         overflow: "hidden",
         flex: 1,
     },
-    marginLeft5: { marginLeft: 5 },
 }));
 
 function BasicRankingRecord({
