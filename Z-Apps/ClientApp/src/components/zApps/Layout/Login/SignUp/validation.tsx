@@ -41,7 +41,7 @@ function nameValidate(name: string): string | null {
     return null;
 }
 
-function emailValidate(email: string): string | null {
+export function emailValidate(email: string): string | null {
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
         return "Please enter a valid email address.";
     }

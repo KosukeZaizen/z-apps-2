@@ -72,6 +72,9 @@ abbr[title] {
 .small {
     font-size: small !important;
 }
+.medium {
+    font-size: medium !important;
+}
 .large {
     font-size: large !important;
 }
