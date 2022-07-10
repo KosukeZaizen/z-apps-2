@@ -1,7 +1,6 @@
 import { Avatar, makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import { useEffect, useState } from "react";
-import { spaceBetween } from "../../../../../../common/util/Array/spaceBetween";
 import { UserForRanking } from "./types";
 
 export function LevelRanking({ screenWidth }: { screenWidth: number }) {
@@ -9,6 +8,7 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
     const [users, setUsers] = useState<UserForRanking[]>([]);
     useEffect(() => {
         fetchUsersForRanking().then(u => {
+            u.length = 9;
             setUsers(u);
         });
     }, []);
@@ -36,16 +36,16 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
                 marginTop: 5,
             }}
         >
-            <Card className={spaceBetween("large", c.card)}>
+            <Card className={c.card}>
                 {topUsers.map((user, i) => (
-                    <BasicRankingRecord
+                    <TopRankingRecord
                         user={user}
                         rank={i + 1}
                         key={user.userId}
                     />
                 ))}
             </Card>
-            <Card className={spaceBetween("large", c.card)}>
+            <Card className={c.card}>
                 {normalUsers.map((user, i) => (
                     <BasicRankingRecord
                         user={user}
@@ -63,10 +63,67 @@ const useStyles = makeStyles(theme => ({
         margin: 5,
         backgroundColor: theme.palette.grey[100],
         height: 335,
-        overflow: "hidden",
         flex: 1,
+        fontSize: "large",
     },
 }));
+
+function TopRankingRecord({
+    user,
+    rank,
+}: {
+    user: UserForRanking;
+    rank: number;
+}) {
+    return (
+        <Card
+            key={user.userId}
+            style={{
+                margin: 5,
+                display: "flex",
+                padding: 5,
+                height: 105,
+            }}
+        >
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginLeft: 10,
+                    marginRight: 20,
+                }}
+            >
+                <div style={{ marginRight: 10 }}>{rank}.</div>
+                <Avatar>
+                    <img
+                        src={
+                            "https://lingualninja.blob.core.windows.net/lingual-storage/articles/_authors/1.jpg"
+                        }
+                        style={{
+                            width: 40,
+                            height: 40,
+                            objectFit: "cover",
+                            objectPosition: "50% 50%",
+                        }}
+                        alt={user.name}
+                        title={user.name}
+                    />
+                </Avatar>
+            </div>
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-around",
+                    width: "100%",
+                }}
+            >
+                <div style={{ flex: 1 }}>{user.name}</div>
+                <div style={{ flex: 1 }}>Lv. {user.level}</div>
+            </div>
+        </Card>
+    );
+}
 
 function BasicRankingRecord({
     user,
