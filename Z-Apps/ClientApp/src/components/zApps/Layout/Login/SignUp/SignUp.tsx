@@ -273,7 +273,7 @@ function UserNameFromEmailField({
                         alignItems: "center",
                     }}
                 >
-                    User Name: <wbr />
+                    Username: <wbr />
                     {nameFromEmail}
                 </div>
                 <IconButton
