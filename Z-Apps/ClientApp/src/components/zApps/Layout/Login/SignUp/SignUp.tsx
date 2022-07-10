@@ -225,19 +225,20 @@ function UserNameField({
 }) {
     return (
         <Collapse in={!!name} timeout={500}>
-            <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                label="Username"
-                autoComplete="username"
-                onChange={ev => {
-                    setName(ev.target.value);
-                    setSubmissionError(null);
-                }}
-                value={name}
-            />
+            <div>
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    label="Username"
+                    autoComplete="username"
+                    onChange={ev => {
+                        setName(ev.target.value);
+                        setSubmissionError(null);
+                    }}
+                    value={name}
+                />
+            </div>
         </Collapse>
     );
 }
