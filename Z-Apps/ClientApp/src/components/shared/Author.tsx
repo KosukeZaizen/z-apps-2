@@ -1,10 +1,11 @@
-import { Avatar, Card } from "@material-ui/core";
+import { Avatar, Card, makeStyles } from "@material-ui/core";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { changeAppState, useAppState } from "../../common/appState";
 import { appsPublicImg, articlesStorage } from "../../common/consts";
 import { useScreenSize } from "../../common/hooks/useScreenSize";
+import { spaceBetween } from "../../common/util/Array/spaceBetween";
 import ShurikenProgress from "./Animations/ShurikenProgress";
 import "./CharacterComment/CharacterComment.css";
 import { Markdown } from "./Markdown";
@@ -33,6 +34,7 @@ export function AuthorCard({
     screenWidth: number;
     style?: CSSProperties;
 }) {
+    const c = useAuthorCardStyles();
     const [isPanelOpen, setIsPanelOpen] = useState(false);
 
     if (!author) {
@@ -44,32 +46,22 @@ export function AuthorCard({
     return (
         <>
             <Card
-                style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    padding: 5,
-                    cursor: "pointer",
-                    ...style,
-                }}
+                style={style}
                 onClick={() => {
                     setIsPanelOpen(true);
                 }}
+                className={c.card}
             >
                 <Avatar>
                     <img
                         src={getAuthorImgPath(author)}
-                        style={{
-                            width: 40,
-                            height: 40,
-                            objectFit: "cover",
-                            objectPosition: "50% 50%",
-                        }}
+                        className={c.avatarImg}
                         alt={author.authorName}
                         title={author.authorName}
                     />
                 </Avatar>
-                <div style={{ marginLeft: 5, marginRight: 5 }}>
-                    <span style={{ color: "#0d6efd" }}>
+                <div className={c.nameArea}>
+                    <span className={c.nameSpan}>
                         {"by "}
                         {author.authorName}
                     </span>
@@ -87,6 +79,22 @@ export function AuthorCard({
         </>
     );
 }
+const useAuthorCardStyles = makeStyles(() => ({
+    card: {
+        display: "inline-flex",
+        alignItems: "center",
+        padding: 5,
+        cursor: "pointer",
+    },
+    avatarImg: {
+        width: 40,
+        height: 40,
+        objectFit: "cover",
+        objectPosition: "50% 50%",
+    },
+    nameArea: { marginLeft: 5, marginRight: 5 },
+    nameSpan: { color: "#0d6efd" },
+}));
 
 export function AuthorName({ title }: { title?: string }) {
     return (
@@ -158,6 +166,7 @@ export const AuthorArea = ({
     title,
     hoverScale,
 }: AuthorProps) => {
+    const c = useAuthorAreaStyles();
     const author = useDefaultAuthor(pAuthor);
     if (!author) {
         return <ShurikenProgress size="20%" style={{ marginTop: 100 }} />;
@@ -174,7 +183,7 @@ export const AuthorArea = ({
             style={{ textAlign: "center", ...style }}
             hoverScale={hoverScale}
         >
-            <h2 style={{ marginBottom: 25 }}>{title || "Author"}</h2>
+            <h2 className={c.title}>{title || "Author"}</h2>
             {isCommentUsed ? (
                 <PersonComment
                     author={author}
@@ -182,18 +191,10 @@ export const AuthorArea = ({
                     screenWidth={screenWidth}
                     comment={
                         <div>
-                            <div
-                                style={{
-                                    width: "100%",
-                                    textAlign: "center",
-                                    fontWeight: "bold",
-                                    fontSize: "x-large",
-                                    margin: "15px 5px 25px",
-                                }}
-                            >
+                            <div className={c.greeting}>
                                 {author.initialGreeting}
                             </div>
-                            <div style={{ margin: 10 }}>
+                            <div className={c.markdownContainer}>
                                 <CommentMarkDown
                                     selfIntroduction={author.selfIntroduction}
                                 />
@@ -203,35 +204,25 @@ export const AuthorArea = ({
                 />
             ) : (
                 <div>
-                    <div style={{ margin: "0 auto 20px" }}>
+                    <div className={c.imgContainer}>
                         <img
                             src={imageSrc}
                             alt={author.authorName}
                             title={author.authorName}
-                            style={{
-                                width: "100%",
-                                maxWidth: 300,
-                                objectFit: "contain",
-                                margin: "auto",
-                            }}
+                            className={c.img}
                         />
                     </div>
                     <div
-                        style={{
-                            margin: isVeryNarrow ? "10px 0" : 10,
-                            fontSize: "large",
-                            textAlign: "left",
-                            padding: isVeryNarrow ? 0 : 10,
-                        }}
+                        className={
+                            isVeryNarrow
+                                ? c.spNarrowMessageContainer
+                                : c.spMessageContainer
+                        }
                     >
                         <div
-                            style={{
-                                fontWeight: "bold",
-                                fontSize: "x-large",
-                                margin: isVeryNarrow
-                                    ? "0 0 25px"
-                                    : "0 5px 25px",
-                            }}
+                            className={
+                                isVeryNarrow ? c.spNarrowGreeting : c.spGreeting
+                            }
                         >
                             {author.initialGreeting}
                         </div>
@@ -248,6 +239,46 @@ export const AuthorArea = ({
         </ScrollBox>
     );
 };
+const useAuthorAreaStyles = makeStyles(() => ({
+    title: { marginBottom: 25 },
+    greeting: {
+        width: "100%",
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: "x-large",
+        margin: "15px 5px 25px",
+    },
+    markdownContainer: { margin: 10 },
+    imgContainer: { margin: "0 auto 20px" },
+    img: {
+        width: "100%",
+        maxWidth: 300,
+        objectFit: "contain",
+        margin: "auto",
+    },
+    spMessageContainer: {
+        margin: 10,
+        fontSize: "large",
+        textAlign: "left",
+        padding: 10,
+    },
+    spNarrowMessageContainer: {
+        margin: "10px 0",
+        fontSize: "large",
+        textAlign: "left",
+        padding: 0,
+    },
+    spGreeting: {
+        fontWeight: "bold",
+        fontSize: "x-large",
+        margin: "0 5px 25px",
+    },
+    spNarrowGreeting: {
+        fontWeight: "bold",
+        fontSize: "x-large",
+        margin: "0 0 25px",
+    },
+}));
 
 type CommentProps = {
     screenWidth: number;
@@ -264,6 +295,8 @@ export function PersonComment({
     author,
     imageSrc,
 }: CommentProps) {
+    const c = usePersonCommentStyles();
+
     return (
         <div
             style={{
@@ -271,25 +304,17 @@ export function PersonComment({
                 ...style,
             }}
         >
-            <div style={{ flex: 1, marginTop: 6, marginRight: 10 }}>
+            <div className={c.imgContainer}>
                 <img
                     src={imageSrc}
                     alt={author.authorName}
                     title={author.authorName}
-                    style={{
-                        maxWidth: 300,
-                        height: "auto",
-                        verticalAlign: "top",
-                    }}
-                    className="ninjaPic"
+                    className={spaceBetween("ninjaPic", c.img)}
                 />
             </div>
             <div
                 className="chatting"
                 style={{
-                    height: "auto",
-                    display: "flex",
-                    alignItems: "center",
                     flex: 2,
                 }}
             >
@@ -306,6 +331,14 @@ export function PersonComment({
         </div>
     );
 }
+const usePersonCommentStyles = makeStyles(() => ({
+    imgContainer: { flex: 1, marginTop: 6, marginRight: 10 },
+    img: {
+        maxWidth: 300,
+        height: "auto",
+        verticalAlign: "top",
+    },
+}));
 
 const CommentMarkDown = ({
     style,
