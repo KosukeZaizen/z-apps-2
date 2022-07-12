@@ -40,7 +40,7 @@ export default function CharacterComment(props: TProps) {
             </div>
             <div className="chatting">
                 <div
-                    className="says"
+                    className="says character-says"
                     style={{
                         width:
                             screenWidth > 767
