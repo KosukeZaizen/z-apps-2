@@ -1,5 +1,7 @@
 //@ts-nocheck
+
 import * as React from "react";
+import { setLocalStorageAndDb } from "../../../Layout/Login/MyPage/progressManager";
 import * as CommonFnc from "./CommonFnc"; //共通関数
 import { TIME_STEP } from "./Consts"; //定数
 import * as GameCore from "./GameCore"; //ゲームのコア関数
