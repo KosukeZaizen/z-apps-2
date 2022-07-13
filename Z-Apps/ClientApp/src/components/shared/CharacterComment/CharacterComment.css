@@ -11,6 +11,9 @@
     padding: 17px 13px;
     border-radius: 12px;
     background: antiquewhite;
+}
+
+.character-says {
     max-width: 420px;
 }
 
