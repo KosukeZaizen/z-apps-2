@@ -28,7 +28,7 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
             style={{
                 display: "flex",
                 flexDirection: isWide ? "row" : "column",
-                marginTop: 5,
+                marginTop: isWide ? 15 : 5,
             }}
         >
             <Card className={c.card}>
