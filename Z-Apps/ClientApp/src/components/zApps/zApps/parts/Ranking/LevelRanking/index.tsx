@@ -2,6 +2,7 @@ import { Avatar, makeStyles, TooltipProps } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { appsPublicImg } from "../../../../../../common/consts";
+import { useScreenSize } from "../../../../../../common/hooks/useScreenSize";
 import { Tooltip } from "../../../../../shared/Tooltip";
 import { theme } from "../../../../Layout";
 import { UserForRanking } from "./types";
@@ -187,16 +188,27 @@ const EllipsisLabel = ({
 }) => {
     const [isOverflowed, setIsOverflow] = useState(false);
     const textElementRef = useRef<HTMLDivElement>(null);
+    const [trimmedTitle, setTrimmedTitle] = useState(title);
+    const { screenWidth } = useScreenSize();
 
     useEffect(() => {
-        // check after every render
-        if (textElementRef.current) {
-            setIsOverflow(
-                textElementRef.current.scrollWidth >
-                    textElementRef.current.clientWidth
-            );
+        setIsOverflow(false);
+        setTrimmedTitle(title);
+    }, [title, screenWidth]);
+
+    useEffect(() => {
+        if (!textElementRef.current) {
+            return;
         }
-    });
+
+        if (
+            textElementRef.current.scrollWidth >
+            textElementRef.current.clientWidth
+        ) {
+            setIsOverflow(true);
+            setTrimmedTitle(trimmedTitle.slice(0, -1));
+        }
+    }, [trimmedTitle]);
 
     return (
         <Tooltip
@@ -213,7 +225,8 @@ const EllipsisLabel = ({
                     ...style,
                 }}
             >
-                {title}
+                {trimmedTitle}
+                {isOverflowed && "..."}
             </div>
         </Tooltip>
     );
@@ -313,6 +326,7 @@ function BasicRankingRecord({
                 margin: 5,
                 display: "flex",
                 padding: 5,
+                height: 50,
             }}
         >
             <div
@@ -348,8 +362,12 @@ function BasicRankingRecord({
                     width: "100%",
                 }}
             >
-                <div style={{ flex: 1 }}>{user.name}</div>
-                <div style={{ flex: 1 }}>Lv. {user.level}</div>
+                <div style={{ flex: 3, overflow: "hidden", paddingRight: 20 }}>
+                    <EllipsisLabel title={user.name} placement="top" />
+                </div>
+                <div style={{ flex: 1, textAlign: "left" }}>
+                    Lv. {user.level}
+                </div>
             </div>
         </Card>
     );
@@ -359,23 +377,35 @@ async function fetchUsersForRanking(): Promise<UserForRanking[]> {
     return [
         {
             userId: 21,
-            name: "Taro1234567890123456789",
-            level: 12,
+            name: "ざいぜんこうすけざいぜんこうすけあいうえ",
+            level: 52,
             xp: 1200,
             avatarPath: "",
         },
-        { userId: 9, name: "Tom", level: 10, xp: 930, avatarPath: "" },
-        { userId: 11, name: "Jane", level: 9, xp: 800, avatarPath: "" },
-        { userId: 15, name: "Kim", level: 7, xp: 700, avatarPath: "" },
-        { userId: 22, name: "Kai", level: 6, xp: 610, avatarPath: "" },
+        {
+            userId: 9,
+            name: "abcdefghijklmnopqrst",
+            level: 50,
+            xp: 930,
+            avatarPath: "",
+        },
+        { userId: 11, name: "Jane", level: 49, xp: 800, avatarPath: "" },
+        { userId: 15, name: "Kim", level: 47, xp: 700, avatarPath: "" },
+        { userId: 22, name: "Kai", level: 46, xp: 610, avatarPath: "" },
         {
             userId: 45,
-            name: "kosuke.zaizen",
-            level: 6,
+            name: "ざいぜんこうすけざいぜんこうすけあいうえ",
+            level: 46,
             xp: 600,
             avatarPath: "",
         },
-        { userId: 1, name: "TJ", level: 3, xp: 300, avatarPath: "" },
+        {
+            userId: 1,
+            name: "abcdefghijklmnopqrst",
+            level: 3,
+            xp: 300,
+            avatarPath: "",
+        },
         { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
         { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
         { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
