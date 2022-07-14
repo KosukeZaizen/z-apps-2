@@ -34,6 +34,7 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
                         user={user}
                         rank={i + 1}
                         key={user.userId}
+                        isWide={isWide}
                     />
                 ))}
             </Card>
@@ -63,9 +64,11 @@ const useStyles = makeStyles(theme => ({
 function TopRankingRecord({
     user,
     rank,
+    isWide,
 }: {
     user: UserForRanking;
     rank: number;
+    isWide: boolean;
 }) {
     return (
         <Card
@@ -84,12 +87,12 @@ function TopRankingRecord({
                     marginRight: 20,
                 }}
             >
-                <div
+                <Card
                     style={{
-                        height: 105,
-                        width: 105,
+                        height: 95,
+                        width: 95,
                         backgroundColor: theme.palette.grey[200],
-                        marginLeft: -5,
+                        marginLeft: 0,
                         marginRight: 20,
                         display: "flex",
                         alignItems: "center",
@@ -100,17 +103,24 @@ function TopRankingRecord({
                         src={`${appsPublicImg}user_ranking/${rank}.png`}
                         style={{ width: 85, height: 85 }}
                     />
-                </div>
-                <Avatar style={{ width: 60, height: 60 }}>
+                </Card>
+                <Avatar
+                    style={
+                        isWide
+                            ? { width: 60, height: 60 }
+                            : { width: 50, height: 50 }
+                    }
+                >
                     <img
                         src={
                             "https://lingualninja.blob.core.windows.net/lingual-storage/articles/_authors/1.jpg"
                         }
                         style={{
-                            width: 60,
-                            height: 60,
                             objectFit: "cover",
                             objectPosition: "50% 50%",
+                            ...(isWide
+                                ? { width: 60, height: 60 }
+                                : { width: 50, height: 50 }),
                         }}
                         alt={user.name}
                         title={user.name}
@@ -124,10 +134,21 @@ function TopRankingRecord({
                     justifyContent: "space-around",
                     width: "100%",
                     fontSize: "1.3rem",
+                    flexDirection: isWide ? "row" : "column",
                 }}
             >
-                <div style={{ flex: 1 }}>{user.name}</div>
-                <div style={{ flex: 1 }}>Lv. {user.level}</div>
+                <div
+                    style={{
+                        flex: 1,
+                        display: "flex",
+                        alignItems: "center",
+                    }}
+                >
+                    {user.name}
+                </div>
+                <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
+                    Lv. {user.level}
+                </div>
             </div>
         </Card>
     );
@@ -191,7 +212,13 @@ function BasicRankingRecord({
 
 async function fetchUsersForRanking(): Promise<UserForRanking[]> {
     return [
-        { userId: 21, name: "taro", level: 12, xp: 1200, avatarPath: "" },
+        {
+            userId: 21,
+            name: "Taro1234567890123456789",
+            level: 12,
+            xp: 1200,
+            avatarPath: "",
+        },
         { userId: 9, name: "Tom", level: 10, xp: 930, avatarPath: "" },
         { userId: 11, name: "Jane", level: 9, xp: 800, avatarPath: "" },
         { userId: 15, name: "Kim", level: 7, xp: 700, avatarPath: "" },
