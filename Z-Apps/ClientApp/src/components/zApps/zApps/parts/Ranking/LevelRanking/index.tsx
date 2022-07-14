@@ -1,7 +1,8 @@
-import { Avatar, makeStyles } from "@material-ui/core";
+import { Avatar, makeStyles, TooltipProps } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
-import { useEffect, useState } from "react";
+import { ReactChild, useEffect, useRef, useState } from "react";
 import { appsPublicImg } from "../../../../../../common/consts";
+import { Tooltip } from "../../../../../shared/Tooltip";
 import { theme } from "../../../../Layout";
 import { UserForRanking } from "./types";
 
@@ -138,22 +139,63 @@ function TopRankingRecordPc({
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-around",
-                    width: "100%",
+                    width: "calc(100% - 20px)",
                     fontSize: "1.3rem",
                 }}
             >
                 <div
                     style={{
                         flex: 1,
+                        flexGrow: 1,
+                        overflow: "hidden",
                     }}
                 >
-                    {user.name}
+                    <EllipsisLabel placement="top" >
+                        {user.name}
+                    </EllipsisLabel>
                 </div>
-                <div style={{ flex: 1 }}>Lv. {user.level}</div>
+                <div style={{ flex: 1, flexGrow: 1 }}>Lv. {user.level}</div>
             </div>
         </Card>
     );
 }
+
+const EllipsisLabel = ({
+    children,
+    placement,
+}: {
+    children: ReactChild;
+    placement?: TooltipProps["placement"];
+}) => {
+    const [isOverflowed, setIsOverflow] = useState(false);
+    const textElementRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        if (textElementRef.current) {
+            setIsOverflow(
+                textElementRef.current.scrollWidth >
+                    textElementRef.current.clientWidth
+            );
+        }
+    }, []);
+    return (
+        <Tooltip
+            title={children}
+            disableHoverListener={!isOverflowed}
+            placement={placement}
+        >
+            <div
+                ref={textElementRef}
+                style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                }}
+            >
+                {children}
+            </div>
+        </Tooltip>
+    );
+};
 
 function TopRankingRecordSp({
     user,
