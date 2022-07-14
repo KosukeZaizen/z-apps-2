@@ -72,7 +72,7 @@ async function lateImportPanels() {
     return await Promise.all(PanelComponents);
 }
 
-const theme = createTheme({
+export const theme = createTheme({
     palette: { primary: { main: "#007BFF" }, secondary: { main: "#dc3545" } },
     typography: {
         button: {

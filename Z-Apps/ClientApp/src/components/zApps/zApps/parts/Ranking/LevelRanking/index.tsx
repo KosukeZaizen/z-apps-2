@@ -1,6 +1,8 @@
 import { Avatar, makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import { useEffect, useState } from "react";
+import { appsPublicImg } from "../../../../../../common/consts";
+import { theme } from "../../../../Layout";
 import { UserForRanking } from "./types";
 
 export function LevelRanking({ screenWidth }: { screenWidth: number }) {
@@ -13,7 +15,7 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
         });
     }, []);
 
-    const isWide = screenWidth > 767;
+    const isWide = screenWidth > 991;
 
     const [user1, user2, user3, ...normalUsers] = users;
     const topUsers = user3 ? [user1, user2, user3] : [];
@@ -79,19 +81,34 @@ function TopRankingRecord({
                 style={{
                     display: "flex",
                     alignItems: "center",
-                    marginLeft: 10,
                     marginRight: 20,
                 }}
             >
-                <div style={{ marginRight: 10 }}>{rank}.</div>
-                <Avatar>
+                <div
+                    style={{
+                        height: 105,
+                        width: 105,
+                        backgroundColor: theme.palette.grey[200],
+                        marginLeft: -5,
+                        marginRight: 20,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <img
+                        src={`${appsPublicImg}user_ranking/${rank}.png`}
+                        style={{ width: 85, height: 85 }}
+                    />
+                </div>
+                <Avatar style={{ width: 60, height: 60 }}>
                     <img
                         src={
                             "https://lingualninja.blob.core.windows.net/lingual-storage/articles/_authors/1.jpg"
                         }
                         style={{
-                            width: 40,
-                            height: 40,
+                            width: 60,
+                            height: 60,
                             objectFit: "cover",
                             objectPosition: "50% 50%",
                         }}
@@ -106,6 +123,7 @@ function TopRankingRecord({
                     alignItems: "center",
                     justifyContent: "space-around",
                     width: "100%",
+                    fontSize: "1.3rem",
                 }}
             >
                 <div style={{ flex: 1 }}>{user.name}</div>
