@@ -1,6 +1,6 @@
 import { Avatar, makeStyles, TooltipProps } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
-import { ReactChild, useEffect, useRef, useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import { appsPublicImg } from "../../../../../../common/consts";
 import { Tooltip } from "../../../../../shared/Tooltip";
 import { theme } from "../../../../Layout";
@@ -17,6 +17,7 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
     }, []);
 
     const isWide = screenWidth > 991;
+    const isVeryWide = screenWidth > 1199;
 
     const [user1, user2, user3, ...normalUsers] = users;
     const topUsers = user3 ? [user1, user2, user3] : [];
@@ -36,6 +37,7 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
                         rank={i + 1}
                         key={user.userId}
                         isWide={isWide}
+                        isVeryWide={isVeryWide}
                     />
                 ))}
             </Card>
@@ -66,13 +68,21 @@ function TopRankingRecord({
     user,
     rank,
     isWide,
+    isVeryWide,
 }: {
     user: UserForRanking;
     rank: number;
     isWide: boolean;
+    isVeryWide: boolean;
 }) {
     if (isWide) {
-        return <TopRankingRecordPc user={user} rank={rank} />;
+        return (
+            <TopRankingRecordPc
+                user={user}
+                rank={rank}
+                isVeryWide={isVeryWide}
+            />
+        );
     }
     return <TopRankingRecordSp user={user} rank={rank} />;
 }
@@ -80,9 +90,11 @@ function TopRankingRecord({
 function TopRankingRecordPc({
     user,
     rank,
+    isVeryWide,
 }: {
     user: UserForRanking;
     rank: number;
+    isVeryWide: boolean;
 }) {
     return (
         <Card
@@ -139,47 +151,56 @@ function TopRankingRecordPc({
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-around",
-                    width: "calc(100% - 20px)",
+                    width: "100%",
                     fontSize: "1.3rem",
                 }}
             >
                 <div
                     style={{
-                        flex: 1,
-                        flexGrow: 1,
+                        width: isVeryWide ? 200 : 160,
                         overflow: "hidden",
+                        paddingRight: 10,
                     }}
                 >
-                    <EllipsisLabel placement="top" >
-                        {user.name}
-                    </EllipsisLabel>
+                    <EllipsisLabel title={user.name} placement="top" />
                 </div>
-                <div style={{ flex: 1, flexGrow: 1 }}>Lv. {user.level}</div>
+                <div style={{ width: 80, overflow: "hidden" }}>
+                    <EllipsisLabel
+                        title={`Lv. ${user.level}`}
+                        placement="top"
+                        style={{ textAlign: "left" }}
+                    />
+                </div>
             </div>
         </Card>
     );
 }
 
 const EllipsisLabel = ({
-    children,
+    title,
     placement,
+    style,
 }: {
-    children: ReactChild;
+    title: string;
     placement?: TooltipProps["placement"];
+    style?: CSSProperties;
 }) => {
     const [isOverflowed, setIsOverflow] = useState(false);
     const textElementRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
+        // check after every render
         if (textElementRef.current) {
             setIsOverflow(
                 textElementRef.current.scrollWidth >
                     textElementRef.current.clientWidth
             );
         }
-    }, []);
+    });
+
     return (
         <Tooltip
-            title={children}
+            title={title}
             disableHoverListener={!isOverflowed}
             placement={placement}
         >
@@ -189,9 +210,10 @@ const EllipsisLabel = ({
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    ...style,
                 }}
             >
-                {children}
+                {title}
             </div>
         </Tooltip>
     );
