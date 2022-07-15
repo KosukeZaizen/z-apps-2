@@ -16,7 +16,6 @@ export function TopRankingRecordPc({
 }) {
     return (
         <Card
-            key={user.userId}
             style={{
                 margin: 5,
                 display: "flex",
