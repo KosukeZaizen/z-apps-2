@@ -1,4 +1,4 @@
-import { TooltipProps } from "@material-ui/core";
+import { makeStyles, TooltipProps } from "@material-ui/core";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useScreenSize } from "../../../common/hooks/useScreenSize";
 import { Tooltip } from "../Tooltip";
@@ -12,6 +12,8 @@ export const EllipsisLabel = ({
     placement?: TooltipProps["placement"];
     style?: CSSProperties;
 }) => {
+    const c = useStyles();
+
     const [isOverflowed, setIsOverflow] = useState(false);
     const textElementRef = useRef<HTMLDivElement>(null);
     const [trimmedTitle, setTrimmedTitle] = useState(title);
@@ -42,18 +44,17 @@ export const EllipsisLabel = ({
             disableHoverListener={!isOverflowed}
             placement={placement}
         >
-            <div
-                ref={textElementRef}
-                style={{
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    ...style,
-                }}
-            >
+            <div ref={textElementRef} className={c.div} style={style}>
                 {trimmedTitle}
                 {isOverflowed && "..."}
             </div>
         </Tooltip>
     );
 };
+const useStyles = makeStyles({
+    div: {
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+    },
+});
