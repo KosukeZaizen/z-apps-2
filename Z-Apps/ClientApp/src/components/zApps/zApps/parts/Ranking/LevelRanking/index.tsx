@@ -1,7 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import { useEffect, useState } from "react";
-import { spaceBetween } from "../../../../../../common/util/Array/spaceBetween";
 import { BasicRankingRecord } from "./BasicRankingRecord";
 import { TopRankingRecord } from "./TopRankingRecord";
 import { UserForRanking } from "./types";
@@ -11,7 +10,6 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
     const [users, setUsers] = useState<UserForRanking[]>([]);
     useEffect(() => {
         fetchUsersForRanking().then(u => {
-            u.length = 9;
             setUsers(u);
         });
     }, []);
@@ -30,7 +28,7 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
                 marginTop: 15,
             }}
         >
-            <Card className={spaceBetween(c.card, "bold")}>
+            <Card className={c.topRankingCard}>
                 {topUsers.map((user, i) => (
                     <TopRankingRecord
                         user={user}
@@ -41,7 +39,7 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
                     />
                 ))}
             </Card>
-            <Card className={c.card}>
+            <Card className={c.basicRankingCard}>
                 {normalUsers.map((user, i) => (
                     <BasicRankingRecord
                         user={user}
@@ -55,12 +53,22 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
 }
 
 const useStyles = makeStyles(theme => ({
-    card: {
+    topRankingCard: {
         margin: 5,
         backgroundColor: theme.palette.grey[100],
         height: 335,
         flex: 1,
         fontSize: "large",
+        fontWeight: "bold",
+    },
+    basicRankingCard: {
+        margin: 5,
+        backgroundColor: theme.palette.grey[100],
+        height: 335,
+        maxHeight: 335,
+        flex: 1,
+        fontSize: "large",
+        overflowY: "scroll",
     },
 }));
 
