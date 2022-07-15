@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { Collapse, makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import { useEffect, useState } from "react";
 import { sleepAsync } from "../../../../../../common/functions";
@@ -23,34 +23,36 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
     const topUsers = user3 ? [user1, user2, user3] : [];
 
     return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: isWide ? "row" : "column",
-                marginTop: 15,
-            }}
-        >
-            <Card className={c.topRankingCard}>
-                {topUsers.map((user, i) => (
-                    <TopRankingRecord
-                        user={user}
-                        rank={i + 1}
-                        key={user.userId}
-                        isWide={isWide}
-                        isVeryWide={isVeryWide}
-                    />
-                ))}
-            </Card>
-            <Card className={c.basicRankingCard}>
-                {normalUsers.map((user, i) => (
-                    <BasicRankingRecord
-                        user={user}
-                        rank={i + 4}
-                        key={user.userId}
-                    />
-                ))}
-            </Card>
-        </div>
+        <Collapse in={users.length > 0} timeout={700}>
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: isWide ? "row" : "column",
+                    marginTop: 15,
+                }}
+            >
+                <Card className={c.topRankingCard}>
+                    {topUsers.map((user, i) => (
+                        <TopRankingRecord
+                            user={user}
+                            rank={i + 1}
+                            key={user.userId}
+                            isWide={isWide}
+                            isVeryWide={isVeryWide}
+                        />
+                    ))}
+                </Card>
+                <Card className={c.basicRankingCard}>
+                    {normalUsers.map((user, i) => (
+                        <BasicRankingRecord
+                            user={user}
+                            rank={i + 4}
+                            key={user.userId}
+                        />
+                    ))}
+                </Card>
+            </div>
+        </Collapse>
     );
 }
 
@@ -109,83 +111,6 @@ async function fetchUsersForRanking(): Promise<UserForRanking[]> {
             xp: 300,
             avatarPath: "",
         },
-        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
-        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
-        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
-        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
-        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
-        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
-        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
-        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
-        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
         { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
         { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
         { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
