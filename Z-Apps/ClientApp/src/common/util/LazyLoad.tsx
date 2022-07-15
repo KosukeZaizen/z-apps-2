@@ -1,8 +1,14 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import ReactLazyLoad, { LazyLoadProps } from "react-lazyload";
 
-export function LazyLoad(props: LazyLoadProps) {
-    return <ReactLazyLoad offset={500} {...props} />;
+export function LazyLoad({
+    noLazy,
+    ...rest
+}: LazyLoadProps & { noLazy?: boolean }) {
+    if (noLazy) {
+        return <>{rest.children}</>;
+    }
+    return <ReactLazyLoad offset={500} {...rest} />;
 }
 
 export function LazyExecutor({

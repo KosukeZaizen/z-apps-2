@@ -1,12 +1,14 @@
 import { makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import { useEffect, useState } from "react";
+import { sleepAsync } from "../../../../../../common/functions";
 import { BasicRankingRecord } from "./BasicRankingRecord";
 import { TopRankingRecord } from "./TopRankingRecord";
 import { UserForRanking } from "./types";
 
 export function LevelRanking({ screenWidth }: { screenWidth: number }) {
     const c = useStyles();
+
     const [users, setUsers] = useState<UserForRanking[]>([]);
     useEffect(() => {
         fetchUsersForRanking().then(u => {
@@ -73,13 +75,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 async function fetchUsersForRanking(): Promise<UserForRanking[]> {
+    await sleepAsync(3000);
     return [
         {
             userId: 21,
             name: "ざいぜんこうすけざいぜんこうすけあいうえ",
             level: 52,
             xp: 1200,
-            avatarPath: "https://lingualninja.blob.core.windows.net/lingual-storage/articles/_authors/1.jpg",
+            avatarPath:
+                "https://lingualninja.blob.core.windows.net/lingual-storage/articles/_authors/1.jpg",
         },
         {
             userId: 9,
@@ -105,6 +109,83 @@ async function fetchUsersForRanking(): Promise<UserForRanking[]> {
             xp: 300,
             avatarPath: "",
         },
+        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
+        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
+        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
+        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
+        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
+        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
+        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
+        { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 134, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 135, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 136, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 137, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 138, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 139, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 140, name: "Atom", level: 2, xp: 110, avatarPath: "" },
+        { userId: 141, name: "Atom", level: 2, xp: 110, avatarPath: "" },
         { userId: 35, name: "AJ", level: 2, xp: 120, avatarPath: "" },
         { userId: 132, name: "Atom", level: 2, xp: 110, avatarPath: "" },
         { userId: 133, name: "Atom", level: 2, xp: 110, avatarPath: "" },
