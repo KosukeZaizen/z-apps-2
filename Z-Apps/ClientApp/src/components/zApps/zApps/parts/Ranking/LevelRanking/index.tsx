@@ -1,4 +1,4 @@
-import { Collapse, makeStyles } from "@material-ui/core";
+import { Collapse, makeStyles, Theme } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import { useEffect, useState } from "react";
 import { sleepAsync } from "../../../../../../common/functions";
@@ -7,7 +7,9 @@ import { TopRankingRecord } from "./TopRankingRecord";
 import { UserForRanking } from "./types";
 
 export function LevelRanking({ screenWidth }: { screenWidth: number }) {
-    const c = useStyles();
+    const isWide = screenWidth > 991;
+    const isVeryWide = screenWidth > 1199;
+    const c = useStyles({ isWide });
 
     const [users, setUsers] = useState<UserForRanking[]>([]);
     useEffect(() => {
@@ -16,21 +18,12 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
         });
     }, []);
 
-    const isWide = screenWidth > 991;
-    const isVeryWide = screenWidth > 1199;
-
     const [user1, user2, user3, ...normalUsers] = users;
     const topUsers = user3 ? [user1, user2, user3] : [];
 
     return (
         <Collapse in={users.length > 0} timeout={700}>
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: isWide ? "row" : "column",
-                    marginTop: 15,
-                }}
-            >
+            <div className={c.container}>
                 <Card className={c.topRankingCard}>
                     {topUsers.map((user, i) => (
                         <TopRankingRecord
@@ -56,7 +49,12 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
     );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles<Theme, { isWide: boolean }>(theme => ({
+    container: ({ isWide }) => ({
+        display: "flex",
+        flexDirection: isWide ? "row" : "column",
+        marginTop: 15,
+    }),
     topRankingCard: {
         margin: 5,
         backgroundColor: theme.palette.grey[100],
