@@ -45,8 +45,7 @@ const colors = [
     "#D4AC0D",
 ];
 
-type StyleProps = { size: number; rank: number };
-const useStyles = makeStyles<Theme, StyleProps>({
+const useStyles = makeStyles<Theme, { size: number; rank: number }>({
     imgAvatar: ({ size }) => ({ width: size, height: size }),
     img: ({ size }) => ({
         objectFit: "cover",
