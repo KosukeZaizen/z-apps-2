@@ -56,7 +56,7 @@ export function BasicRankingRecord({
                 <div style={{ flex: 3, overflow: "hidden", paddingRight: 20 }}>
                     <EllipsisLabel title={user.name} placement="top" />
                 </div>
-                <div style={{ flex: 1, textAlign: "left" }}>
+                <div style={{ flex: 1, textAlign: "left", marginRight: 10 }}>
                     Lv. {user.level}
                 </div>
             </div>
