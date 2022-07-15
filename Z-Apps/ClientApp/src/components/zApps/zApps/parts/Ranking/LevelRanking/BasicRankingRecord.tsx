@@ -1,7 +1,7 @@
-import { Avatar } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import { EllipsisLabel } from "../../../../../shared/EllipsisLabel/EllipsisLabel";
 import { UserForRanking } from "./types";
+import { UserAvatar } from "./UserAvatar";
 
 export function BasicRankingRecord({
     user,
@@ -24,26 +24,14 @@ export function BasicRankingRecord({
                 style={{
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "space-between",
                     marginLeft: 10,
                     marginRight: 20,
+                    minWidth: 73,
                 }}
             >
                 <div style={{ marginRight: 10 }}>{rank}.</div>
-                <Avatar>
-                    <img
-                        src={
-                            "https://lingualninja.blob.core.windows.net/lingual-storage/articles/_authors/1.jpg"
-                        }
-                        style={{
-                            width: 40,
-                            height: 40,
-                            objectFit: "cover",
-                            objectPosition: "50% 50%",
-                        }}
-                        alt={user.name}
-                        title={user.name}
-                    />
-                </Avatar>
+                <UserAvatar user={user} rank={rank} size={40} />
             </div>
             <div
                 style={{

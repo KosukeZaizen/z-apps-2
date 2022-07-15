@@ -1,9 +1,9 @@
-import { Avatar } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import { appsPublicImg } from "../../../../../../../common/consts";
 import { EllipsisLabel } from "../../../../../../shared/EllipsisLabel/EllipsisLabel";
 import { theme } from "../../../../../Layout";
 import { UserForRanking } from "../types";
+import { UserAvatar } from "../UserAvatar";
 
 export function TopRankingRecordPc({
     user,
@@ -48,21 +48,7 @@ export function TopRankingRecordPc({
                         style={{ width: 85, height: 85 }}
                     />
                 </Card>
-                <Avatar style={{ width: 60, height: 60 }}>
-                    <img
-                        src={
-                            "https://lingualninja.blob.core.windows.net/lingual-storage/articles/_authors/1.jpg"
-                        }
-                        style={{
-                            objectFit: "cover",
-                            objectPosition: "50% 50%",
-                            width: 60,
-                            height: 60,
-                        }}
-                        alt={user.name}
-                        title={user.name}
-                    />
-                </Avatar>
+                <UserAvatar user={user} rank={rank} size={60} />
             </div>
             <div
                 style={{

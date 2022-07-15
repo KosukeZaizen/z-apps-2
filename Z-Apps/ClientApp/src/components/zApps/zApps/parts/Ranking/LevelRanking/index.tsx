@@ -79,7 +79,7 @@ async function fetchUsersForRanking(): Promise<UserForRanking[]> {
             name: "ざいぜんこうすけざいぜんこうすけあいうえ",
             level: 52,
             xp: 1200,
-            avatarPath: "",
+            avatarPath: "https://lingualninja.blob.core.windows.net/lingual-storage/articles/_authors/1.jpg",
         },
         {
             userId: 9,
