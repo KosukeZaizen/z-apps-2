@@ -25,7 +25,7 @@ export function TopRankingRecordSp({
                 style={{
                     display: "flex",
                     alignItems: "center",
-                    marginRight: 20,
+                    marginRight: 10,
                 }}
             >
                 <Card
@@ -34,7 +34,7 @@ export function TopRankingRecordSp({
                         width: 95,
                         backgroundColor: theme.palette.grey[200],
                         marginLeft: 0,
-                        marginRight: 20,
+                        marginRight: 15,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -65,20 +65,17 @@ export function TopRankingRecordSp({
                 style={{
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "space-around",
+                    justifyContent: "center",
                     width: "100%",
                     fontSize: "1.3rem",
-                    flexDirection: "column",
+                    wordBreak: "break-all",
+                    marginRight: 5,
                 }}
             >
-                <div
-                    style={{
-                        flex: 1,
-                    }}
-                >
-                    {user.name}
+                <div>
+                    <div>{user.name}</div>
+                    <div>Lv. {user.level}</div>
                 </div>
-                <div style={{ flex: 1 }}>Lv. {user.level}</div>
             </div>
         </Card>
     );
