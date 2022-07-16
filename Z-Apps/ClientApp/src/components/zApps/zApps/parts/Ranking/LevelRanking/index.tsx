@@ -2,6 +2,7 @@ import { Collapse, makeStyles, Theme } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import { useEffect, useState } from "react";
 import { sleepAsync } from "../../../../../../common/functions";
+import { useUser } from "../../../../../../common/hooks/useUser";
 import { BasicRankingRecord } from "./BasicRankingRecord";
 import { TopRankingRecord } from "./TopRankingRecord";
 import { UserForRanking } from "./types";
@@ -10,13 +11,19 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
     const isWide = screenWidth > 991;
     const isVeryWide = screenWidth > 1199;
     const c = useStyles({ isWide });
+    const { user: player } = useUser();
 
-    const [users, setUsers] = useState<UserForRanking[]>([]);
+    const [_users, setUsers] = useState<UserForRanking[]>([]);
     useEffect(() => {
         fetchUsersForRanking().then(u => {
             setUsers(u);
         });
     }, []);
+
+    // When the user update their profile, ranking will also change
+    const users = player
+        ? _users.map(u => (u.userId === player.userId ? player : u))
+        : _users;
 
     const [user1, user2, user3, ...normalUsers] = users;
     const topUsers = user3 ? [user1, user2, user3] : [];
