@@ -1,6 +1,5 @@
-import { Button, Card, makeStyles } from "@material-ui/core";
+import { Card, makeStyles } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
-import CameraIcon from "@material-ui/icons/CameraAlt";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { changeAppState } from "../../../../../common/appState";
@@ -10,10 +9,10 @@ import { spaceBetween } from "../../../../../common/util/Array/spaceBetween";
 import { ApplicationState } from "../../../../../store/configureStore";
 import * as vocabStore from "../../../../../store/VocabQuizStore";
 import { FullScreenShurikenProgress } from "../../../../shared/Animations/ShurikenProgress";
-import { UserAvatar } from "../../../../shared/Avatar/UserAvatar";
 import { Link } from "../../../../shared/Link/LinkWithYouTube";
 import { useOpenState, useStyles } from "../SignUp/SignUp";
 import { XpProgressArea } from "./components/XpProgressBar";
+import { AvatarField } from "./Fields/AvatarField";
 import { BioField } from "./Fields/BioField";
 import { UsernameField } from "./Fields/UsernameField";
 import { clearLocalStorageData } from "./progressManager";
@@ -80,12 +79,7 @@ function ProfileCard({ user }: { user: User }) {
 
     return (
         <Card className={spaceBetween("progressCard", c.card)}>
-            <div style={{ position: "relative" }}>
-                <UserAvatar user={user} colorNumber={"noColor"} size={80} />
-                <Button variant="contained" className={c.cameraButton}>
-                    <CameraIcon style={{ width: 20, height: 20 }} />
-                </Button>
-            </div>
+            <AvatarField user={user} />
 
             <UsernameField user={user} />
 
@@ -97,14 +91,13 @@ function ProfileCard({ user }: { user: User }) {
                     </tr>
                 </tbody>
             </table>
-
             <XpProgressArea />
 
             <BioField user={user} />
         </Card>
     );
 }
-const useStatusCardStyles = makeStyles(({ palette }) => ({
+const useStatusCardStyles = makeStyles({
     card: {
         width: "100%",
         fontSize: "large",
@@ -114,24 +107,7 @@ const useStatusCardStyles = makeStyles(({ palette }) => ({
         flexDirection: "column",
         alignItems: "center",
     },
-    cameraButton: {
-        borderRadius: "50%",
-        maxWidth: 30,
-        maxHeight: 30,
-        minWidth: 30,
-        minHeight: 30,
-        backgroundColor: palette.grey[800],
-        color: "white",
-        transition: "all 200ms",
-        "&:hover": {
-            backgroundColor: palette.grey[600],
-        },
-        position: "absolute",
-        right: -7,
-        bottom: -5,
-        transform: "scale(0.8)",
-    },
-}));
+});
 
 function logout() {
     changeAppState("signInPanelState", "signIn");
