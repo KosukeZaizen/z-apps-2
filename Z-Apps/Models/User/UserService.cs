@@ -217,6 +217,11 @@ where UserId = @UserId;
 
         public bool UpdateBio(int UserId, string Bio)
         {
+            if (Bio?.Length > 999)
+            {
+                return false;
+            }
+
             string sql = @"
 UPDATE ZAppsUser
 SET Bio = @Bio
@@ -225,6 +230,24 @@ WHERE UserId = @UserId;
             return con.ExecuteUpdate(sql, new Dictionary<string, object[]> {
                 { "@UserId", new object[2] { SqlDbType.Int, UserId } },
                 { "@Bio", new object[2] { SqlDbType.NVarChar, Bio ?? "" } },
+            });
+        }
+
+        public bool UpdateName(int UserId, string Name)
+        {
+            if (Name.Length > 20 || string.IsNullOrEmpty(Name))
+            {
+                return false;
+            }
+
+            string sql = @"
+UPDATE ZAppsUser
+SET Name = @Name
+WHERE UserId = @UserId;
+";
+            return con.ExecuteUpdate(sql, new Dictionary<string, object[]> {
+                { "@UserId", new object[2] { SqlDbType.Int, UserId } },
+                { "@Name", new object[2] { SqlDbType.NVarChar, Name } },
             });
         }
     }

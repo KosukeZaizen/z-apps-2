@@ -105,5 +105,44 @@ namespace Z_Apps.Controllers
                 user = user,
             });
         }
+
+        [HttpPost("[action]/")]
+        public IActionResult UpdateName(int userId, string name)
+        {
+            var userFromCookies = GetUserFromCookies();
+            if (userFromCookies.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            var result = userService.UpdateName(userId, name);
+            if (!result)
+            {
+                return BadRequest(new
+                {
+                    error = "no data updated"
+                });
+            }
+
+            var user = userService.GetUserById(userId);
+            string referer = Request.Headers["Referer"].ToString();
+            Task.Run(async () =>
+            {
+                await Task.Delay(1000);
+                EmailService.SendToAdmin(
+                    "Username updated!",
+                    @$"{userFromCookies.Name} updated the username into {user.Name}!<br/>
+                    Level: {user.Level}<br/>
+                    UserId: {user.UserId}<br/><br/>
+                    URL: {referer}<br/><br/>
+                    Bio:<br/>{user.Bio}"
+                );
+            });
+
+            return Ok(new
+            {
+                user = user,
+            });
+        }
     }
 }

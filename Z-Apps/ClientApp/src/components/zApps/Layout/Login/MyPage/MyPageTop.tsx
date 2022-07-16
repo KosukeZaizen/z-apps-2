@@ -1,7 +1,6 @@
-import { Button, Card, IconButton, makeStyles } from "@material-ui/core";
+import { Button, Card, makeStyles } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import CameraIcon from "@material-ui/icons/CameraAlt";
-import PencilIcon from "@material-ui/icons/Create";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { changeAppState } from "../../../../../common/appState";
@@ -14,8 +13,9 @@ import { FullScreenShurikenProgress } from "../../../../shared/Animations/Shurik
 import { UserAvatar } from "../../../../shared/Avatar/UserAvatar";
 import { Link } from "../../../../shared/Link/LinkWithYouTube";
 import { useOpenState, useStyles } from "../SignUp/SignUp";
-import { BioField } from "./Bio/BioField";
 import { XpProgressArea } from "./components/XpProgressBar";
+import { BioField } from "./Fields/BioField";
+import { UsernameField } from "./Fields/UsernameField";
 import { clearLocalStorageData } from "./progressManager";
 import "./style.css";
 import { useProgress } from "./useProgress";
@@ -87,18 +87,7 @@ function ProfileCard({ user }: { user: User }) {
                 </Button>
             </div>
 
-            <h2 className={c.username}>
-                {user.name}
-                <IconButton
-                    onClick={() => {
-                        // setName(nameFromEmail); // Change the mode into edit-mode by setting "name"
-                    }}
-                    // className={c.iconButton}
-                    style={{ padding: 5, marginBottom: -5 }}
-                >
-                    <PencilIcon style={{ height: 25, width: 25 }} />
-                </IconButton>
-            </h2>
+            <UsernameField user={user} />
 
             <table className="progressTable">
                 <tbody>
@@ -141,14 +130,6 @@ const useStatusCardStyles = makeStyles(({ palette }) => ({
         right: -7,
         bottom: -5,
         transform: "scale(0.8)",
-    },
-    username: {
-        marginTop: 15,
-        marginBottom: 20,
-        fontWeight: "bold",
-        display: "flex",
-        alignItems: "center",
-        paddingLeft: 35,
     },
 }));
 
