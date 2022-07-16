@@ -8,15 +8,16 @@ export function AvatarField({ user }: { user: User }) {
     const c = useAvatarFieldStyles();
 
     return (
-        <div style={{ position: "relative" }}>
+        <div className={c.container}>
             <UserAvatar user={user} colorNumber={"noColor"} size={80} />
             <Button variant="contained" className={c.cameraButton}>
-                <CameraIcon style={{ width: 20, height: 20 }} />
+                <CameraIcon className={c.cameraIcon} />
             </Button>
         </div>
     );
 }
 const useAvatarFieldStyles = makeStyles(({ palette }) => ({
+    container: { position: "relative" },
     cameraButton: {
         borderRadius: "50%",
         maxWidth: 30,
@@ -34,4 +35,5 @@ const useAvatarFieldStyles = makeStyles(({ palette }) => ({
         bottom: -5,
         transform: "scale(0.8)",
     },
+    cameraIcon: { width: 20, height: 20 },
 }));
