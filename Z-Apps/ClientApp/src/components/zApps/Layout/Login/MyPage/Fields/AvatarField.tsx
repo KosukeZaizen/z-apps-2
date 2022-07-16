@@ -29,21 +29,10 @@ export function AvatarField({ user }: { user: User }) {
                         return;
                     }
                     const file = target.files[0];
-                    console.log("file", file);
 
-                    if (
-                        !["image/jpeg", "image/png", "image/gif"].includes(
-                            file.type
-                        )
-                    ) {
-                        alert(
-                            "Sorry, only JPG, JPEG, PNG & GIF files are allowed"
-                        );
-                        return;
-                    }
-
-                    if (file.size > 3000000) {
-                        alert("File size must be less than 3MB");
+                    const error = validate(file);
+                    if (error) {
+                        alert(error);
                         return;
                     }
 
@@ -104,4 +93,15 @@ async function fetchUpdateAvatar(
         body: formData,
     });
     return res.json();
+}
+
+function validate(file: File) {
+    if (!["image/jpeg", "image/png", "image/gif"].includes(file.type)) {
+        return "Sorry, only JPG, JPEG, PNG & GIF files are allowed";
+    }
+
+    if (file.size > 3000000) {
+        return "File size must be less than 3MB";
+    }
+    return null;
 }
