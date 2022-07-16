@@ -11,6 +11,7 @@ export type User = {
     level: number;
     xp: number;
     avatarPath: string;
+    bio: string;
 };
 
 let isFetchUnnecessary = false;

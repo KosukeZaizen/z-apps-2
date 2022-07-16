@@ -1,7 +1,6 @@
-export type UserForRanking = {
-    userId: number;
-    name: string;
-    level: number;
-    xp: number;
-    avatarPath: string;
-};
+import { User } from "../../../../../../common/hooks/useUser";
+
+export type UserForRanking = Pick<
+    User,
+    "userId" | "name" | "level" | "xp" | "avatarPath"
+>;
