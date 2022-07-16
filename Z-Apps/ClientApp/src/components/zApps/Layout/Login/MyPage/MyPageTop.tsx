@@ -1,5 +1,6 @@
 import { Button, Card, IconButton, makeStyles } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
+import CameraIcon from "@material-ui/icons/CameraAlt";
 import PencilIcon from "@material-ui/icons/Create";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -79,16 +80,21 @@ function ProfileCard({ user }: { user: User }) {
 
     return (
         <Card className={spaceBetween("progressCard", c.card)}>
-            <UserAvatar user={user} colorNumber={"noColor"} size={80} />
+            <div style={{ position: "relative" }}>
+                <UserAvatar user={user} colorNumber={"noColor"} size={80} />
+                <Button variant="contained" className={c.cameraButton}>
+                    <CameraIcon style={{ width: 20, height: 20 }} />
+                </Button>
+            </div>
 
-            <h2 className="progressTitle">
+            <h2 className={c.username}>
                 {user.name}
                 <IconButton
                     onClick={() => {
                         // setName(nameFromEmail); // Change the mode into edit-mode by setting "name"
                     }}
                     // className={c.iconButton}
-                    style={{ padding: "5px 5px 0" }}
+                    style={{ padding: 5, marginBottom: -5 }}
                 >
                     <PencilIcon style={{ height: 25, width: 25 }} />
                 </IconButton>
@@ -109,7 +115,7 @@ function ProfileCard({ user }: { user: User }) {
         </Card>
     );
 }
-const useStatusCardStyles = makeStyles(() => ({
+const useStatusCardStyles = makeStyles(({ palette }) => ({
     card: {
         width: "100%",
         fontSize: "large",
@@ -118,6 +124,31 @@ const useStatusCardStyles = makeStyles(() => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+    },
+    cameraButton: {
+        borderRadius: "50%",
+        maxWidth: 30,
+        maxHeight: 30,
+        minWidth: 30,
+        minHeight: 30,
+        backgroundColor: palette.grey[800],
+        color: "white",
+        transition: "all 200ms",
+        "&:hover": {
+            backgroundColor: palette.grey[600],
+        },
+        position: "absolute",
+        right: -7,
+        bottom: -5,
+        transform: "scale(0.8)",
+    },
+    username: {
+        marginTop: 15,
+        marginBottom: 20,
+        fontWeight: "bold",
+        display: "flex",
+        alignItems: "center",
+        paddingLeft: 35,
     },
 }));
 

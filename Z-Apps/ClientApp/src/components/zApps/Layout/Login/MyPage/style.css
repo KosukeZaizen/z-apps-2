@@ -11,12 +11,10 @@
 }
 
 .progressTitle {
-    margin-top: 5px;
     margin-bottom: 20px;
     font-weight: bold;
     display: flex;
     align-items: center;
-    padding-left: 35px;
 }
 
 .progressCard a {
