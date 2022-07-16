@@ -101,7 +101,7 @@ function EditField({
                 multiline
                 fullWidth
                 onChange={ev => {
-                    setBio(ev.target.value);
+                    setBio(ev.target.value || "");
                 }}
                 inputProps={{
                     style: {
@@ -121,7 +121,6 @@ function EditField({
                 onClick={() => {
                     setSubmitting(true);
                     fetchUpdateBio(user.userId, bio).then(({ user }) => {
-                        console.log("user", user);
                         setSubmitting(false);
                         changeAppState("user", user);
                         setEditMode(false);
@@ -162,4 +161,3 @@ async function fetchUpdateBio(
     });
     return res.json();
 }
-
