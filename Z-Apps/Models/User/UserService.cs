@@ -4,6 +4,9 @@ using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 using static Z_Apps.Models.DBCon;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using Z_Apps.Models.SystemBase;
 
 namespace Z_Apps.Models
 {
@@ -38,7 +41,7 @@ INSERT INTO ZAppsUser (UserId, Name, Email, Password, Xp) VALUES
         public User GetUserByEmail(string Email)
         {
             string sql = @"
-SELECT UserId, Name, Email, Password, Progress, Xp, AvatarPath, Bio
+SELECT UserId, Name, Email, Password, Progress, Xp, AvatarExtension, Bio
 FROM ZAppsUser
 WHERE Email = @Email;
 ";
@@ -59,7 +62,7 @@ WHERE Email = @Email;
                 Password = (string)result["Password"],
                 Progress = (string)result["Progress"],
                 Xp = (long)result["Xp"],
-                AvatarPath = (string)result["AvatarPath"],
+                AvatarExtension = (string)result["AvatarExtension"],
                 Bio = (string)result["Bio"],
             };
         }
@@ -67,7 +70,7 @@ WHERE Email = @Email;
         public User GetUserById(int UserId)
         {
             string sql = @"
-SELECT UserId, Name, Email, Password, Progress, Xp, AvatarPath, Bio
+SELECT UserId, Name, Email, Password, Progress, Xp, AvatarExtension, Bio
 FROM ZAppsUser
 WHERE UserId = @UserId;
 ";
@@ -88,7 +91,7 @@ WHERE UserId = @UserId;
                 Password = (string)result["Password"],
                 Progress = (string)result["Progress"],
                 Xp = (long)result["Xp"],
-                AvatarPath = (string)result["AvatarPath"],
+                AvatarExtension = (string)result["AvatarExtension"],
                 Bio = (string)result["Bio"],
             };
         }
@@ -248,6 +251,41 @@ WHERE UserId = @UserId;
             return con.ExecuteUpdate(sql, new Dictionary<string, object[]> {
                 { "@UserId", new object[2] { SqlDbType.Int, UserId } },
                 { "@Name", new object[2] { SqlDbType.NVarChar, Name } },
+            });
+        }
+
+        public async Task<bool> UpdateAvatar(int userId, IFormFile file)
+        {
+            var allowedFileTypes = new string[] {
+                "image/jpeg",
+                "image/png",
+                "image/gif"
+            };
+
+            if (!allowedFileTypes.Contains(file.ContentType) ||
+                file.Length <= 0 ||
+                file.Length > 3000000
+            )
+            {
+                return false;
+            }
+
+            var extension = "." + file.ContentType.Replace("image/", "");
+
+            //upload
+            if (!await new StorageService().UploadAndOverwriteFileAsync(file, "user/avatarImage/" + userId + extension))
+            {
+                return false;
+            }
+
+            string sql = @"
+UPDATE ZAppsUser
+SET AvatarExtension = @AvatarExtension
+WHERE UserId = @UserId;
+";
+            return con.ExecuteUpdate(sql, new Dictionary<string, object[]> {
+                { "@UserId", new object[2] { SqlDbType.Int, userId } },
+                { "@AvatarExtension", new object[2] { SqlDbType.NVarChar, extension } },
             });
         }
     }

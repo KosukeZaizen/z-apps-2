@@ -3,6 +3,7 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Z_Apps.Models;
 using static Z_Apps.Models.UserService;
+using Microsoft.AspNetCore.Http;
 
 namespace Z_Apps.Controllers
 {
@@ -132,6 +133,45 @@ namespace Z_Apps.Controllers
                 EmailService.SendToAdmin(
                     "Username updated!",
                     @$"{userFromCookies.Name} updated the username into {user.Name}!<br/>
+                    Level: {user.Level}<br/>
+                    UserId: {user.UserId}<br/><br/>
+                    URL: {referer}<br/><br/>
+                    Bio:<br/>{user.Bio}"
+                );
+            });
+
+            return Ok(new
+            {
+                user = user,
+            });
+        }
+
+        [HttpPost("[action]/")]
+        public async Task<IActionResult> UpdateAvatar(int userId, IFormFile file)
+        {
+            var userFromCookies = GetUserFromCookies();
+            if (userFromCookies.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            var result = await userService.UpdateAvatar(userId, file);
+            if (!result)
+            {
+                return BadRequest(new
+                {
+                    error = "no data updated"
+                });
+            }
+
+            var user = userService.GetUserById(userId);
+            string referer = Request.Headers["Referer"].ToString();
+            var _t = Task.Run(async () =>
+            {
+                await Task.Delay(1000);
+                EmailService.SendToAdmin(
+                    "Avatar Image uploaded!",
+                    @$"{userFromCookies.Name} uploaded avatar image!<br/>
                     Level: {user.Level}<br/>
                     UserId: {user.UserId}<br/><br/>
                     URL: {referer}<br/><br/>

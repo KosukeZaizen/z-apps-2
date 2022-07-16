@@ -1,6 +1,5 @@
-using System.Linq;
-using System;
 using System.Text.Json.Serialization;
+using Z_Apps.Util;
 
 namespace Z_Apps.Models
 {
@@ -10,14 +9,17 @@ namespace Z_Apps.Models
         {
             get; set;
         }
+
         public string Name
         {
             get; set;
         }
+
         public string Email
         {
             get; set;
         }
+
         [JsonIgnore]
         public string Password
         {
@@ -27,10 +29,12 @@ namespace Z_Apps.Models
         {
             get; set;
         }
+
         public long Xp
         {
             get; set;
         }
+
         public int Level
         {
             get
@@ -38,10 +42,31 @@ namespace Z_Apps.Models
                 return UserService.GetLevelFromXp(Xp);
             }
         }
+
+        [JsonIgnore]
+        public string AvatarExtension { get; set; }
+        private static int imagePathVersion = 0; // For refreshing the browser cache
         public string AvatarPath
         {
-            get; set;
+            get
+            {
+                if (string.IsNullOrEmpty(AvatarExtension))
+                {
+                    return "";
+                }
+                imagePathVersion++;
+                if (imagePathVersion > 10000)
+                {
+                    imagePathVersion = 0;
+                }
+                return Consts.BLOB_URL
+                    + "/user/avatarImage/"
+                    + UserId
+                    + AvatarExtension
+                    + "?v=" + imagePathVersion;
+            }
         }
+
         private string _Bio;
         public string Bio
         {

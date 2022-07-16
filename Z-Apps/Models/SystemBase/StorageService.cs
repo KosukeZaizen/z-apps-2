@@ -33,7 +33,7 @@ namespace Z_Apps.Models.SystemBase
         public async Task<bool> UploadAndOverwriteFileAsync(IFormFile file, string filePath)
         {
             //upload
-            //アップロード後のファイル名を指定（無くてよい）
+            //アップロード後のファイル名を指定
             CloudBlockBlob blockBlob_upload = container.GetBlockBlobReference(filePath);
 
             //アップロード処理
