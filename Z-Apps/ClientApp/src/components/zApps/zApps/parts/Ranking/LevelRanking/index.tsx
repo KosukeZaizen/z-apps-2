@@ -20,7 +20,7 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
         });
     }, []);
 
-    // When the user update their profile, ranking will also change
+    // When the user update their profile, the ranking will also change
     const users = player
         ? _users.map(u => (u.userId === player.userId ? player : u))
         : _users;
