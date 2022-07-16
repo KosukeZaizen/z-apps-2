@@ -1,8 +1,8 @@
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
+import { UserAvatar } from "../../../../../shared/Avatar/UserAvatar";
 import { EllipsisLabel } from "../../../../../shared/EllipsisLabel/EllipsisLabel";
 import { UserForRanking } from "./types";
-import { UserAvatar } from "./UserAvatar";
 
 export function BasicRankingRecord({
     user,
@@ -17,7 +17,7 @@ export function BasicRankingRecord({
         <Card className={c.card}>
             <div className={c.rankAndAvatar}>
                 <div className={c.rank}>{rank}.</div>
-                <UserAvatar user={user} rank={rank} size={40} />
+                <UserAvatar user={user} colorNumber={rank} size={40} />
             </div>
             <div className={c.nameAndLevel}>
                 <div className={c.name}>

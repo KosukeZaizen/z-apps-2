@@ -1,9 +1,9 @@
 import Card from "@material-ui/core/Card";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { appsPublicImg } from "../../../../../../../common/consts";
+import { UserAvatar } from "../../../../../../shared/Avatar/UserAvatar";
 import { EllipsisLabel } from "../../../../../../shared/EllipsisLabel/EllipsisLabel";
 import { UserForRanking } from "../types";
-import { UserAvatar } from "../UserAvatar";
 
 export function TopRankingRecordPc({
     user,
@@ -25,7 +25,7 @@ export function TopRankingRecordPc({
                         className={c.trophyImg}
                     />
                 </Card>
-                <UserAvatar user={user} rank={rank} size={60} />
+                <UserAvatar user={user} colorNumber={rank} size={60} />
             </div>
             <div className={c.nameAndLevel}>
                 <div className={c.name}>

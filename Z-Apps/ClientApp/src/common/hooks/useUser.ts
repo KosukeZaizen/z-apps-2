@@ -10,6 +10,7 @@ export type User = {
     progress: string | null;
     level: number;
     xp: number;
+    avatarPath: string;
 };
 
 let isFetchUnnecessary = false;

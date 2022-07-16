@@ -1,8 +1,8 @@
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
 import { appsPublicImg } from "../../../../../../../common/consts";
+import { UserAvatar } from "../../../../../../shared/Avatar/UserAvatar";
 import { UserForRanking } from "../types";
-import { UserAvatar } from "../UserAvatar";
 
 export function TopRankingRecordSp({
     user,
@@ -22,7 +22,7 @@ export function TopRankingRecordSp({
                         className={c.trophyImg}
                     />
                 </Card>
-                <UserAvatar user={user} rank={rank} size={50} />
+                <UserAvatar user={user} colorNumber={rank} size={50} />
             </div>
             <div className={c.nameAndLevelContainer}>
                 <div>

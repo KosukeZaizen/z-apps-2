@@ -1,5 +1,6 @@
-import { Card, makeStyles } from "@material-ui/core";
+import { Button, Card, makeStyles } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
+import PencilIcon from "@material-ui/icons/Create";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { changeAppState } from "../../../../../common/appState";
@@ -9,9 +10,9 @@ import { spaceBetween } from "../../../../../common/util/Array/spaceBetween";
 import { ApplicationState } from "../../../../../store/configureStore";
 import * as vocabStore from "../../../../../store/VocabQuizStore";
 import { FullScreenShurikenProgress } from "../../../../shared/Animations/ShurikenProgress";
-import CharacterComment from "../../../../shared/CharacterComment";
+import { UserAvatar } from "../../../../shared/Avatar/UserAvatar";
 import { Link } from "../../../../shared/Link/LinkWithYouTube";
-import { signInPanelWidth } from "../Panel";
+import { Markdown } from "../../../../shared/Markdown";
 import { useOpenState, useStyles } from "../SignUp/SignUp";
 import { XpProgressArea } from "./components/XpProgressBar";
 import { clearLocalStorageData } from "./progressManager";
@@ -48,7 +49,7 @@ export function MyPageTop({
 
 function Content() {
     const classes = useStyles();
-    const { screenWidth, screenHeight } = useScreenSize();
+    const { screenHeight } = useScreenSize();
     const { user } = useUser();
 
     if (!user) {
@@ -59,39 +60,9 @@ function Content() {
         );
     }
 
-    const arrUserName = [...user.name];
-    const lineNum = Math.ceil(arrUserName.length / 16);
-    const charsInOneLine = Math.ceil(arrUserName.length / lineNum);
-
     return (
         <div className={classes.paper}>
-            <CharacterComment
-                imgNumber={2}
-                screenWidth={Math.min(signInPanelWidth - 58, screenWidth)}
-                comment={
-                    <div
-                        style={{
-                            textAlign: "center",
-                            padding: "0 8px",
-                            fontSize:
-                                screenWidth > signInPanelWidth
-                                    ? "xx-large"
-                                    : "x-large",
-                            fontWeight: "bold",
-                        }}
-                    >
-                        Hi{lineNum === 1 ? " " : <br />}
-                        {arrUserName.map((c, i) => (
-                            <span key={i}>
-                                {i > 0 && i % charsInOneLine === 0 && <br />}
-                                {c}
-                            </span>
-                        ))}
-                        !
-                    </div>
-                }
-            />
-            <LevelCard user={user} />
+            <ProfileCard user={user} />
             <Progress />
             <button
                 className="btn btn-dark btn-block logoutButton"
@@ -103,12 +74,14 @@ function Content() {
     );
 }
 
-function LevelCard({ user }: { user: User }) {
+function ProfileCard({ user }: { user: User }) {
     const c = useStatusCardStyles();
 
     return (
         <Card className={spaceBetween("progressCard", c.card)}>
-            <h2 className="progressTitle">{"Current Status"}</h2>
+            <UserAvatar user={user} colorNumber={"noColor"} size={80} />
+
+            <h2 className="progressTitle">{user.name}</h2>
 
             <table className="progressTable">
                 <tbody>
@@ -120,6 +93,8 @@ function LevelCard({ user }: { user: User }) {
             </table>
 
             <XpProgressArea />
+
+            <BioArea />
         </Card>
     );
 }
@@ -132,6 +107,41 @@ const useStatusCardStyles = makeStyles(() => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+    },
+}));
+
+function BioArea() {
+    const c = useBioAreaStyles();
+    const bio = `Hello! I'm **Kosuke**! Nice to meet you!
+
+I hope we can be friends!`;
+
+    return (
+        <div style={{ width: "100%", marginTop: 25, position: "relative" }}>
+            <Card style={{ padding: 15 }}>
+                <Markdown source={bio} />
+            </Card>
+            <Button variant="contained" className={c.editButton}>
+                <PencilIcon style={{ width: 20, height: 20 }} />
+            </Button>
+        </div>
+    );
+}
+const useBioAreaStyles = makeStyles(({ palette }) => ({
+    editButton: {
+        backgroundColor: palette.grey[800],
+        color: "white",
+        maxWidth: 30,
+        maxHeight: 30,
+        minWidth: 30,
+        minHeight: 30,
+        position: "absolute",
+        bottom: 5,
+        right: 5,
+        transition: "all 200ms",
+        "&:hover": {
+            backgroundColor: palette.grey[600],
+        },
     },
 }));
 

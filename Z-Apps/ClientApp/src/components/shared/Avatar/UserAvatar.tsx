@@ -1,18 +1,19 @@
 import { Avatar, makeStyles, Theme } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
-import { theme } from "../../../../Layout";
-import { UserForRanking } from "./types";
+import { User } from "../../../common/hooks/useUser";
+import { theme } from "../../zApps/Layout";
+import { UserForRanking } from "../../zApps/zApps/parts/Ranking/LevelRanking/types";
 
 export function UserAvatar({
     user,
-    rank,
+    colorNumber,
     size,
 }: {
-    user: UserForRanking;
-    rank: number;
+    user: User | UserForRanking;
+    colorNumber: number | "noColor";
     size: number;
 }) {
-    const c = useStyles({ size, rank });
+    const c = useStyles({ size, colorNumber });
 
     if (user.avatarPath) {
         return (
@@ -45,7 +46,10 @@ const colors = [
     "#D4AC0D",
 ];
 
-const useStyles = makeStyles<Theme, { size: number; rank: number }>({
+const useStyles = makeStyles<
+    Theme,
+    { size: number; colorNumber: number | "noColor" }
+>({
     imgAvatar: ({ size }) => ({ width: size, height: size }),
     img: ({ size }) => ({
         objectFit: "cover",
@@ -53,10 +57,13 @@ const useStyles = makeStyles<Theme, { size: number; rank: number }>({
         width: size,
         height: size,
     }),
-    iconAvatar: ({ size, rank }) => ({
+    iconAvatar: ({ size, colorNumber }) => ({
         width: size,
         height: size,
-        backgroundColor: colors[rank % colors.length],
+        backgroundColor:
+            colorNumber === "noColor"
+                ? undefined
+                : colors[colorNumber % colors.length],
     }),
     icon: ({ size }) => ({
         width: size * 0.8,
