@@ -1,4 +1,4 @@
-import { Button, Card, makeStyles } from "@material-ui/core";
+import { Button, Card, IconButton, makeStyles } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import PencilIcon from "@material-ui/icons/Create";
 import { connect } from "react-redux";
@@ -81,7 +81,18 @@ function ProfileCard({ user }: { user: User }) {
         <Card className={spaceBetween("progressCard", c.card)}>
             <UserAvatar user={user} colorNumber={"noColor"} size={80} />
 
-            <h2 className="progressTitle">{user.name}</h2>
+            <h2 className="progressTitle">
+                {user.name}
+                <IconButton
+                    onClick={() => {
+                        // setName(nameFromEmail); // Change the mode into edit-mode by setting "name"
+                    }}
+                    // className={c.iconButton}
+                    style={{ padding: "5px 5px 0" }}
+                >
+                    <PencilIcon style={{ height: 25, width: 25 }} />
+                </IconButton>
+            </h2>
 
             <table className="progressTable">
                 <tbody>
