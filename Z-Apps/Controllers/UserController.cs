@@ -66,5 +66,44 @@ namespace Z_Apps.Controllers
                 levelUp = levelUp
             });
         }
+
+        [HttpPost("[action]/")]
+        public IActionResult UpdateBio(int userId, string bio)
+        {
+            var userFromCookies = GetUserFromCookies();
+            if (userFromCookies.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            var result = userService.UpdateBio(userId, bio);
+            if (!result)
+            {
+                return BadRequest(new
+                {
+                    error = "no data updated"
+                });
+            }
+
+            var user = userService.GetUserById(userId);
+            string referer = Request.Headers["Referer"].ToString();
+            Task.Run(async () =>
+            {
+                await Task.Delay(1000);
+                EmailService.SendToAdmin(
+                    "Bio updated!",
+                    @$"{user.Name} updated bio!<br/>
+                    Level: {user.Level}<br/>
+                    UserId: {user.UserId}<br/>
+                    URL: {referer}<br/><br/>
+                    {user.Bio}"
+                );
+            });
+
+            return Ok(new
+            {
+                user = user,
+            });
+        }
     }
 }

@@ -38,7 +38,7 @@ INSERT INTO ZAppsUser (UserId, Name, Email, Password, Xp) VALUES
         public User GetUserByEmail(string Email)
         {
             string sql = @"
-SELECT UserId, Name, Email, Password, Progress, Xp
+SELECT UserId, Name, Email, Password, Progress, Xp, AvatarPath, Bio
 FROM ZAppsUser
 WHERE Email = @Email;
 ";
@@ -59,13 +59,15 @@ WHERE Email = @Email;
                 Password = (string)result["Password"],
                 Progress = (string)result["Progress"],
                 Xp = (long)result["Xp"],
+                AvatarPath = (string)result["AvatarPath"],
+                Bio = (string)result["Bio"],
             };
         }
 
         public User GetUserById(int UserId)
         {
             string sql = @"
-SELECT UserId, Name, Email, Password, Progress, Xp
+SELECT UserId, Name, Email, Password, Progress, Xp, AvatarPath, Bio
 FROM ZAppsUser
 WHERE UserId = @UserId;
 ";
@@ -86,6 +88,8 @@ WHERE UserId = @UserId;
                 Password = (string)result["Password"],
                 Progress = (string)result["Progress"],
                 Xp = (long)result["Xp"],
+                AvatarPath = (string)result["AvatarPath"],
+                Bio = (string)result["Bio"],
             };
         }
 
@@ -208,6 +212,19 @@ where UserId = @UserId;
             return con.ExecuteUpdate(sql, new Dictionary<string, object[]> {
                 { "@XpToAdd", new object[2] { SqlDbType.BigInt, XpToAdd } },
                 { "@UserId", new object[2] { SqlDbType.Int, UserId } },
+            });
+        }
+
+        public bool UpdateBio(int UserId, string Bio)
+        {
+            string sql = @"
+UPDATE ZAppsUser
+SET Bio = @Bio
+WHERE UserId = @UserId;
+";
+            return con.ExecuteUpdate(sql, new Dictionary<string, object[]> {
+                { "@UserId", new object[2] { SqlDbType.Int, UserId } },
+                { "@Bio", new object[2] { SqlDbType.NVarChar, Bio ?? "" } },
             });
         }
     }

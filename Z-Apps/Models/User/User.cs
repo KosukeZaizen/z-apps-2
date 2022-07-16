@@ -47,7 +47,7 @@ namespace Z_Apps.Models
         {
             get
             {
-                if (_Bio == null || _Bio == "")
+                if (string.IsNullOrEmpty(_Bio))
                 {
                     return @$"Hello! I'm **{Name}**! Nice to meet you!
 
