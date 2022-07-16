@@ -59,7 +59,6 @@ function EditField({
     setEditMode: (editMode: boolean) => void;
 }) {
     const [submitting, setSubmitting] = useState(false);
-
     const [name, setName] = useState(user.name);
 
     const error =
