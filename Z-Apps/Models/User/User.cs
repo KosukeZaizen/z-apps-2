@@ -38,5 +38,27 @@ namespace Z_Apps.Models
                 return UserService.GetLevelFromXp(Xp);
             }
         }
+        public string AvatarPath
+        {
+            get; set;
+        }
+        private string _Bio;
+        public string Bio
+        {
+            get
+            {
+                if (_Bio == null || _Bio == "")
+                {
+                    return @$"Hello! I'm **{Name}**! Nice to meet you!
+
+I hope we can be friends!";
+                }
+                return _Bio;
+            }
+            set
+            {
+                _Bio = value;
+            }
+        }
     }
 }

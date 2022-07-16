@@ -13,8 +13,8 @@ import * as vocabStore from "../../../../../store/VocabQuizStore";
 import { FullScreenShurikenProgress } from "../../../../shared/Animations/ShurikenProgress";
 import { UserAvatar } from "../../../../shared/Avatar/UserAvatar";
 import { Link } from "../../../../shared/Link/LinkWithYouTube";
-import { Markdown } from "../../../../shared/Markdown";
 import { useOpenState, useStyles } from "../SignUp/SignUp";
+import { BioField } from "./Bio/BioField";
 import { XpProgressArea } from "./components/XpProgressBar";
 import { clearLocalStorageData } from "./progressManager";
 import "./style.css";
@@ -111,7 +111,7 @@ function ProfileCard({ user }: { user: User }) {
 
             <XpProgressArea />
 
-            <BioArea />
+            <BioField user={user} />
         </Card>
     );
 }
@@ -149,41 +149,6 @@ const useStatusCardStyles = makeStyles(({ palette }) => ({
         display: "flex",
         alignItems: "center",
         paddingLeft: 35,
-    },
-}));
-
-function BioArea() {
-    const c = useBioAreaStyles();
-    const bio = `Hello! I'm **Kosuke**! Nice to meet you!
-
-I hope we can be friends!`;
-
-    return (
-        <div style={{ width: "100%", marginTop: 25, position: "relative" }}>
-            <Card style={{ padding: 15 }}>
-                <Markdown source={bio} />
-            </Card>
-            <Button variant="contained" className={c.editButton}>
-                <PencilIcon style={{ width: 20, height: 20 }} />
-            </Button>
-        </div>
-    );
-}
-const useBioAreaStyles = makeStyles(({ palette }) => ({
-    editButton: {
-        backgroundColor: palette.grey[800],
-        color: "white",
-        maxWidth: 30,
-        maxHeight: 30,
-        minWidth: 30,
-        minHeight: 30,
-        position: "absolute",
-        bottom: 5,
-        right: 5,
-        transition: "all 200ms",
-        "&:hover": {
-            backgroundColor: palette.grey[600],
-        },
     },
 }));
 
