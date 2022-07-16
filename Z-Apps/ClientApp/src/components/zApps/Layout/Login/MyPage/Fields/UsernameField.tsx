@@ -82,6 +82,7 @@ function EditField({
                         <div className={c.errorText}>{error}</div>
                     ) : undefined
                 }
+                error={!!error}
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
