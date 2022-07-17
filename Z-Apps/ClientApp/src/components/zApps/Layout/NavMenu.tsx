@@ -321,7 +321,7 @@ const useLoginIconStyles = makeStyles(theme => ({
     },
     imgAvatarForOpenHamburger: {
         width: 0,
-        height: 45,
+        height: 0,
     },
     imgObjectFit: { objectFit: "cover", objectPosition: "50% 50%" },
 }));
