@@ -8,7 +8,7 @@ namespace UnitTest.UserTest
         [TestMethod]
         public void Validate()
         {
-            var userService = new UserService();
+            var userService = new UserService(null);
 
             Assert.AreEqual(userService.Validate("", "", ""), "Your username must contain between 1 and 20 characters.");
 
@@ -129,7 +129,7 @@ namespace UnitTest.UserTest
         [TestMethod]
         public void GetXpProgress_0()
         {
-            var service = new UserService();
+            var service = new UserService(null);
             var progress = service.GetXpProgress(0);
 
             Assert.AreEqual(0, progress.xpProgress);
@@ -139,7 +139,7 @@ namespace UnitTest.UserTest
         [TestMethod]
         public void GetXpProgress_45()
         {
-            var service = new UserService();
+            var service = new UserService(null);
             var progress = service.GetXpProgress(45);
 
             Assert.AreEqual(45, progress.xpProgress);
@@ -149,7 +149,7 @@ namespace UnitTest.UserTest
         [TestMethod]
         public void GetXpProgress_100()
         {
-            var service = new UserService();
+            var service = new UserService(null);
             var progress = service.GetXpProgress(100);
 
             Assert.AreEqual(0, progress.xpProgress);
@@ -159,7 +159,7 @@ namespace UnitTest.UserTest
         [TestMethod]
         public void GetXpProgress_209()
         {
-            var service = new UserService();
+            var service = new UserService(null);
             var progress = service.GetXpProgress(209);
 
             Assert.AreEqual(109, progress.xpProgress);
@@ -169,7 +169,7 @@ namespace UnitTest.UserTest
         [TestMethod]
         public void GetXpProgress_12526830()
         {
-            var service = new UserService();
+            var service = new UserService(null);
             var progress = service.GetXpProgress(12526830);
 
             Assert.AreEqual(0, progress.xpProgress);
@@ -179,7 +179,7 @@ namespace UnitTest.UserTest
         [TestMethod]
         public void GetXpProgress_13779612()
         {
-            var service = new UserService();
+            var service = new UserService(null);
             var progress = service.GetXpProgress(13779612);
 
             Assert.AreEqual(1252782, progress.xpProgress);

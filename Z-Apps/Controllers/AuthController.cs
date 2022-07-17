@@ -3,12 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using Z_Apps.Models;
+using Z_Apps.Models.SystemBase;
 
 namespace Z_Apps.Controllers
 {
     [Route("api/[controller]")]
     public class AuthController : _LNBaseController
     {
+        public AuthController(StorageService storageService): base(storageService)
+        {
+        }
+
         [HttpPost("[action]/")]
         public IActionResult Register([FromBody] RegisterParam param)
         {
