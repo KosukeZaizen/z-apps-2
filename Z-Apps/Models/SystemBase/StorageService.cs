@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
+using SixLabors.ImageSharp;
 using Z_Apps.Util;
 
 namespace Z_Apps.Models.SystemBase
@@ -41,6 +43,19 @@ namespace Z_Apps.Models.SystemBase
             {
                 await blockBlob_upload.UploadFromStreamAsync(stream);
             }
+            return true;
+        }
+
+        public async Task<bool> UploadAndOverwriteFromStreamAsync(MemoryStream output, string filePath)
+        {
+            /**
+             * Reference: https://gist.github.com/mike1477/250c5124e72be0a3756aaacddf43ad25
+             **/
+
+            CloudBlockBlob blockBlob_upload = container.GetBlockBlobReference(filePath);
+            output.Position = 0;
+
+            await blockBlob_upload.UploadFromStreamAsync(output);
             return true;
         }
 

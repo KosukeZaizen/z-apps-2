@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Z_Apps.Models;
 using Z_Apps.Models.Auth;
+using Z_Apps.Models.SystemBase;
 
 namespace Z_Apps.Controllers
 {
@@ -10,9 +11,9 @@ namespace Z_Apps.Controllers
         protected UserService userService;
         protected JwtService jwtService;
 
-        public _LNBaseController()
+        public _LNBaseController(StorageService storageService)
         {
-            userService = new UserService();
+            userService = new UserService(storageService);
             jwtService = new JwtService();
         }
 
