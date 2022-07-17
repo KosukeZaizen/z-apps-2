@@ -7,16 +7,20 @@ using static Z_Apps.Models.DBCon;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using Z_Apps.Models.SystemBase;
+using Z_Apps.Util;
 
 namespace Z_Apps.Models
 {
     public class UserService
     {
         private DBCon con;
-        public UserService()
+        private StorageService storageService;
+        public UserService(StorageService storageService)
         {
             con = new DBCon(DBType.wiki_db);
+            this.storageService = storageService;
         }
+
 
         public bool RegisterUser(string Name, string Email, string Password, int InitialXp)
         {
@@ -262,9 +266,10 @@ WHERE UserId = @UserId;
                 "image/gif"
             };
 
-            if (!allowedFileTypes.Contains(file.ContentType) ||
+            if (file == null ||
+                !allowedFileTypes.Contains(file.ContentType) ||
                 file.Length <= 0 ||
-                file.Length > 3000000
+                file.Length > 5000000
             )
             {
                 return false;
@@ -272,8 +277,35 @@ WHERE UserId = @UserId;
 
             var extension = "." + file.ContentType.Replace("image/", "");
 
-            //upload
-            if (!await new StorageService().UploadAndOverwriteFileAsync(file, "user/avatarImage/" + userId + extension))
+            var imageUtil = new ImageUtil(storageService);
+
+            var smallTask = imageUtil
+                            .ResizeAndUploadImage(
+                                file,
+                                150,
+                                150,
+                                "user/avatarImage/" + userId + extension
+                            );
+
+            var width300Task = imageUtil
+                                .ResizeAndUploadImage(
+                                    file,
+                                    300,
+                                    1500,
+                                    "user/avatarImage/" + userId + "_width300" + extension
+                                );
+
+            var width1000Task = imageUtil
+                                .ResizeAndUploadImage(
+                                    file,
+                                    1000,
+                                    5000,
+                                    "user/avatarImage/" + userId + "_width1000" + extension
+                                );
+
+            var results = await Task.WhenAll(smallTask, width300Task, width1000Task);
+
+            if (results.Contains(false))
             {
                 return false;
             }

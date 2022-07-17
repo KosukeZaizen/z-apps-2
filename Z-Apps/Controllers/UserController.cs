@@ -6,12 +6,17 @@ using static Z_Apps.Models.UserService;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Z_Apps.Util;
+using Z_Apps.Models.SystemBase;
 
 namespace Z_Apps.Controllers
 {
     [Route("api/[controller]")]
     public class UserController : _LNBaseController
     {
+        public UserController(StorageService storageService): base(storageService)
+        {
+        }
+
         [HttpGet("[action]/")]
         public XpProgress GetXpProgress(long xp)
         {
