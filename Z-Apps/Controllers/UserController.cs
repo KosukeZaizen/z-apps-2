@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Z_Apps.Models;
 using static Z_Apps.Models.UserService;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace Z_Apps.Controllers
 {
@@ -183,6 +184,12 @@ namespace Z_Apps.Controllers
             {
                 user = user,
             });
+        }
+
+        [HttpGet("[action]/")]
+        public IEnumerable<User> GetUsersForRanking()
+        {
+            return userService.GetUsersForRanking();
         }
     }
 }

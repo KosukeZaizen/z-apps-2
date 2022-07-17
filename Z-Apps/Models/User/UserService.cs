@@ -288,5 +288,24 @@ WHERE UserId = @UserId;
                 { "@AvatarExtension", new object[2] { SqlDbType.NVarChar, extension } },
             });
         }
+
+        public IEnumerable<User> GetUsersForRanking()
+        {
+            string sql = @"
+select top(99)
+UserId, Name, Xp, AvatarExtension
+from ZAppsUser with(index(IX_ZAppsUser_Xp_Ranking_Index))
+order by Xp desc;
+";
+            return con
+                    .ExecuteSelect(sql)
+                    .Select(result => new User()
+                    {
+                        UserId = (int)result["UserId"],
+                        Name = (string)result["Name"],
+                        Xp = (long)result["Xp"],
+                        AvatarExtension = (string)result["AvatarExtension"],
+                    });
+        }
     }
 }
