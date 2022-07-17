@@ -1,6 +1,4 @@
-import * as React from "react";
 import { Helmet as ReactHelmet } from "react-helmet";
-import { isGoogleAdsDisplayed } from "./GoogleAd";
 
 export const Helmet = (props: {
     noindex?: boolean;
@@ -9,11 +7,11 @@ export const Helmet = (props: {
     isHome?: boolean;
     img?: string;
 }) => {
-    if (isGoogleAdsDisplayed && props.noindex) {
-        // noindexのページにAdsenseの自動広告が引き継がれそうになった場合は、リロードして消す
-        window.location.reload();
-        return null;
-    }
+    // if (isGoogleAdsDisplayed && props.noindex) {
+    //     // noindexのページにAdsenseの自動広告が引き継がれそうになった場合は、リロードして消す
+    //     window.location.reload();
+    //     return null;
+    // }
 
     return (
         <div className="application">
