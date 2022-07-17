@@ -284,7 +284,7 @@ WHERE UserId = @UserId;
                                 file,
                                 150,
                                 150,
-                                "user/avatarImage/" + userId + extension
+                                $"user/{userId}/avatarImage/150_150{extension}"
                             );
 
             var width300Task = imageUtil
@@ -292,18 +292,18 @@ WHERE UserId = @UserId;
                                     file,
                                     300,
                                     1500,
-                                    "user/avatarImage/" + userId + "_width300" + extension
+                                    $"user/{userId}/avatarImage/width300{extension}"
                                 );
 
-            var width1000Task = imageUtil
+            var width600Task = imageUtil
                                 .ResizeAndUploadImage(
                                     file,
-                                    1000,
-                                    5000,
-                                    "user/avatarImage/" + userId + "_width1000" + extension
+                                    600,
+                                    3000,
+                                    $"user/{userId}/avatarImage/width600{extension}"
                                 );
 
-            var results = await Task.WhenAll(smallTask, width300Task, width1000Task);
+            var results = await Task.WhenAll(smallTask, width300Task, width600Task);
 
             if (results.Contains(false))
             {
