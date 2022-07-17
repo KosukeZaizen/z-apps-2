@@ -1,3 +1,4 @@
+import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
 import PersonIcon from "@material-ui/icons/Person";
@@ -237,12 +238,35 @@ function LoginIcon({
                     changeAppState("signInPanelState", "signUp");
                 }}
             >
-                <PersonIcon
-                    className={spaceBetween(
-                        isOpenHamburger ? c.iconForOpenHamburger : c.icon,
-                        transitionClass
-                    )}
-                />
+                {user?.avatarPath ? (
+                    <Avatar
+                        className={spaceBetween(
+                            isOpenHamburger
+                                ? c.imgAvatarForOpenHamburger
+                                : c.imgAvatar,
+                            transitionClass
+                        )}
+                    >
+                        <img
+                            src={user.avatarPath}
+                            className={spaceBetween(
+                                isOpenHamburger
+                                    ? c.imgAvatarForOpenHamburger
+                                    : c.imgAvatar,
+                                transitionClass,
+                                c.imgObjectFit
+                            )}
+                            alt={user.name}
+                        />
+                    </Avatar>
+                ) : (
+                    <PersonIcon
+                        className={spaceBetween(
+                            isOpenHamburger ? c.iconForOpenHamburger : c.icon,
+                            transitionClass
+                        )}
+                    />
+                )}
                 {!isOpenHamburger && (
                     <div
                         className={spaceBetween(
@@ -291,6 +315,15 @@ const useLoginIconStyles = makeStyles(theme => ({
         color: "white",
         cursor: "pointer",
     },
+    imgAvatar: {
+        width: 45,
+        height: 45,
+    },
+    imgAvatarForOpenHamburger: {
+        width: 0,
+        height: 45,
+    },
+    imgObjectFit: { objectFit: "cover", objectPosition: "50% 50%" },
 }));
 
 function useHeaderHeight(headerElement: HTMLElement | null) {
