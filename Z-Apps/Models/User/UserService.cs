@@ -269,7 +269,7 @@ WHERE UserId = @UserId;
             if (file == null ||
                 !allowedFileTypes.Contains(file.ContentType) ||
                 file.Length <= 0 ||
-                file.Length > 5000000
+                file.Length > 10000000
             )
             {
                 return false;
