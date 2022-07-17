@@ -36,9 +36,9 @@ export function UserAvatar({
 
 const colors = [
     "#DC7633",
-    theme.palette.secondary.light,
     theme.palette.primary.light,
     theme.palette.success.main,
+    theme.palette.secondary.light,
     "#8E44AD",
     "#EC7063",
     "#34495E",
