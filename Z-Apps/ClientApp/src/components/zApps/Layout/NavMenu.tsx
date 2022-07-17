@@ -313,11 +313,11 @@ const useLoginIconStyles = makeStyles(theme => ({
         width: 0,
         height: 40,
         color: "white",
-        cursor: "pointer",
     },
     imgAvatar: {
         width: 45,
         height: 45,
+        cursor: "pointer",
     },
     imgAvatarForOpenHamburger: {
         width: 0,

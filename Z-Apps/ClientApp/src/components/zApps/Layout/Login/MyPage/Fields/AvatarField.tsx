@@ -100,8 +100,8 @@ function validate(file: File) {
         return "Sorry, only JPG, JPEG, PNG & GIF files are allowed";
     }
 
-    if (file.size > 5000000) {
-        return "File size must be less than 5MB";
+    if (file.size > 10000000) {
+        return "File size must be less than 10MB";
     }
     return null;
 }

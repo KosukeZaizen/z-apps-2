@@ -269,7 +269,7 @@ WHERE UserId = @UserId;
             if (file == null ||
                 !allowedFileTypes.Contains(file.ContentType) ||
                 file.Length <= 0 ||
-                file.Length > 5000000
+                file.Length > 10000000
             )
             {
                 return false;
@@ -277,33 +277,31 @@ WHERE UserId = @UserId;
 
             var extension = "." + file.ContentType.Replace("image/", "");
 
-            var imageUtil = new ImageUtil(storageService);
-
-            var smallTask = imageUtil
+            var smallTask = storageService
                             .ResizeAndUploadImage(
                                 file,
                                 150,
                                 150,
-                                "user/avatarImage/" + userId + extension
+                                $"user/{userId}/avatarImage/150_150{extension}"
                             );
 
-            var width300Task = imageUtil
+            var width300Task = storageService
                                 .ResizeAndUploadImage(
                                     file,
                                     300,
                                     1500,
-                                    "user/avatarImage/" + userId + "_width300" + extension
+                                    $"user/{userId}/avatarImage/width300{extension}"
                                 );
 
-            var width1000Task = imageUtil
+            var width600Task = storageService
                                 .ResizeAndUploadImage(
                                     file,
-                                    1000,
-                                    5000,
-                                    "user/avatarImage/" + userId + "_width1000" + extension
+                                    600,
+                                    3000,
+                                    $"user/{userId}/avatarImage/width600{extension}"
                                 );
 
-            var results = await Task.WhenAll(smallTask, width300Task, width1000Task);
+            var results = await Task.WhenAll(smallTask, width300Task, width600Task);
 
             if (results.Contains(false))
             {

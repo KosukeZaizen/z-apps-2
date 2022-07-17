@@ -59,11 +59,7 @@ namespace Z_Apps.Models
                 {
                     imagePathVersion = 0;
                 }
-                return Consts.BLOB_URL
-                    + "/user/avatarImage/"
-                    + UserId
-                    + AvatarExtension
-                    + "?v=" + imagePathVersion;
+                return $"{Consts.BLOB_URL}/user/{UserId}/avatarImage/150_150{AvatarExtension}?v={imagePathVersion}";
             }
         }
 

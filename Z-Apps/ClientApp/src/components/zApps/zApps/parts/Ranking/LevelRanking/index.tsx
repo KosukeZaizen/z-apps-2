@@ -1,6 +1,6 @@
 import { Collapse, makeStyles, Theme } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useUser } from "../../../../../../common/hooks/useUser";
 import { BasicRankingRecord } from "./BasicRankingRecord";
 import { TopRankingRecord } from "./TopRankingRecord";
@@ -20,9 +20,17 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
     }, []);
 
     // When the user update their profile, the ranking will also change
-    const users = player
-        ? _users.map(u => (u.userId === player.userId ? player : u))
-        : _users;
+    const users = useMemo(() => {
+        if (!player) {
+            return _users;
+        }
+        if (_users.some(u => u.userId === player.userId)) {
+            return _users
+                .map(u => (u.userId === player.userId ? player : u))
+                .sort((a, b) => b.xp - a.xp);
+        }
+        return [..._users, player].sort((a, b) => b.xp - a.xp);
+    }, [player, _users]);
 
     const [user1, user2, user3, ...normalUsers] = users;
     const topUsers = user3 ? [user1, user2, user3] : [];
