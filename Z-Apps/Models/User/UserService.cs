@@ -262,7 +262,8 @@ WHERE UserId = @UserId;
                 "image/gif"
             };
 
-            if (!allowedFileTypes.Contains(file.ContentType) ||
+            if (file == null ||
+                !allowedFileTypes.Contains(file.ContentType) ||
                 file.Length <= 0 ||
                 file.Length > 3000000
             )
