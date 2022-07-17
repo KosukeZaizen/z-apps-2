@@ -52,5 +52,10 @@ const useStyles = makeStyles(() => ({
         width: "100%",
     },
     name: { flex: 3, overflow: "hidden", paddingRight: 20 },
-    level: { flex: 1, textAlign: "left", marginRight: 10 },
+    level: {
+        flex: 1,
+        textAlign: "left",
+        marginRight: 10,
+        whiteSpace: "nowrap",
+    },
 }));
