@@ -277,9 +277,7 @@ WHERE UserId = @UserId;
 
             var extension = "." + file.ContentType.Replace("image/", "");
 
-            var imageUtil = new ImageUtil(storageService);
-
-            var smallTask = imageUtil
+            var smallTask = storageService
                             .ResizeAndUploadImage(
                                 file,
                                 150,
@@ -287,7 +285,7 @@ WHERE UserId = @UserId;
                                 $"user/{userId}/avatarImage/150_150{extension}"
                             );
 
-            var width300Task = imageUtil
+            var width300Task = storageService
                                 .ResizeAndUploadImage(
                                     file,
                                     300,
@@ -295,7 +293,7 @@ WHERE UserId = @UserId;
                                     $"user/{userId}/avatarImage/width300{extension}"
                                 );
 
-            var width600Task = imageUtil
+            var width600Task = storageService
                                 .ResizeAndUploadImage(
                                     file,
                                     600,
