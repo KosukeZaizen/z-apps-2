@@ -1,23 +1,37 @@
-import { makeStyles } from "@material-ui/core/styles";
 import MuiTextField, { TextFieldProps } from "@material-ui/core/TextField";
-import { spaceBetween } from "../../../common/util/Array/spaceBetween";
 
-export function TextField({ className, ...rest }: TextFieldProps) {
-    const c = useStyles();
+export function TextField({
+    onMouseDown,
+    onFocus,
+    inputProps,
+    ...rest
+}: TextFieldProps) {
     return (
         <MuiTextField
             {...rest}
-            className={spaceBetween(c.textField, className)}
+            onMouseDown={ev => {
+                /**
+                 * Prevent iPhone screen from zooming automatically
+                 *    Reference: https://stackoverflow.com/a/41487632
+                 */
+                (
+                    ev.target as HTMLInputElement | HTMLTextAreaElement
+                ).style.fontSize = "16px";
+                onMouseDown?.(ev);
+            }}
+            onFocus={ev => {
+                ev.target.style.fontSize = "";
+                onFocus?.(ev);
+            }}
+            inputProps={
+                rest.autoFocus
+                    ? {
+                          ...inputProps,
+                          style: { ...inputProps?.style, fontSize: 16 },
+                      }
+                    : inputProps
+            }
         />
     );
 }
-const useStyles = makeStyles({
-    textField: {
-        /**
-         * To prevent iPhone screen from zooming automatically
-         *   - Reference: https://stackoverflow.com/questions/2989263/disable-auto-zoom-in-input-text-tag-safari-on-iphone
-         */
-        fontSize: 16,
-    },
-});
 
