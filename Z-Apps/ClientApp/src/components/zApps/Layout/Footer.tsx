@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { spaceBetween } from "../../../common/util/Array/spaceBetween";
-import { AuthorName } from "../../shared/Author";
+import { AuthorName } from "../../shared/Author/Author";
 import { Link } from "../../shared/Link/LinkWithYouTube";
 import "./Footer.css";
 

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { initialAuthorPanelState } from "../components/shared/Author";
+import {
+    AuthorPanelState,
+    initialAuthorPanelState,
+} from "../components/shared/Author/types";
 import { SignInPanelState } from "../components/zApps/Layout/Login/Panel";
 import { User } from "./hooks/useUser";
 
@@ -8,7 +11,7 @@ type AppState = {
     isNoYouTubeAdMode: boolean;
     screenSize: { screenWidth: number; screenHeight: number };
     signInPanelState: SignInPanelState;
-    authorPanelState: { open: true; title?: string } | { open: false };
+    authorPanelState: AuthorPanelState;
     user?: User;
     otherUserPanelState: { targetUserId: number } | "closed";
     isUserFetchDone: boolean;

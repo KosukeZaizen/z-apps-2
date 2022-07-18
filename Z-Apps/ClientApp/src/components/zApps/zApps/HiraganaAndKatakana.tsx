@@ -3,7 +3,7 @@ import Button from "reactstrap/lib/Button";
 import { useScreenSize } from "../../../common/hooks/useScreenSize";
 import { ColorChangeButton } from "../../shared/Animations/ColorChangeButton";
 import { SeasonAnimation } from "../../shared/Animations/SeasonAnimation";
-import { AuthorArea } from "../../shared/Author";
+import { AuthorArea } from "../../shared/Author/Author";
 import CharacterComment from "../../shared/CharacterComment";
 import FB from "../../shared/FaceBook";
 import { FolktaleMenu } from "../../shared/FolktaleMenu";

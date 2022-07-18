@@ -2,24 +2,21 @@ import { Avatar, Card, makeStyles } from "@material-ui/core";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { changeAppState, useAppState } from "../../common/appState";
-import { appsPublicImg, articlesStorage } from "../../common/consts";
-import { useScreenSize } from "../../common/hooks/useScreenSize";
-import { spaceBetween } from "../../common/util/Array/spaceBetween";
-import ShurikenProgress from "./Animations/ShurikenProgress";
-import "./CharacterComment/CharacterComment.css";
-import { Markdown } from "./Markdown";
-import { RightPanel } from "./Panel/RightPanel";
-import { ScrollBox } from "./ScrollBox";
-
-export interface Author {
-    authorId: number;
-    authorName: string;
-    initialGreeting: string;
-    selfIntroduction: string;
-    isAdmin: boolean;
-    imgExtension: string;
-}
+import {
+    changeAppState,
+    getAppState,
+    useAppState,
+} from "../../../common/appState";
+import { appsPublicImg, articlesStorage } from "../../../common/consts";
+import { sleepAsync } from "../../../common/functions";
+import { useScreenSize } from "../../../common/hooks/useScreenSize";
+import { spaceBetween } from "../../../common/util/Array/spaceBetween";
+import ShurikenProgress from "../Animations/ShurikenProgress";
+import "../CharacterComment/CharacterComment.css";
+import { Markdown } from "../Markdown";
+import { RightPanel } from "../Panel/RightPanel";
+import { ScrollBox } from "../ScrollBox";
+import { Author } from "./types";
 
 function getAuthorImgPath({ authorId, imgExtension }: Author) {
     return `${articlesStorage}_authors/${authorId}${imgExtension}?v=${renderCounter()}`;
@@ -111,15 +108,31 @@ export function AuthorName({ title }: { title?: string }) {
 }
 
 const panelWidth = 1000;
-export const initialAuthorPanelState =
-    window.location.hash === "#KosukeZaizen"
-        ? { open: true, title: "Developer" }
-        : { open: false };
 
 export default function AuthorPanel() {
     const { screenWidth } = useScreenSize();
     const [authorPanelState, setAuthorPanelState] =
         useAppState("authorPanelState");
+
+    const getCurrentTitle = () => {
+        const state = getAppState().authorPanelState;
+        if ("title" in state && state.title) {
+            return state.title;
+        }
+        return undefined;
+    };
+
+    const [title, setTitle] = useState(getCurrentTitle());
+
+    useEffect(() => {
+        if (authorPanelState.open) {
+            setTitle(getCurrentTitle());
+            return;
+        }
+        sleepAsync(700).then(() => {
+            setTitle(getCurrentTitle());
+        });
+    }, [authorPanelState]);
 
     return (
         <RightPanel
@@ -130,11 +143,7 @@ export default function AuthorPanel() {
             panelWidth={1000}
         >
             <AuthorArea
-                title={
-                    "title" in authorPanelState && authorPanelState.title
-                        ? authorPanelState.title
-                        : undefined
-                }
+                title={title}
                 screenWidth={Math.min(panelWidth, screenWidth)}
                 style={{ lineHeight: 1.5 }}
             />

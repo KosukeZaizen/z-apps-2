@@ -1,5 +1,5 @@
 import "../../../css/Terms.css";
-import { AuthorName } from "../../shared/Author";
+import { AuthorName } from "../../shared/Author/Author";
 import Helmet from "../../shared/Helmet";
 
 export default function Terms() {

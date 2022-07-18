@@ -1,7 +1,7 @@
 import { Card, Input, InputLabel } from "@material-ui/core";
-import * as React from "react";
 import { useState } from "react";
-import { Author, AuthorArea } from "../../shared/Author";
+import { AuthorArea } from "../../shared/Author/Author";
+import { Author } from "../../shared/Author/types";
 
 export function AuthorEditor({
     initialAuthor,

@@ -4,7 +4,8 @@ import { Page } from ".";
 import { spaceBetween } from "../../../common/util/Array/spaceBetween";
 import { LazyLoad } from "../../../common/util/LazyLoad";
 import ShurikenProgress from "../../shared/Animations/ShurikenProgress";
-import { Author, AuthorCard } from "../../shared/Author";
+import { AuthorCard } from "../../shared/Author/Author";
+import { Author } from "../../shared/Author/types";
 import { LinkOrA } from "../../shared/Link/LinkOrA";
 import { ScrollBox } from "../../shared/ScrollBox";
 
