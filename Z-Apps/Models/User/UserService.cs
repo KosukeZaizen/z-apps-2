@@ -337,5 +337,32 @@ order by Xp desc;
                         AvatarExtension = (string)result["AvatarExtension"],
                     });
         }
+
+        public User GetOtherUserInfo(int UserId)
+        {
+            string sql = @"
+select Name, Xp, AvatarExtension, Bio
+from ZAppsUser
+where UserId = @UserId;
+";
+            var result = con
+                            .ExecuteSelect(sql, new Dictionary<string, object[]> {
+                                { "@UserId", new object[2] { SqlDbType.Int, UserId } },
+                            }).FirstOrDefault();
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            return new User()
+            {
+                UserId = UserId,
+                Name = (string)result["Name"],
+                Xp = (long)result["Xp"],
+                AvatarExtension = (string)result["AvatarExtension"],
+                Bio = (string)result["Bio"],
+            };
+        }
     }
 }

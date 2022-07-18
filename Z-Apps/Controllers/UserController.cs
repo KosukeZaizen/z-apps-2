@@ -13,7 +13,7 @@ namespace Z_Apps.Controllers
     [Route("api/[controller]")]
     public class UserController : _LNBaseController
     {
-        public UserController(StorageService storageService): base(storageService)
+        public UserController(StorageService storageService) : base(storageService)
         {
         }
 
@@ -199,6 +199,12 @@ namespace Z_Apps.Controllers
                 "p",
                 () => userService.GetUsersForRanking()
             );
+        }
+
+        [HttpGet("[action]/")]
+        public User GetOtherUserInfo(int userId)
+        {
+            return userService.GetOtherUserInfo(userId);
         }
     }
 }

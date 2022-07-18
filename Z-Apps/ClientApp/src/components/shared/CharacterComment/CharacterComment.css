@@ -39,6 +39,13 @@
     flex: 3;
 }
 
+.userChatting {
+    height: auto;
+    display: flex;
+    align-items: flex-start;
+    flex: 3;
+}
+
 .ninjaPicContainer {
     flex: 1;
 }

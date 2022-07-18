@@ -1,7 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { useEffect, useState } from "react";
 import { useAppState } from "../../../../common/appState";
-import { sleepAsync } from "../../../../common/functions";
 import { useScreenSize } from "../../../../common/hooks/useScreenSize";
 import { spaceBetween } from "../../../../common/util/Array/spaceBetween";
 import ShurikenProgress from "../../Animations/ShurikenProgress";
@@ -19,28 +18,30 @@ type OtherUser = {
 };
 
 export default function OtherUserPanel() {
-    const [userPanelState, setUserPanelState] = useAppState(
+    const [otherUserPanelState, setOtherUserPanelState] = useAppState(
         "otherUserPanelState"
     );
 
     const [targetUser, setTargetUser] = useState<OtherUser | null>(null);
     useEffect(() => {
-        sleepAsync(1000).then(() => {
-            setTargetUser({
-                userId: 1,
-                name: "Kosuke",
-                level: 100,
-                avatarPath: "",
-                bio: "hello!",
+        if (otherUserPanelState === "closed") {
+            return;
+        }
+        fetch(
+            "api/User/GetOtherUserInfo?userId=" +
+                otherUserPanelState.targetUserId
+        ).then(res => {
+            res.json().then(u => {
+                setTargetUser(u);
             });
         });
-    }, [useAppState]);
+    }, [otherUserPanelState]);
 
     return (
         <RightPanel
-            open={userPanelState !== "closed"}
+            open={otherUserPanelState !== "closed"}
             onClose={() => {
-                setUserPanelState("closed");
+                setOtherUserPanelState("closed");
             }}
             panelWidth={1000}
         >
@@ -62,7 +63,9 @@ export const OtherUserArea = ({ targetUser }: { targetUser: OtherUser }) => {
 
     const isCommentUsed = screenWidth > 767;
     const isVeryNarrow = screenWidth < 500;
-    const imageSrc = targetUser.avatarPath || "";
+    const imageSrc = targetUser.avatarPath
+        ? targetUser.avatarPath.replace("150_150", "width300")
+        : "";
 
     return (
         <ScrollBox style={{ textAlign: "center" }}>
@@ -190,7 +193,7 @@ export function PersonComment({
                 />
             </div>
             <div
-                className="chatting"
+                className="userChatting"
                 style={{
                     flex: 2,
                 }}
