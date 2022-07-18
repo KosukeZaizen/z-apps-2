@@ -140,5 +140,12 @@ abbr[title] {
     position
 */
 .relative {
-    position: relative;
+    position: relative !important;
+}
+
+/*
+    cursor
+*/
+.pointer {
+    cursor: pointer !important;
 }

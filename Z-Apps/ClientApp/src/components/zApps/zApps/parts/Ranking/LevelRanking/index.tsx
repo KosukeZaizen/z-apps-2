@@ -107,7 +107,7 @@ function RecordContainer({
                     targetUserId: userId,
                 });
             }}
-            className="hoverScale05"
+            className="hoverScale05 pointer"
         >
             {children}
         </div>
