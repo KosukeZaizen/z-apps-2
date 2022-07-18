@@ -22,7 +22,7 @@ export function TextField({
                  */
                 (
                     ev.target as HTMLInputElement | HTMLTextAreaElement
-                ).style.fontSize = "16px"; // Modify the real DOM directory before iPhone detects the font-size
+                ).style.fontSize = "16px"; // Modify the real DOM directly before iPhone detects the font-size
 
                 setInputStyle({ ...inputProps?.style, fontSize: 16 }); // Virtual DOM will also be changed
 
