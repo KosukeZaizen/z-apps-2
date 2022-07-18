@@ -4,6 +4,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Container from "@material-ui/core/Container";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { ReactNode, SyntheticEvent, useState } from "react";
@@ -37,6 +38,12 @@ export function SignIn({
     const [submitting, setSubmitting] = useState(false);
 
     const { partiallyOpened, completelyOpened } = useOpenState(chosen);
+    const containerC = useContainerStyles({
+        panelClosed,
+        completelyOpened,
+        chosen,
+        sidePadding: screenWidth > 600 ? 25 : 15,
+    });
     if (!partiallyOpened) {
         return null;
     }
@@ -70,19 +77,10 @@ export function SignIn({
         setSubmitting(false);
     };
 
-    const sidePadding = screenWidth > 600 ? 25 : 15;
-
     return (
         <Container
             component="div"
-            style={{
-                position: "absolute",
-                right:
-                    panelClosed || completelyOpened ? 0 : chosen ? 600 : -600,
-                transition: "all 500ms",
-                paddingLeft: sidePadding,
-                paddingRight: sidePadding,
-            }}
+            className={containerC.container}
             key="signIn"
         >
             <div className={classes.paper}>
@@ -178,6 +176,23 @@ export function SignIn({
         </Container>
     );
 }
+const useContainerStyles = makeStyles<
+    Theme,
+    {
+        panelClosed: boolean;
+        completelyOpened: boolean;
+        chosen: boolean;
+        sidePadding: number;
+    }
+>({
+    container: ({ panelClosed, completelyOpened, chosen, sidePadding }) => ({
+        position: "absolute",
+        right: panelClosed || completelyOpened ? 0 : chosen ? 600 : -600,
+        transition: "all 500ms",
+        paddingLeft: sidePadding,
+        paddingRight: sidePadding,
+    }),
+});
 
 function getSubmissionError(error: string): ReactNode {
     if (error === "emailNoMatch") {

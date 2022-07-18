@@ -1,5 +1,6 @@
-import { Card, makeStyles } from "@material-ui/core";
+import Card from "@material-ui/core/Card";
 import Container from "@material-ui/core/Container";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { changeAppState } from "../../../../../common/appState";
@@ -27,25 +28,27 @@ export function MyPageTop({
     panelClosed: boolean;
 }) {
     const { partiallyOpened, completelyOpened } = useOpenState(chosen);
+    const c = useContainerStyles({ panelClosed, completelyOpened, chosen });
     if (!partiallyOpened) {
         return null;
     }
 
     return (
-        <Container
-            component="div"
-            style={{
-                position: "absolute",
-                right:
-                    panelClosed || completelyOpened ? 0 : chosen ? 600 : -600,
-                transition: "all 500ms",
-            }}
-            key="MyPageTop"
-        >
+        <Container component="div" className={c.container} key="MyPageTop">
             <Content />
         </Container>
     );
 }
+const useContainerStyles = makeStyles<
+    Theme,
+    { panelClosed: boolean; completelyOpened: boolean; chosen: boolean }
+>({
+    container: ({ panelClosed, completelyOpened, chosen }) => ({
+        position: "absolute",
+        right: panelClosed || completelyOpened ? 0 : chosen ? 600 : -600,
+        transition: "all 500ms",
+    }),
+});
 
 function Content() {
     const classes = useStyles();

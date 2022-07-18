@@ -5,7 +5,7 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import PencilIcon from "@material-ui/icons/Create";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -103,23 +103,20 @@ export function SignUp({
     };
 
     const { partiallyOpened, completelyOpened } = useOpenState(chosen);
+    const containerC = useContainerStyles({
+        panelClosed,
+        completelyOpened,
+        chosen,
+        sidePadding: screenWidth > 600 ? 25 : 15,
+    });
     if (!partiallyOpened) {
         return null;
     }
 
-    const sidePadding = screenWidth > 600 ? 25 : 15;
-
     return (
         <Container
             component="div"
-            style={{
-                position: "absolute",
-                right:
-                    panelClosed || completelyOpened ? 0 : chosen ? 600 : -600,
-                transition: "all 500ms",
-                paddingLeft: sidePadding,
-                paddingRight: sidePadding,
-            }}
+            className={containerC.container}
             key="signUp"
         >
             <div className={classes.paper}>
@@ -210,6 +207,23 @@ export function SignUp({
         </Container>
     );
 }
+const useContainerStyles = makeStyles<
+    Theme,
+    {
+        panelClosed: boolean;
+        completelyOpened: boolean;
+        chosen: boolean;
+        sidePadding: number;
+    }
+>({
+    container: ({ panelClosed, completelyOpened, chosen, sidePadding }) => ({
+        position: "absolute",
+        right: panelClosed || completelyOpened ? 0 : chosen ? 600 : -600,
+        transition: "all 500ms",
+        paddingLeft: sidePadding,
+        paddingRight: sidePadding,
+    }),
+});
 
 function getUserNameFromEmail(email: string) {
     return email.split("@")[0].replaceAll(".", " ");
