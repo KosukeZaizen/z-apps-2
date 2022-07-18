@@ -1,12 +1,12 @@
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import PencilIcon from "@material-ui/icons/Create";
 import { useState } from "react";
 import { changeAppState } from "../../../../../../common/appState";
 import { User } from "../../../../../../common/hooks/useUser";
 import ShurikenProgress from "../../../../../shared/Animations/ShurikenProgress";
+import { TextField } from "../../../../../shared/Input/TextField";
 import { Markdown } from "../../../../../shared/Markdown";
 
 export function BioField({ user }: { user: User }) {

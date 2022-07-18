@@ -6,7 +6,6 @@ import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import PencilIcon from "@material-ui/icons/Create";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Visibility from "@material-ui/icons/Visibility";
@@ -27,6 +26,7 @@ import { User } from "../../../../../common/hooks/useUser";
 import { FetchResult } from "../../../../../types/fetch";
 import ShurikenProgress from "../../../../shared/Animations/ShurikenProgress";
 import CharacterComment from "../../../../shared/CharacterComment";
+import { TextField } from "../../../../shared/Input/TextField";
 import { loginSuccess } from "../MyPage/loginSuccess";
 import { signInPanelWidth } from "../Panel";
 import {

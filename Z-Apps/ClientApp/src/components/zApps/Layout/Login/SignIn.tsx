@@ -5,7 +5,6 @@ import Container from "@material-ui/core/Container";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { ReactNode, SyntheticEvent, useState } from "react";
 import { changeAppState } from "../../../../common/appState";
@@ -13,6 +12,7 @@ import { useScreenSize } from "../../../../common/hooks/useScreenSize";
 import { User } from "../../../../common/hooks/useUser";
 import { FetchResult } from "../../../../types/fetch";
 import ShurikenProgress from "../../../shared/Animations/ShurikenProgress";
+import { TextField } from "../../../shared/Input/TextField";
 import { loginSuccess } from "./MyPage/loginSuccess";
 import { PasswordField, useOpenState, useStyles } from "./SignUp/SignUp";
 
