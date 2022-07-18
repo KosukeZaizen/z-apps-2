@@ -41,35 +41,21 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
             <div className={c.container}>
                 <Card className={c.topRankingCard}>
                     {topUsers.map((user, i) => (
-                        <div
-                            onClick={() => {
-                                changeAppState("otherUserPanelState", {
-                                    targetUserId: user.userId,
-                                });
-                            }}
-                            key={user.userId}
-                        >
+                        <RecordContainer key={user.userId} userId={user.userId}>
                             <TopRankingRecord
                                 user={user}
                                 rank={i + 1}
                                 isWide={isWide}
                                 isVeryWide={isVeryWide}
                             />
-                        </div>
+                        </RecordContainer>
                     ))}
                 </Card>
                 <Card className={c.basicRankingCard}>
                     {normalUsers.map((user, i) => (
-                        <div
-                            onClick={() => {
-                                changeAppState("otherUserPanelState", {
-                                    targetUserId: user.userId,
-                                });
-                            }}
-                            key={user.userId}
-                        >
+                        <RecordContainer key={user.userId} userId={user.userId}>
                             <BasicRankingRecord user={user} rank={i + 4} />
-                        </div>
+                        </RecordContainer>
                     ))}
                 </Card>
             </div>
@@ -105,4 +91,25 @@ const useStyles = makeStyles<Theme, { isWide: boolean }>(theme => ({
 async function fetchUsersForRanking(): Promise<UserForRanking[]> {
     const res = await fetch("api/User/GetUsersForRanking");
     return res.json();
+}
+
+function RecordContainer({
+    userId,
+    children,
+}: {
+    userId: number;
+    children: JSX.Element;
+}) {
+    return (
+        <div
+            onClick={() => {
+                changeAppState("otherUserPanelState", {
+                    targetUserId: userId,
+                });
+            }}
+            className="hoverScale05"
+        >
+            {children}
+        </div>
+    );
 }
