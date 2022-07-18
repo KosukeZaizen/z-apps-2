@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import { useAppState } from "../../../../common/appState";
 import { sleepAsync } from "../../../../common/functions";
 import { useScreenSize } from "../../../../common/hooks/useScreenSize";
+import { useUser } from "../../../../common/hooks/useUser";
 import { spaceBetween } from "../../../../common/util/Array/spaceBetween";
 import ShurikenProgress from "../../Animations/ShurikenProgress";
 import "../../CharacterComment/CharacterComment.css";
 import { Markdown } from "../../Markdown";
 import { RightPanel } from "../../Panel/RightPanel";
 import { ScrollBox } from "../../ScrollBox";
+import { UploadCameraButton } from "../UserAvatar/UploadCameraButton";
 
 type OtherUser = {
     userId: number;
@@ -25,12 +27,16 @@ export default function OtherUserPanel() {
         "otherUserPanelState"
     );
 
-    const [targetUser, setTargetUser] = useState<OtherUser | null>(null);
+    const { user } = useUser();
+
+    const [_targetUser, setTargetUser] = useState<OtherUser | undefined>(
+        undefined
+    );
     useEffect(() => {
         (async () => {
             if (otherUserPanelState === "closed") {
                 await sleepAsync(500);
-                setTargetUser(null);
+                setTargetUser(undefined);
                 return;
             }
             const res = await fetch(
@@ -41,6 +47,9 @@ export default function OtherUserPanel() {
         })();
     }, [otherUserPanelState]);
 
+    const isMyself = !!user && user?.userId === _targetUser?.userId;
+    const targetUser = isMyself ? user : _targetUser;
+
     return (
         <RightPanel
             open={otherUserPanelState !== "closed"}
@@ -49,19 +58,31 @@ export default function OtherUserPanel() {
             }}
             panelWidth={1000}
         >
-            <ContentsContainer targetUser={targetUser} />
+            <ContentsContainer targetUser={targetUser} isMyself={isMyself} />
         </RightPanel>
     );
 }
 
-function ContentsContainer({ targetUser }: { targetUser: OtherUser | null }) {
+function ContentsContainer({
+    targetUser,
+    isMyself,
+}: {
+    targetUser?: OtherUser;
+    isMyself: boolean;
+}) {
     if (!targetUser) {
         return <ShurikenProgress size="20%" style={{ marginTop: 100 }} />;
     }
-    return <OtherUserArea targetUser={targetUser} />;
+    return <OtherUserArea targetUser={targetUser} isMyself={isMyself} />;
 }
 
-export const OtherUserArea = ({ targetUser }: { targetUser: OtherUser }) => {
+const OtherUserArea = ({
+    targetUser,
+    isMyself,
+}: {
+    targetUser: OtherUser;
+    isMyself: boolean;
+}) => {
     const { screenWidth } = useScreenSize();
     const c = useAuthorAreaStyles();
 
@@ -91,6 +112,7 @@ export const OtherUserArea = ({ targetUser }: { targetUser: OtherUser }) => {
                             />
                         </div>
                     }
+                    isMyself={isMyself}
                 />
             ) : (
                 <div>
@@ -103,7 +125,10 @@ export const OtherUserArea = ({ targetUser }: { targetUser: OtherUser }) => {
                                 className={c.img}
                             />
                         ) : (
-                            <AlternativeAvatar />
+                            <AlternativeAvatar
+                                targetUser={targetUser}
+                                isMyself={isMyself}
+                            />
                         )}
                     </div>
                     <div
@@ -175,6 +200,7 @@ type CommentProps = {
     commentStyle?: React.CSSProperties;
     targetUser: OtherUser;
     imageSrc: string;
+    isMyself: boolean;
 };
 export function PersonComment({
     comment,
@@ -182,6 +208,7 @@ export function PersonComment({
     commentStyle,
     targetUser,
     imageSrc,
+    isMyself,
 }: CommentProps) {
     const c = usePersonCommentStyles();
 
@@ -201,7 +228,10 @@ export function PersonComment({
                         className={spaceBetween("ninjaPic", c.img)}
                     />
                 ) : (
-                    <AlternativeAvatar />
+                    <AlternativeAvatar
+                        targetUser={targetUser}
+                        isMyself={isMyself}
+                    />
                 )}
             </div>
             <div
@@ -232,22 +262,53 @@ const usePersonCommentStyles = makeStyles(() => ({
     },
 }));
 
-function AlternativeAvatar() {
+function AlternativeAvatar({
+    targetUser,
+    isMyself,
+}: {
+    targetUser: OtherUser;
+    isMyself: boolean;
+}) {
     const c = useAlternativeAvatarStyles();
+    const [submitting, setSubmitting] = useState(false);
+
     return (
         <div className={c.container}>
             <Avatar className={c.avatar}>
-                <PersonIcon className={c.personIcon} />
+                {submitting ? (
+                    <ShurikenProgress
+                        style={{ width: 100, height: 100 }}
+                        size={60}
+                    />
+                ) : (
+                    <PersonIcon className={c.personIcon} />
+                )}
             </Avatar>
+
+            {isMyself && (
+                <UploadCameraButton
+                    submitting={submitting}
+                    setSubmitting={setSubmitting}
+                    userId={targetUser.userId}
+                    size={70}
+                    style={{
+                        position: "absolute",
+                        right: 0,
+                        bottom: 0,
+                        margin: 0,
+                    }}
+                />
+            )}
         </div>
     );
 }
-const useAlternativeAvatarStyles = makeStyles({
+const useAlternativeAvatarStyles = makeStyles(({ palette }) => ({
     container: {
         width: "100%",
         maxWidth: 300,
         display: "flex",
         justifyContent: "center",
+        position: "relative",
     },
     avatar: {
         width: "100%",
@@ -255,5 +316,22 @@ const useAlternativeAvatarStyles = makeStyles({
         height: 250,
     },
     personIcon: { width: 200, height: 200 },
-});
+    label: { position: "absolute", right: -7, bottom: -5, margin: 0 },
+    cameraButton: {
+        borderRadius: "50%",
+        maxWidth: 30,
+        maxHeight: 30,
+        minWidth: 30,
+        minHeight: 30,
+        backgroundColor: palette.grey[800],
+        color: "white",
+        transition: "all 200ms",
+        "&:hover": {
+            backgroundColor: palette.grey[600],
+        },
+        transform: "scale(0.8)",
+    },
+    cameraIcon: { width: 20, height: 20 },
+    input: { display: "none" },
+}));
 

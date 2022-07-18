@@ -1,8 +1,8 @@
 import { Avatar, makeStyles, Theme } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
-import { User } from "../../../common/hooks/useUser";
-import { theme } from "../../zApps/Layout";
-import { UserForRanking } from "../../zApps/zApps/parts/Ranking/LevelRanking/types";
+import { User } from "../../../../common/hooks/useUser";
+import { theme } from "../../../zApps/Layout";
+import { UserForRanking } from "../../../zApps/zApps/parts/Ranking/LevelRanking/types";
 
 export function UserAvatar({
     user,

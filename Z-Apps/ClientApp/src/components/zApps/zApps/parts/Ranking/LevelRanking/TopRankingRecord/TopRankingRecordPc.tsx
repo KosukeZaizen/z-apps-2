@@ -2,7 +2,7 @@ import Card from "@material-ui/core/Card";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { appsPublicImg } from "../../../../../../../common/consts";
 import { EllipsisLabel } from "../../../../../../shared/EllipsisLabel/EllipsisLabel";
-import { UserAvatar } from "../../../../../../shared/User/UserAvatar";
+import { UserAvatar } from "../../../../../../shared/User/UserAvatar/UserAvatar";
 import { UserForRanking } from "../types";
 
 export function TopRankingRecordPc({
