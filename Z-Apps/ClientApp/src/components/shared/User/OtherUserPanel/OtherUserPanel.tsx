@@ -1,6 +1,9 @@
+import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
+import PersonIcon from "@material-ui/icons/Person";
 import { useEffect, useState } from "react";
 import { useAppState } from "../../../../common/appState";
+import { sleepAsync } from "../../../../common/functions";
 import { useScreenSize } from "../../../../common/hooks/useScreenSize";
 import { spaceBetween } from "../../../../common/util/Array/spaceBetween";
 import ShurikenProgress from "../../Animations/ShurikenProgress";
@@ -24,17 +27,18 @@ export default function OtherUserPanel() {
 
     const [targetUser, setTargetUser] = useState<OtherUser | null>(null);
     useEffect(() => {
-        if (otherUserPanelState === "closed") {
-            return;
-        }
-        fetch(
-            "api/User/GetOtherUserInfo?userId=" +
-                otherUserPanelState.targetUserId
-        ).then(res => {
-            res.json().then(u => {
-                setTargetUser(u);
-            });
-        });
+        (async () => {
+            if (otherUserPanelState === "closed") {
+                await sleepAsync(500);
+                setTargetUser(null);
+                return;
+            }
+            const res = await fetch(
+                "api/User/GetOtherUserInfo?userId=" +
+                    otherUserPanelState.targetUserId
+            );
+            setTargetUser(await res.json());
+        })();
     }, [otherUserPanelState]);
 
     return (
@@ -91,12 +95,35 @@ export const OtherUserArea = ({ targetUser }: { targetUser: OtherUser }) => {
             ) : (
                 <div>
                     <div className={c.imgContainer}>
-                        <img
-                            src={imageSrc}
-                            alt={targetUser.name}
-                            title={targetUser.name}
-                            className={c.img}
-                        />
+                        {imageSrc ? (
+                            <img
+                                src={imageSrc}
+                                alt={targetUser.name}
+                                title={targetUser.name}
+                                className={c.img}
+                            />
+                        ) : (
+                            <div
+                                style={{
+                                    width: "100%",
+                                    maxWidth: 300,
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <Avatar
+                                    style={{
+                                        width: "100%",
+                                        maxWidth: 250,
+                                        height: 250,
+                                    }}
+                                >
+                                    <PersonIcon
+                                        style={{ width: 200, height: 200 }}
+                                    />
+                                </Avatar>
+                            </div>
+                        )}
                     </div>
                     <div
                         className={
@@ -185,15 +212,29 @@ export function PersonComment({
             }}
         >
             <div className={c.imgContainer}>
-                <img
-                    src={imageSrc}
-                    alt={targetUser.name}
-                    title={targetUser.name}
-                    className={spaceBetween("ninjaPic", c.img)}
-                />
+                {imageSrc ? (
+                    <img
+                        src={imageSrc}
+                        alt={targetUser.name}
+                        title={targetUser.name}
+                        className={spaceBetween("ninjaPic", c.img)}
+                    />
+                ) : (
+                    <div
+                        style={{
+                            width: 300,
+                            display: "flex",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Avatar style={{ width: 250, height: 250 }}>
+                            <PersonIcon style={{ width: 200, height: 200 }} />
+                        </Avatar>
+                    </div>
+                )}
             </div>
             <div
-                className="userChatting"
+                className={imageSrc ? "userChatting" : "chatting"}
                 style={{
                     flex: 2,
                 }}
