@@ -103,26 +103,7 @@ export const OtherUserArea = ({ targetUser }: { targetUser: OtherUser }) => {
                                 className={c.img}
                             />
                         ) : (
-                            <div
-                                style={{
-                                    width: "100%",
-                                    maxWidth: 300,
-                                    display: "flex",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <Avatar
-                                    style={{
-                                        width: "100%",
-                                        maxWidth: 250,
-                                        height: 250,
-                                    }}
-                                >
-                                    <PersonIcon
-                                        style={{ width: 200, height: 200 }}
-                                    />
-                                </Avatar>
-                            </div>
+                            <AlternativeAvatar />
                         )}
                     </div>
                     <div
@@ -220,17 +201,7 @@ export function PersonComment({
                         className={spaceBetween("ninjaPic", c.img)}
                     />
                 ) : (
-                    <div
-                        style={{
-                            width: 300,
-                            display: "flex",
-                            justifyContent: "center",
-                        }}
-                    >
-                        <Avatar style={{ width: 250, height: 250 }}>
-                            <PersonIcon style={{ width: 200, height: 200 }} />
-                        </Avatar>
-                    </div>
+                    <AlternativeAvatar />
                 )}
             </div>
             <div
@@ -260,4 +231,29 @@ const usePersonCommentStyles = makeStyles(() => ({
         verticalAlign: "top",
     },
 }));
+
+function AlternativeAvatar() {
+    const c = useAlternativeAvatarStyles();
+    return (
+        <div className={c.container}>
+            <Avatar className={c.avatar}>
+                <PersonIcon className={c.personIcon} />
+            </Avatar>
+        </div>
+    );
+}
+const useAlternativeAvatarStyles = makeStyles({
+    container: {
+        width: "100%",
+        maxWidth: 300,
+        display: "flex",
+        justifyContent: "center",
+    },
+    avatar: {
+        width: "100%",
+        maxWidth: 250,
+        height: 250,
+    },
+    personIcon: { width: 200, height: 200 },
+});
 
