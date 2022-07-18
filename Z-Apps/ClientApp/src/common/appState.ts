@@ -10,6 +10,7 @@ type AppState = {
     signInPanelState: SignInPanelState;
     authorPanelState: { open: true; title?: string } | { open: false };
     user?: User;
+    otherUserPanelState: { targetUserId: number } | "closed";
     isUserFetchDone: boolean;
     isMainMounted: boolean;
     xpBeforeSignUp: number;
@@ -24,6 +25,7 @@ const appState: AppState = {
     signInPanelState: "close",
     authorPanelState: initialAuthorPanelState,
     user: undefined,
+    otherUserPanelState: "closed",
     isUserFetchDone: false,
     isMainMounted: true,
     xpBeforeSignUp: 0,

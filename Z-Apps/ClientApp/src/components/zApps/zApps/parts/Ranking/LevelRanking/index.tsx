@@ -1,6 +1,7 @@
 import { Collapse, makeStyles, Theme } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import { useEffect, useMemo, useState } from "react";
+import { changeAppState } from "../../../../../../common/appState";
 import { useUser } from "../../../../../../common/hooks/useUser";
 import { BasicRankingRecord } from "./BasicRankingRecord";
 import { TopRankingRecord } from "./TopRankingRecord";
@@ -40,22 +41,35 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
             <div className={c.container}>
                 <Card className={c.topRankingCard}>
                     {topUsers.map((user, i) => (
-                        <TopRankingRecord
-                            user={user}
-                            rank={i + 1}
+                        <div
+                            onClick={() => {
+                                changeAppState("otherUserPanelState", {
+                                    targetUserId: user.userId,
+                                });
+                            }}
                             key={user.userId}
-                            isWide={isWide}
-                            isVeryWide={isVeryWide}
-                        />
+                        >
+                            <TopRankingRecord
+                                user={user}
+                                rank={i + 1}
+                                isWide={isWide}
+                                isVeryWide={isVeryWide}
+                            />
+                        </div>
                     ))}
                 </Card>
                 <Card className={c.basicRankingCard}>
                     {normalUsers.map((user, i) => (
-                        <BasicRankingRecord
-                            user={user}
-                            rank={i + 4}
+                        <div
+                            onClick={() => {
+                                changeAppState("otherUserPanelState", {
+                                    targetUserId: user.userId,
+                                });
+                            }}
                             key={user.userId}
-                        />
+                        >
+                            <BasicRankingRecord user={user} rank={i + 4} />
+                        </div>
                     ))}
                 </Card>
             </div>

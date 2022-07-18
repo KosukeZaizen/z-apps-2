@@ -5,7 +5,7 @@ import { useState } from "react";
 import { changeAppState } from "../../../../../../common/appState";
 import { User } from "../../../../../../common/hooks/useUser";
 import ShurikenProgress from "../../../../../shared/Animations/ShurikenProgress";
-import { UserAvatar } from "../../../../../shared/Avatar/UserAvatar";
+import { UserAvatar } from "../../../../../shared/User/UserAvatar";
 
 export function AvatarField({ user }: { user: User }) {
     const c = useAvatarFieldStyles();

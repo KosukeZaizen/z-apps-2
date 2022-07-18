@@ -64,6 +64,7 @@ async function lateImportPanels() {
     const PanelComponents = [
         import("../../shared/Dialog/ResultXpDialog/GuestUser"),
         import("../../shared/Dialog/ResultXpDialog/RegisteredUser"),
+        import("../../shared/User/OtherUserPanel/OtherUserPanel"),
     ].map(async (p, i) => {
         const { default: Component } = await p;
         return <Component key={`latePanel${i}`} />;
