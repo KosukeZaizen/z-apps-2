@@ -22,7 +22,7 @@ namespace Z_Apps.Models.SystemBase
             var credential = new StorageCredentials(accountName, accessKey);
             var storageAccount = new CloudStorageAccount(credential, true);
 
-            ////////////////// ここまでは各Storageサービス共通 //////////////////////////////////
+            /* ------------- ここまでは各Storageサービス共通 ------------- */
 
             //blob
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
