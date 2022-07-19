@@ -1,8 +1,8 @@
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
-import { appsPublicImg } from "../../../../../../../common/consts";
-import { UserAvatar } from "../../../../../../shared/User/UserAvatar/UserAvatar";
-import { UserForRanking } from "../types";
+import { appsPublicImg } from "../../../../../../../../common/consts";
+import { UserAvatar } from "../../../../../../../shared/User/UserAvatar/UserAvatar";
+import { UserForRanking } from "../../types";
 
 export function TopRankingRecordSp({
     user,

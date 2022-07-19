@@ -1,8 +1,8 @@
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
-import { EllipsisLabel } from "../../../../../shared/EllipsisLabel/EllipsisLabel";
-import { UserAvatar } from "../../../../../shared/User/UserAvatar/UserAvatar";
-import { UserForRanking } from "./types";
+import { EllipsisLabel } from "../../../../../../shared/EllipsisLabel/EllipsisLabel";
+import { UserAvatar } from "../../../../../../shared/User/UserAvatar/UserAvatar";
+import { UserForRanking } from "../types";
 
 export function BasicRankingRecord({
     user,

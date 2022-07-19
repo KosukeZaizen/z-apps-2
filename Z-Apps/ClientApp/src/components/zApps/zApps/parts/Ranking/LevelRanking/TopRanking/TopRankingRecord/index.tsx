@@ -1,4 +1,4 @@
-import { UserForRanking } from "../types";
+import { UserForRanking } from "../../types";
 import { TopRankingRecordPc } from "./TopRankingRecordPc";
 import { TopRankingRecordSp } from "./TopRankingRecordSp";
 

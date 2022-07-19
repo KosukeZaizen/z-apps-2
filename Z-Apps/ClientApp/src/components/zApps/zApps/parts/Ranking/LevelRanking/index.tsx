@@ -1,10 +1,8 @@
 import { Collapse, makeStyles, Theme } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
 import { useEffect, useMemo, useState } from "react";
 import { useUser } from "../../../../../../common/hooks/useUser";
-import { BasicRankingRecord } from "./BasicRankingRecord";
-import { RankingRecordContainer } from "./RankingRecordContainer";
-import { TopRankingRecord } from "./TopRankingRecord";
+import { BasicRanking } from "./BasicRanking/BasicRanking";
+import { TopRanking } from "./TopRanking/TopRanking";
 import { UserForRanking } from "./types";
 
 export function LevelRanking({ screenWidth }: { screenWidth: number }) {
@@ -39,31 +37,12 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
     return (
         <Collapse in={users.length > 0} timeout={700}>
             <div className={c.container}>
-                <Card className={c.topRankingCard}>
-                    {topUsers.map((user, i) => (
-                        <RankingRecordContainer
-                            key={user.userId}
-                            userId={user.userId}
-                        >
-                            <TopRankingRecord
-                                user={user}
-                                rank={i + 1}
-                                isWide={isWide}
-                                isVeryWide={isVeryWide}
-                            />
-                        </RankingRecordContainer>
-                    ))}
-                </Card>
-                <Card className={c.basicRankingCard}>
-                    {normalUsers.map((user, i) => (
-                        <RankingRecordContainer
-                            key={user.userId}
-                            userId={user.userId}
-                        >
-                            <BasicRankingRecord user={user} rank={i + 4} />
-                        </RankingRecordContainer>
-                    ))}
-                </Card>
+                <TopRanking
+                    users={topUsers}
+                    isWide={isWide}
+                    isVeryWide={isVeryWide}
+                />
+                <BasicRanking users={normalUsers} />
             </div>
         </Collapse>
     );
@@ -75,23 +54,6 @@ const useStyles = makeStyles<Theme, { isWide: boolean }>(theme => ({
         flexDirection: isWide ? "row" : "column",
         marginTop: 15,
     }),
-    topRankingCard: {
-        margin: 5,
-        backgroundColor: theme.palette.grey[100],
-        height: 335,
-        flex: 1,
-        fontSize: "large",
-        fontWeight: "bold",
-    },
-    basicRankingCard: {
-        margin: 5,
-        backgroundColor: theme.palette.grey[100],
-        height: 335,
-        maxHeight: 335,
-        flex: 1,
-        fontSize: "large",
-        overflowY: "scroll",
-    },
 }));
 
 async function fetchUsersForRanking(): Promise<UserForRanking[]> {
