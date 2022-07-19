@@ -69,6 +69,7 @@ function Content() {
         <div className={classes.paper}>
             <ProfileCard user={user} />
             <Progress />
+            {/* <RankingAroundMe /> */}
             <button
                 className="btn btn-dark btn-block logoutButton"
                 onClick={logout}
@@ -76,6 +77,18 @@ function Content() {
                 Logout
             </button>
         </div>
+    );
+}
+
+function RankingAroundMe() {
+    return (
+        <OpenableCard
+            title="Ranking"
+            icon={<RunningIcon />}
+            saveKey="MypageUserRankingAroundMe"
+        >
+            rank
+        </OpenableCard>
     );
 }
 

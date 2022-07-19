@@ -5,6 +5,7 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
 import { ReactNode, useEffect, useState } from "react";
 import { sleepAsync } from "../../../../../../common/functions";
+import { spaceBetween } from "../../../../../../common/util/Array/spaceBetween";
 
 export function OpenableCard({
     children,
@@ -72,8 +73,8 @@ export function OpenableCard({
                     </Button>
                     <Button
                         variant="contained"
-                        color="primary"
-                        className={c.button}
+                        color={"primary"}
+                        className={spaceBetween(c.button, "hoverScale05")}
                         onClick={closeCollapse}
                     >
                         {open ? <CloseIcon /> : buttonMessage}
@@ -133,7 +134,7 @@ const useOpenableCardStyles = makeStyles<
         width: "calc(100% - 10px)",
     },
     button: ({ open }) => ({
-        backgroundColor: open ? palette.grey[800] : undefined,
+        backgroundColor: open ? palette.grey[800] : palette.primary.main,
         color: "white",
         display: "flex",
         alignItems: "center",
@@ -143,6 +144,9 @@ const useOpenableCardStyles = makeStyles<
         maxHeight: 30,
         minHeight: 30,
         transition: "all 500ms",
+        "&:hover": {
+            backgroundColor: open ? palette.grey[800] : undefined, // To disable the smartphone's too long hover state
+        },
     }),
     iconButton: ({ open }) => ({
         backgroundColor: palette.grey[800],
