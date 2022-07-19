@@ -295,7 +295,7 @@ type CommentProps = {
     author: Author;
     imageSrc: string;
 };
-export function PersonComment({ comment, author, imageSrc }: CommentProps) {
+function PersonComment({ comment, author, imageSrc }: CommentProps) {
     const c = usePersonCommentStyles();
 
     return (
