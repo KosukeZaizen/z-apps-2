@@ -2,6 +2,7 @@ import Card from "@material-ui/core/Card";
 import Container from "@material-ui/core/Container";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import RunningIcon from "@material-ui/icons/DirectionsRun";
+import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -105,7 +106,7 @@ function RankingAroundMe({ user: player }: { user: User }) {
     return (
         <OpenableCard
             title={`Ranking: ${myRank}`}
-            icon={<RunningIcon />}
+            icon={<TrendingUpIcon />}
             saveKey="MypageUserRankingAroundMe"
             open={open}
             setOpen={setOpen}
