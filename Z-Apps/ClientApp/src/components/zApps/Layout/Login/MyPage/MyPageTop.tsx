@@ -5,7 +5,7 @@ import Container from "@material-ui/core/Container";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
 import RunningIcon from "@material-ui/icons/DirectionsRun";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { changeAppState } from "../../../../../common/appState";
@@ -88,12 +88,15 @@ function OpenableCard({
     buttonMessage = "Detail",
     title,
     icon,
+    saveKey: _saveKey,
 }: {
     children: ReactNode;
     buttonMessage?: string;
     title: string;
     icon: ReactNode;
+    saveKey: string;
 }) {
+    const saveKey = "OpenableCard-status-" + _saveKey;
     const [open, setOpen] = useState(false);
     const [isTitleShown, setTitleShown] = useState(!open);
 
@@ -115,6 +118,22 @@ function OpenableCard({
             setTitleShown(false);
         }
     };
+
+    useEffect(() => {
+        const previousStatus = localStorage.getItem(saveKey);
+        if (!previousStatus) {
+            return;
+        }
+
+        if (previousStatus === "open") {
+            openCollapse();
+            return;
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem(saveKey, open ? "open" : "close");
+    }, [open]);
 
     return (
         <Card className={c.card} onClick={openCollapse}>
@@ -328,6 +347,7 @@ const Progress = connect(
         <OpenableCard
             title={`Progress: ${totalProgress}%`}
             icon={<RunningIcon />}
+            saveKey="MypageProgressCard"
         >
             <h2 className="progressTitle">{"Your Progress"}</h2>
 
