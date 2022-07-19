@@ -1,9 +1,13 @@
+import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
+import Collapse from "@material-ui/core/Collapse";
 import Container from "@material-ui/core/Container";
 import { makeStyles, Theme } from "@material-ui/core/styles";
+import { ReactNode, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { changeAppState } from "../../../../../common/appState";
+import { sleepAsync } from "../../../../../common/functions";
 import { useScreenSize } from "../../../../../common/hooks/useScreenSize";
 import { User, useUser } from "../../../../../common/hooks/useUser";
 import { spaceBetween } from "../../../../../common/util/Array/spaceBetween";
@@ -76,6 +80,101 @@ function Content() {
         </div>
     );
 }
+
+function OpenableCard({ children }: { children: ReactNode }) {
+    const [open, setOpen] = useState(false);
+    const [isTitleShown, setTitleShown] = useState(!open);
+
+    const c = useOpenableCardStyles({ open, isTitleShown });
+
+    return (
+        <Card
+            style={{
+                width: "100%",
+                position: "relative",
+            }}
+            className={c.card}
+        >
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    position: "absolute",
+                    top: open || !isTitleShown ? 7 : undefined,
+                    right: 0,
+                    width: "100%",
+                }}
+            >
+                <div
+                    style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontWeight: "bold",
+                        fontSize: "large",
+                        opacity: isTitleShown ? 1 : 0,
+                    }}
+                >
+                    Your Progress: 100%
+                </div>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                        position: "absolute",
+                        right: 5,
+                        width: "100%",
+                    }}
+                >
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ padding: "3px 8px" }}
+                        onClick={() => {
+                            if (open) {
+                                // To close the Collapse
+                                setOpen(false);
+                                sleepAsync(500).then(() => {
+                                    setTitleShown(true);
+                                });
+                                return;
+                            }
+                            // To open the Collapse
+                            setOpen(true);
+                            setTitleShown(false);
+                        }}
+                    >
+                        Detail
+                    </Button>
+                </div>
+            </div>
+
+            <Collapse in={open} timeout={500}>
+                {children}
+            </Collapse>
+        </Card>
+    );
+}
+const useOpenableCardStyles = makeStyles<
+    Theme,
+    { open: boolean; isTitleShown: boolean }
+>({
+    card: ({ open, isTitleShown }) => ({
+        height: open || !isTitleShown ? undefined : 40,
+        width: "100%",
+        fontSize: "large",
+        margin: "10px 0",
+        padding: open ? 30 : 15,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        transition: "all 500ms",
+    }),
+});
 
 function ProfileCard({ user }: { user: User }) {
     const c = useStatusCardStyles();
@@ -184,7 +283,7 @@ const Progress = connect(
     );
 
     return (
-        <Card className={spaceBetween("progressCard", c.card)}>
+        <OpenableCard>
             <h2 className="progressTitle">{"Your Progress"}</h2>
 
             <table className="progressTable">
@@ -205,7 +304,7 @@ const Progress = connect(
                     ))}
                 </tbody>
             </table>
-        </Card>
+        </OpenableCard>
     );
 });
 const onClickProgressLink = () => {

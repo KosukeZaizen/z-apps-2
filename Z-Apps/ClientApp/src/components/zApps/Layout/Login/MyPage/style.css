@@ -17,13 +17,13 @@
     align-items: center;
 }
 
-.progressCard a {
+.progressTable a {
     font-weight: bold;
     padding-left: 7px;
     font-size: x-large;
 }
 
-.progressCard .total {
+.progressTable .total {
     font-weight: bold;
     padding-left: 7px;
     font-size: x-large;
