@@ -202,10 +202,15 @@ namespace Z_Apps.Controllers
         }
 
         [HttpGet("[action]/")]
-        public IEnumerable<User> GetUsersAroundMyRank(int userId)
+        public IActionResult GetUsersAroundMyRank(int userId)
         {
-            return userService.GetUsersAroundMyRank(userId);
+            return Ok(new
+            {
+                Users = userService.GetUsersAroundMyRank(userId),
+                MyRank = userService.GetMyRank(userId),
+            });
         }
+
 
         [HttpGet("[action]/")]
         public int GetMyRank(int userId)

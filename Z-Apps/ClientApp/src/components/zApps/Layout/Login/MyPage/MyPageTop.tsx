@@ -85,17 +85,25 @@ function Content() {
 
 function RankingAroundMe({ user: player }: { user: User }) {
     const [users, setUsers] = useState<UserForRanking[]>([]);
+    const [myRank, setMyRank] = useState(0);
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        fetchUsersAroundMyRank(player.userId).then(u => {
-            setUsers(u);
+        if (open) {
+            fetchUsersAroundMyRank(player.userId).then(({ users, myRank }) => {
+                setUsers(users);
+                setMyRank(myRank);
+            });
+            return;
+        }
+        fetchMyRank(player.userId).then(myRank => {
+            setMyRank(myRank);
         });
-    }, [player]);
+    }, [player, open]);
 
     return (
         <OpenableCard
-            title={`Ranking: `}
+            title={`Ranking: ${myRank}`}
             icon={<RunningIcon />}
             saveKey="MypageUserRankingAroundMe"
             open={open}
@@ -108,8 +116,13 @@ function RankingAroundMe({ user: player }: { user: User }) {
 
 async function fetchUsersAroundMyRank(
     userId: number
-): Promise<UserForRanking[]> {
+): Promise<{ users: UserForRanking[]; myRank: number }> {
     const res = await fetch(`api/User/GetUsersAroundMyRank?userId=${userId}`);
+    return res.json();
+}
+
+async function fetchMyRank(userId: number): Promise<number> {
+    const res = await fetch(`api/User/GetMyRank?userId=${userId}`);
     return res.json();
 }
 
