@@ -13,15 +13,18 @@ export function OpenableCard({
     title,
     icon,
     saveKey: _saveKey,
+    open,
+    setOpen,
 }: {
     children: ReactNode;
     buttonMessage?: string;
     title: string;
     icon: ReactNode;
     saveKey: string;
+    open: boolean;
+    setOpen: (open: boolean) => void;
 }) {
     const saveKey = "OpenableCard-status-" + _saveKey;
-    const [open, setOpen] = useState(false);
     const [isTitleShown, setTitleShown] = useState(!open);
 
     const c = useOpenableCardStyles({ open, isTitleShown });

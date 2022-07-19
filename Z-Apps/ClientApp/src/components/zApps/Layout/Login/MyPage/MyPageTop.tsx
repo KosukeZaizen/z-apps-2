@@ -85,6 +85,8 @@ function Content() {
 
 function RankingAroundMe({ user: player }: { user: User }) {
     const [users, setUsers] = useState<UserForRanking[]>([]);
+    const [open, setOpen] = useState(false);
+
     useEffect(() => {
         fetchUsersAroundMyRank(player.userId).then(u => {
             setUsers(u);
@@ -96,6 +98,8 @@ function RankingAroundMe({ user: player }: { user: User }) {
             title={`Ranking: `}
             icon={<RunningIcon />}
             saveKey="MypageUserRankingAroundMe"
+            open={open}
+            setOpen={setOpen}
         >
             <BasicRanking users={users} />
         </OpenableCard>
@@ -213,11 +217,15 @@ const Progress = connect(
             4
     );
 
+    const [open, setOpen] = useState(false);
+
     return (
         <OpenableCard
             title={`Progress: ${totalProgress}%`}
             icon={<RunningIcon />}
             saveKey="MypageProgressPercentageCard"
+            open={open}
+            setOpen={setOpen}
         >
             <h2 className="progressTitle">{"Your Progress"}</h2>
 
