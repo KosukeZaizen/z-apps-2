@@ -3,6 +3,8 @@ import Card from "@material-ui/core/Card";
 import Collapse from "@material-ui/core/Collapse";
 import Container from "@material-ui/core/Container";
 import { makeStyles, Theme } from "@material-ui/core/styles";
+import CloseIcon from "@material-ui/icons/Close";
+import RunningIcon from "@material-ui/icons/DirectionsRun";
 import { ReactNode, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -85,50 +87,60 @@ function OpenableCard({
     children,
     buttonMessage = "Detail",
     title,
+    icon,
 }: {
     children: ReactNode;
     buttonMessage?: string;
     title: string;
+    icon: ReactNode;
 }) {
     const [open, setOpen] = useState(false);
     const [isTitleShown, setTitleShown] = useState(!open);
 
     const c = useOpenableCardStyles({ open, isTitleShown });
 
+    const closeCollapse = () => {
+        if (open) {
+            // To close the Collapse
+            setOpen(false);
+            sleepAsync(500).then(() => {
+                setTitleShown(true);
+            });
+        }
+    };
+    const openCollapse = () => {
+        if (!open) {
+            // To open the Collapse
+            setOpen(true);
+            setTitleShown(false);
+        }
+    };
+
     return (
-        <Card
-            className={c.card}
-            onClick={() => {
-                if (!open) {
-                    // To open the Collapse
-                    setOpen(true);
-                    setTitleShown(false);
-                }
-            }}
-        >
+        <Card className={c.card} onClick={openCollapse}>
             <div className={c.closedContainer}>
                 <div className={c.title}>{title}</div>
-                <div className={c.buttonContainer}>
+                <div className={c.buttonsContainer}>
+                    <Button
+                        variant="contained"
+                        className={c.iconButton}
+                        onClick={closeCollapse}
+                    >
+                        {icon}
+                    </Button>
                     <Button
                         variant="contained"
                         color="primary"
+                        size="small"
                         className={c.button}
-                        onClick={() => {
-                            if (open) {
-                                // To close the Collapse
-                                setOpen(false);
-                                sleepAsync(500).then(() => {
-                                    setTitleShown(true);
-                                });
-                            }
-                        }}
+                        onClick={closeCollapse}
                     >
-                        {open ? "Close" : buttonMessage}
+                        {open ? <CloseIcon /> : buttonMessage}
                     </Button>
                 </div>
             </div>
 
-            <Collapse in={open} timeout={500}>
+            <Collapse in={open} timeout={500} style={{ paddingTop: 10 }}>
                 {children}
             </Collapse>
         </Card>
@@ -171,18 +183,38 @@ const useOpenableCardStyles = makeStyles<
         opacity: isTitleShown ? 1 : 0,
         transition: "all 300ms",
     }),
-    buttonContainer: {
+    buttonsContainer: {
         display: "flex",
-        justifyContent: "flex-end",
+        justifyContent: "space-between",
         alignItems: "center",
         position: "absolute",
         right: 5,
-        width: "100%",
+        width: "calc(100% - 10px)",
     },
     button: ({ open }) => ({
-        padding: "3px 8px",
         backgroundColor: open ? palette.grey[800] : undefined,
         color: "white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        maxWidth: open ? 30 : undefined,
+        minWidth: open ? 30 : undefined,
+        maxHeight: 30,
+        minHeight: 30,
+        transition: "all 500ms",
+    }),
+    iconButton: ({ open }) => ({
+        backgroundColor: palette.grey[800],
+        color: "white",
+        maxWidth: 30,
+        maxHeight: 30,
+        minWidth: 30,
+        minHeight: 30,
+        transition: "background-color 200ms, opacity 500ms",
+        "&:hover": {
+            backgroundColor: palette.grey[600],
+        },
+        opacity: open ? 0 : 1,
     }),
 }));
 
@@ -293,7 +325,10 @@ const Progress = connect(
     );
 
     return (
-        <OpenableCard title={`Progress: ${totalProgress}%`}>
+        <OpenableCard
+            title={`Progress: ${totalProgress}%`}
+            icon={<RunningIcon />}
+        >
             <h2 className="progressTitle">{"Your Progress"}</h2>
 
             <table className="progressTable">
