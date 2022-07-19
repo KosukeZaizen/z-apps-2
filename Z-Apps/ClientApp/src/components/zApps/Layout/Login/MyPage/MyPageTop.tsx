@@ -81,7 +81,15 @@ function Content() {
     );
 }
 
-function OpenableCard({ children }: { children: ReactNode }) {
+function OpenableCard({
+    children,
+    buttonMessage = "Detail",
+    title,
+}: {
+    children: ReactNode;
+    buttonMessage?: string;
+    title: string;
+}) {
     const [open, setOpen] = useState(false);
     const [isTitleShown, setTitleShown] = useState(!open);
 
@@ -89,50 +97,22 @@ function OpenableCard({ children }: { children: ReactNode }) {
 
     return (
         <Card
-            style={{
-                width: "100%",
-                position: "relative",
-            }}
             className={c.card}
+            onClick={() => {
+                if (!open) {
+                    // To open the Collapse
+                    setOpen(true);
+                    setTitleShown(false);
+                }
+            }}
         >
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    position: "absolute",
-                    top: open || !isTitleShown ? 7 : undefined,
-                    right: 0,
-                    width: "100%",
-                }}
-            >
-                <div
-                    style={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        fontWeight: "bold",
-                        fontSize: "large",
-                        opacity: isTitleShown ? 1 : 0,
-                    }}
-                >
-                    Your Progress: 100%
-                </div>
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                        position: "absolute",
-                        right: 5,
-                        width: "100%",
-                    }}
-                >
+            <div className={c.closedContainer}>
+                <div className={c.title}>{title}</div>
+                <div className={c.buttonContainer}>
                     <Button
                         variant="contained"
                         color="primary"
-                        style={{ padding: "3px 8px" }}
+                        className={c.button}
                         onClick={() => {
                             if (open) {
                                 // To close the Collapse
@@ -140,14 +120,10 @@ function OpenableCard({ children }: { children: ReactNode }) {
                                 sleepAsync(500).then(() => {
                                     setTitleShown(true);
                                 });
-                                return;
                             }
-                            // To open the Collapse
-                            setOpen(true);
-                            setTitleShown(false);
                         }}
                     >
-                        Detail
+                        {open ? "Close" : buttonMessage}
                     </Button>
                 </div>
             </div>
@@ -161,7 +137,7 @@ function OpenableCard({ children }: { children: ReactNode }) {
 const useOpenableCardStyles = makeStyles<
     Theme,
     { open: boolean; isTitleShown: boolean }
->({
+>(({ palette }) => ({
     card: ({ open, isTitleShown }) => ({
         height: open || !isTitleShown ? undefined : 40,
         width: "100%",
@@ -173,8 +149,42 @@ const useOpenableCardStyles = makeStyles<
         alignItems: "center",
         justifyContent: "center",
         transition: "all 500ms",
+        position: "relative",
+        cursor: open ? undefined : "pointer",
     }),
-});
+    closedContainer: ({ open, isTitleShown }) => ({
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        position: "absolute",
+        top: open || !isTitleShown ? 7 : undefined,
+        right: 0,
+        width: "100%",
+    }),
+    title: ({ isTitleShown }) => ({
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        fontWeight: "bold",
+        fontSize: "large",
+        opacity: isTitleShown ? 1 : 0,
+        transition: "all 300ms",
+    }),
+    buttonContainer: {
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        position: "absolute",
+        right: 5,
+        width: "100%",
+    },
+    button: ({ open }) => ({
+        padding: "3px 8px",
+        backgroundColor: open ? palette.grey[800] : undefined,
+        color: "white",
+    }),
+}));
 
 function ProfileCard({ user }: { user: User }) {
     const c = useStatusCardStyles();
@@ -283,7 +293,7 @@ const Progress = connect(
     );
 
     return (
-        <OpenableCard>
+        <OpenableCard title={`Progress: ${totalProgress}%`}>
             <h2 className="progressTitle">{"Your Progress"}</h2>
 
             <table className="progressTable">
