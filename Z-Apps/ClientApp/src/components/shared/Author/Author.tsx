@@ -292,27 +292,14 @@ const useAuthorAreaStyles = makeStyles(() => ({
 type CommentProps = {
     screenWidth: number;
     comment: string | React.ReactNode;
-    style?: React.CSSProperties;
-    commentStyle?: React.CSSProperties;
     author: Author;
     imageSrc: string;
 };
-export function PersonComment({
-    comment,
-    style,
-    commentStyle,
-    author,
-    imageSrc,
-}: CommentProps) {
+export function PersonComment({ comment, author, imageSrc }: CommentProps) {
     const c = usePersonCommentStyles();
 
     return (
-        <div
-            style={{
-                display: "flex",
-                ...style,
-            }}
-        >
+        <div className={c.container}>
             <div className={c.imgContainer}>
                 <img
                     src={imageSrc}
@@ -321,31 +308,27 @@ export function PersonComment({
                     className={spaceBetween("ninjaPic", c.img)}
                 />
             </div>
-            <div
-                className="chatting"
-                style={{
-                    flex: 2,
-                }}
-            >
-                <div
-                    className="says"
-                    style={{
-                        width: "100%",
-                        ...commentStyle,
-                    }}
-                >
-                    {comment}
-                </div>
+            <div className={spaceBetween("chatting", c.chatting)}>
+                <div className={spaceBetween("says", c.says)}>{comment}</div>
             </div>
         </div>
     );
 }
 const usePersonCommentStyles = makeStyles(() => ({
+    container: {
+        display: "flex",
+    },
     imgContainer: { flex: 1, marginTop: 6, marginRight: 10 },
     img: {
         maxWidth: 300,
         height: "auto",
         verticalAlign: "top",
+    },
+    chatting: {
+        flex: 2,
+    },
+    says: {
+        width: "100%",
     },
 }));
 
