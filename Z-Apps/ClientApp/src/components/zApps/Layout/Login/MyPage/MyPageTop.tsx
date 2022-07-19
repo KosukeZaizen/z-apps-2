@@ -110,6 +110,8 @@ function RankingAroundMe({ user: player }: { user: User }) {
             saveKey="MypageUserRankingAroundMe"
             open={open}
             setOpen={setOpen}
+            alwaysShowIcon
+            alwaysShowTitle
         >
             {users.length > 0 && (
                 <div

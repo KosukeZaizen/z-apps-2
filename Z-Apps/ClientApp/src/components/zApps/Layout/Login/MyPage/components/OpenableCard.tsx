@@ -15,6 +15,8 @@ export function OpenableCard({
     saveKey: _saveKey,
     open,
     setOpen,
+    alwaysShowIcon,
+    alwaysShowTitle,
 }: {
     children: ReactNode;
     buttonMessage?: string;
@@ -23,11 +25,18 @@ export function OpenableCard({
     saveKey: string;
     open: boolean;
     setOpen: (open: boolean) => void;
+    alwaysShowIcon?: boolean;
+    alwaysShowTitle?: boolean;
 }) {
     const saveKey = "OpenableCard-status-" + _saveKey;
     const [isTitleShown, setTitleShown] = useState(!open);
 
-    const c = useOpenableCardStyles({ open, isTitleShown });
+    const c = useOpenableCardStyles({
+        open,
+        isTitleShown,
+        alwaysShowIcon,
+        alwaysShowTitle,
+    });
 
     const closeCollapse = () => {
         if (open) {
@@ -93,7 +102,12 @@ export function OpenableCard({
 }
 const useOpenableCardStyles = makeStyles<
     Theme,
-    { open: boolean; isTitleShown: boolean }
+    {
+        open: boolean;
+        isTitleShown: boolean;
+        alwaysShowIcon?: boolean;
+        alwaysShowTitle?: boolean;
+    }
 >(({ palette }) => ({
     card: ({ open, isTitleShown }) => ({
         height: open || !isTitleShown ? undefined : 40,
@@ -118,14 +132,14 @@ const useOpenableCardStyles = makeStyles<
         right: 0,
         width: "100%",
     }),
-    title: ({ isTitleShown }) => ({
+    title: ({ isTitleShown, alwaysShowTitle }) => ({
         width: "100%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         fontWeight: "bold",
         fontSize: "large",
-        opacity: isTitleShown ? 1 : 0,
+        opacity: alwaysShowTitle || isTitleShown ? 1 : 0,
         transition: "all 300ms",
     }),
     buttonsContainer: {
@@ -151,7 +165,7 @@ const useOpenableCardStyles = makeStyles<
             backgroundColor: open ? palette.grey[800] : undefined, // To disable the smartphone's too long hover state
         },
     }),
-    iconButton: ({ open }) => ({
+    iconButton: ({ open, alwaysShowIcon }) => ({
         backgroundColor: palette.grey[800],
         color: "white",
         maxWidth: 30,
@@ -162,7 +176,7 @@ const useOpenableCardStyles = makeStyles<
         "&:hover": {
             backgroundColor: palette.grey[600],
         },
-        opacity: open ? 0 : 1,
+        opacity: !alwaysShowIcon && open ? 0 : 1,
         lineHeight: 1,
     }),
     collapse: {
