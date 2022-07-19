@@ -369,7 +369,9 @@ select * from (
 order by Xp desc;
 ";
             return con
-                    .ExecuteSelect(sql)
+                    .ExecuteSelect(sql, new Dictionary<string, object[]> {
+                        { "@UserId", new object[2] { SqlDbType.Int, UserId } },
+                    })
                     .Select(result => new User()
                     {
                         UserId = (int)result["UserId"],
@@ -377,6 +379,25 @@ order by Xp desc;
                         Xp = (long)result["Xp"],
                         AvatarExtension = (string)result["AvatarExtension"],
                     });
+        }
+
+        public int GetMyRank(int UserId)
+        {
+            string sql = @"
+select UserId
+from ZAppsUser with(index(IX_ZAppsUser_Xp_Ranking_Index))
+where Xp >= (
+	select Xp
+	from ZAppsUser
+	where UserId = @UserId
+)
+order by Xp desc;
+";
+            return con
+                    .ExecuteSelect(sql, new Dictionary<string, object[]> {
+                        { "@UserId", new object[2] { SqlDbType.Int, UserId } },
+                    })
+                    .FindIndex(result => (int)result["UserId"] == UserId) + 1;
         }
 
         public User GetOtherUserInfo(int UserId)

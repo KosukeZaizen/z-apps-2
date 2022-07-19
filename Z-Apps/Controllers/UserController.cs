@@ -208,6 +208,12 @@ namespace Z_Apps.Controllers
         }
 
         [HttpGet("[action]/")]
+        public int GetMyRank(int userId)
+        {
+            return userService.GetMyRank(userId);
+        }
+
+        [HttpGet("[action]/")]
         public User GetOtherUserInfo(int userId)
         {
             return userService.GetOtherUserInfo(userId);

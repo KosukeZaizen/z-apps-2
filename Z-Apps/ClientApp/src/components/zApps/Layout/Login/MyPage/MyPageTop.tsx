@@ -2,6 +2,7 @@ import Card from "@material-ui/core/Card";
 import Container from "@material-ui/core/Container";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import RunningIcon from "@material-ui/icons/DirectionsRun";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { changeAppState } from "../../../../../common/appState";
@@ -12,6 +13,8 @@ import { ApplicationState } from "../../../../../store/configureStore";
 import * as vocabStore from "../../../../../store/VocabQuizStore";
 import { FullScreenShurikenProgress } from "../../../../shared/Animations/ShurikenProgress";
 import { Link } from "../../../../shared/Link/LinkWithYouTube";
+import { BasicRanking } from "../../../zApps/parts/Ranking/LevelRanking/BasicRanking/BasicRanking";
+import { UserForRanking } from "../../../zApps/parts/Ranking/LevelRanking/types";
 import { useOpenState, useStyles } from "../SignUp/SignUp";
 import { OpenableCard } from "./components/OpenableCard";
 import { XpProgressArea } from "./components/XpProgressBar";
@@ -80,16 +83,30 @@ function Content() {
     );
 }
 
-function RankingAroundMe({ user }: { user: User }) {
+function RankingAroundMe({ user: player }: { user: User }) {
+    const [users, setUsers] = useState<UserForRanking[]>([]);
+    useEffect(() => {
+        fetchUsersAroundMyRank(player.userId).then(u => {
+            setUsers(u);
+        });
+    }, [player]);
+
     return (
         <OpenableCard
             title={`Ranking: `}
             icon={<RunningIcon />}
             saveKey="MypageUserRankingAroundMe"
         >
-            rank
+            <BasicRanking users={users} />
         </OpenableCard>
     );
+}
+
+async function fetchUsersAroundMyRank(
+    userId: number
+): Promise<UserForRanking[]> {
+    const res = await fetch(`api/User/GetUsersAroundMyRank?userId=${userId}`);
+    return res.json();
 }
 
 function ProfileCard({ user }: { user: User }) {
