@@ -5,7 +5,6 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
 import { ReactNode, useEffect, useState } from "react";
 import { sleepAsync } from "../../../../../../common/functions";
-import "../style.css";
 
 export function OpenableCard({
     children,
@@ -82,7 +81,7 @@ export function OpenableCard({
                 </div>
             </div>
 
-            <Collapse in={open} timeout={500} style={{ paddingTop: 10 }}>
+            <Collapse in={open} timeout={500} className={c.collapse}>
                 {children}
             </Collapse>
         </Card>
@@ -159,4 +158,5 @@ const useOpenableCardStyles = makeStyles<
         opacity: open ? 0 : 1,
         lineHeight: 1,
     }),
+    collapse: { paddingTop: 10 },
 }));
