@@ -187,7 +187,7 @@ const Progress = connect(
         <OpenableCard
             title={`Progress: ${totalProgress}%`}
             icon={<RunningIcon />}
-            saveKey="MypageProgressCard"
+            saveKey="MypageProgressPercentageCard"
         >
             <h2 className="progressTitle">{"Your Progress"}</h2>
 
