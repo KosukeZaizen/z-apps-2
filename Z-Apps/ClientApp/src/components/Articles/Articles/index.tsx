@@ -1,10 +1,10 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { Z_APPS_TOP_URL } from "../../../common/consts";
 import { cFetch } from "../../../common/util/cFetch";
 import ShurikenProgress from "../../shared/Animations/ShurikenProgress";
-import { Author, AuthorArea, AuthorCard } from "../../shared/Author";
+import { AuthorArea, AuthorCard } from "../../shared/Author/Author";
+import { Author } from "../../shared/Author/types";
 import CharacterComment from "../../shared/CharacterComment";
 import FB from "../../shared/FaceBook";
 import { AnchorLink, HashScroll } from "../../shared/HashScroll";

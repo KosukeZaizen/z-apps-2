@@ -15,7 +15,7 @@ import * as storiesStore from "../../../../store/StoriesStore";
 import { sentence, word } from "../../../../types/stories";
 import { SeasonAnimation } from "../../../shared/Animations/SeasonAnimation";
 import ShurikenProgress from "../../../shared/Animations/ShurikenProgress";
-import { AuthorArea } from "../../../shared/Author";
+import { AuthorArea } from "../../../shared/Author/Author";
 import CharacterComment from "../../../shared/CharacterComment";
 import FB from "../../../shared/FaceBook";
 // import GoogleAd from "../parts/GoogleAd";

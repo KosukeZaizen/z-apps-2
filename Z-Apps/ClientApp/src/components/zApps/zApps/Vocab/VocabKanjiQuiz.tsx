@@ -19,7 +19,7 @@ import * as vocabStore from "../../../../store/VocabQuizStore";
 import { sound, vocab, vocabGenre } from "../../../../types/vocab";
 import { SeasonAnimation } from "../../../shared/Animations/SeasonAnimation";
 import ShurikenProgress from "../../../shared/Animations/ShurikenProgress";
-import { AuthorArea } from "../../../shared/Author";
+import { AuthorArea } from "../../../shared/Author/Author";
 import CharacterComment from "../../../shared/CharacterComment";
 import { addXp } from "../../../shared/Dialog/ResultXpDialog/addXp";
 import FB from "../../../shared/FaceBook";

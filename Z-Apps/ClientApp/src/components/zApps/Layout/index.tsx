@@ -49,7 +49,7 @@ function Layout({ children, isHeaderShown, isFooterShown }: InnerProps) {
 async function importPanels() {
     // Dynamic import panels
     const PanelComponents = [
-        import("../../shared/Author"),
+        import("../../shared/Author/Author"),
         import("./Login/Panel"),
     ].map(async (p, i) => {
         const { default: Component } = await p;

@@ -6,7 +6,7 @@ import { useAbTest } from "../../../../../common/hooks/useAbTest";
 import { useUser } from "../../../../../common/hooks/useUser";
 import { LazyExecutor, LazyLoad } from "../../../../../common/util/LazyLoad";
 import ShurikenProgress from "../../../../shared/Animations/ShurikenProgress";
-import { AuthorArea } from "../../../../shared/Author";
+import { AuthorArea } from "../../../../shared/Author/Author";
 import { AnchorLink } from "../../../../shared/HashScroll";
 import { Link } from "../../../../shared/Link/LinkWithYouTube";
 import { Markdown } from "../../../../shared/Markdown";

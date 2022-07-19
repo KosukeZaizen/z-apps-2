@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import Button from "reactstrap/lib/Button";
@@ -9,7 +9,7 @@ import { useScreenSize } from "../../../../common/hooks/useScreenSize";
 import { ApplicationState } from "../../../../store/configureStore";
 import * as vocabStore from "../../../../store/VocabQuizStore";
 import { SeasonAnimation } from "../../../shared/Animations/SeasonAnimation";
-import { AuthorArea } from "../../../shared/Author";
+import { AuthorArea } from "../../../shared/Author/Author";
 import CharacterComment from "../../../shared/CharacterComment";
 import FB from "../../../shared/FaceBook";
 import { FolktaleMenu } from "../../../shared/FolktaleMenu";

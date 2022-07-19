@@ -12,7 +12,7 @@ import { spaceBetween } from "../../../../../common/util/Array/spaceBetween";
 import { EasyAudioPlayer } from "../../../../../common/util/Audio/EasyAudioPlayer";
 import { LazyLoad } from "../../../../../common/util/LazyLoad";
 import ShurikenProgress from "../../../../shared/Animations/ShurikenProgress";
-import { AuthorArea } from "../../../../shared/Author";
+import { AuthorArea } from "../../../../shared/Author/Author";
 import { addXp } from "../../../../shared/Dialog/ResultXpDialog/addXp";
 import { HideFooter } from "../../../../shared/HideHeaderAndFooter/HideFooter";
 import { scrollToElement } from "../../../Layout/NavMenu";

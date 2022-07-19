@@ -1,12 +1,11 @@
 import { Input, Tooltip } from "@material-ui/core";
 import PencilIcon from "@material-ui/icons/Create";
 import DeleteIcon from "@material-ui/icons/Delete";
-import * as React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getImgNumber } from ".";
 import ShurikenProgress from "../../shared/Animations/ShurikenProgress";
-import { Author } from "../../shared/Author";
+import { Author } from "../../shared/Author/types";
 import CharacterComment from "../../shared/CharacterComment";
 import FB from "../../shared/FaceBook";
 import { FolktaleMenu } from "../../shared/FolktaleMenu";

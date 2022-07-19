@@ -1,7 +1,6 @@
 import { Card, Tooltip } from "@material-ui/core";
 import Popover from "@material-ui/core/Popover";
 import ArrowForward from "@material-ui/icons/ArrowForward";
-import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { ArticleContent, BreadCrumbs, getIndex } from ".";
@@ -12,7 +11,7 @@ import {
 } from "../../../common/consts";
 import { checkThumbnailExistence } from "../../../common/util/checkThumbnailExistence";
 import ShurikenProgress from "../../shared/Animations/ShurikenProgress";
-import { Author } from "../../shared/Author";
+import { Author } from "../../shared/Author/types";
 import Head from "../../shared/Helmet";
 import { Markdown } from "../../shared/Markdown";
 import { checkImgExtension } from "../../shared/Markdown/ImageRender";
