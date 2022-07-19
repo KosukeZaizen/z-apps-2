@@ -42,6 +42,8 @@ export const EllipsisLabel = ({
         <Tooltip
             title={title}
             disableHoverListener={!isOverflowed}
+            disableTouchListener={!isOverflowed}
+            disableFocusListener={!isOverflowed}
             placement={placement}
         >
             <div ref={textElementRef} className={c.div} style={style}>
