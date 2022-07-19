@@ -338,6 +338,47 @@ order by Xp desc;
                     });
         }
 
+        public IEnumerable<User> GetUsersAroundMyRank(int UserId)
+        {
+            string sql = @"
+select * from (
+	select * from (
+		select top(21)
+		UserId, Name, Xp, AvatarExtension
+		from ZAppsUser with(index(IX_ZAppsUser_Xp_Ranking_Index))
+		where Xp >= (
+			select Xp
+			from ZAppsUser
+			where UserId = @UserId
+		)
+		order by Xp asc
+	) as Upper
+	union
+	select * from (
+		select top(20)
+		UserId, Name, Xp, AvatarExtension
+		from ZAppsUser with(index(IX_ZAppsUser_Xp_Ranking_Index))
+		where Xp < (
+			select Xp
+			from ZAppsUser
+			where UserId = @UserId
+		)
+		order by Xp desc
+	) as Lower
+) as AroundMe
+order by Xp desc;
+";
+            return con
+                    .ExecuteSelect(sql)
+                    .Select(result => new User()
+                    {
+                        UserId = (int)result["UserId"],
+                        Name = (string)result["Name"],
+                        Xp = (long)result["Xp"],
+                        AvatarExtension = (string)result["AvatarExtension"],
+                    });
+        }
+
         public User GetOtherUserInfo(int UserId)
         {
             string sql = @"
