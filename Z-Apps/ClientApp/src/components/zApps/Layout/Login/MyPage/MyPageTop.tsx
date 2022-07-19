@@ -146,8 +146,6 @@ const Progress = connect(
         actionGameProgress,
     } = useProgress(loadAllGenres, allGenres);
 
-    const c = useStatusCardStyles();
-
     const tableContents: {
         name: string;
         link: string;
