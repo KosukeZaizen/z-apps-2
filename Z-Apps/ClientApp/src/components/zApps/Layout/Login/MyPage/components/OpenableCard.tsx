@@ -165,5 +165,10 @@ const useOpenableCardStyles = makeStyles<
         opacity: open ? 0 : 1,
         lineHeight: 1,
     }),
-    collapse: { paddingTop: 10 },
+    collapse: {
+        paddingTop: 10,
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+    },
 }));

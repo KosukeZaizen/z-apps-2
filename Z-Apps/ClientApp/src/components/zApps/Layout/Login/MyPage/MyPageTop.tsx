@@ -71,8 +71,8 @@ function Content() {
     return (
         <div className={classes.paper}>
             <ProfileCard user={user} />
-            <Progress />
             <RankingAroundMe user={user} />
+            <Progress />
             <button
                 className="btn btn-dark btn-block logoutButton"
                 onClick={logout}
@@ -87,6 +87,7 @@ function RankingAroundMe({ user: player }: { user: User }) {
     const [users, setUsers] = useState<UserForRanking[]>([]);
     const [myRank, setMyRank] = useState(0);
     const [open, setOpen] = useState(false);
+    const { screenWidth } = useScreenSize();
 
     useEffect(() => {
         if (open) {
@@ -109,7 +110,27 @@ function RankingAroundMe({ user: player }: { user: User }) {
             open={open}
             setOpen={setOpen}
         >
-            <BasicRanking users={users} />
+            {users.length > 0 && (
+                <div
+                    style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                    }}
+                >
+                    <div
+                        style={{
+                            width: "calc(100% - 5px)",
+                            marginBottom:
+                                screenWidth > 480
+                                    ? undefined
+                                    : Math.max(-35, -(480 - screenWidth) / 2),
+                        }}
+                    >
+                        <BasicRanking users={users} />
+                    </div>
+                </div>
+            )}
         </OpenableCard>
     );
 }
