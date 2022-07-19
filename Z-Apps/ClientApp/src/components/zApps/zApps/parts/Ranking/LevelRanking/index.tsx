@@ -1,9 +1,9 @@
 import { Collapse, makeStyles, Theme } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import { useEffect, useMemo, useState } from "react";
-import { changeAppState } from "../../../../../../common/appState";
 import { useUser } from "../../../../../../common/hooks/useUser";
 import { BasicRankingRecord } from "./BasicRankingRecord";
+import { RankingRecordContainer } from "./RankingRecordContainer";
 import { TopRankingRecord } from "./TopRankingRecord";
 import { UserForRanking } from "./types";
 
@@ -41,21 +41,27 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
             <div className={c.container}>
                 <Card className={c.topRankingCard}>
                     {topUsers.map((user, i) => (
-                        <RecordContainer key={user.userId} userId={user.userId}>
+                        <RankingRecordContainer
+                            key={user.userId}
+                            userId={user.userId}
+                        >
                             <TopRankingRecord
                                 user={user}
                                 rank={i + 1}
                                 isWide={isWide}
                                 isVeryWide={isVeryWide}
                             />
-                        </RecordContainer>
+                        </RankingRecordContainer>
                     ))}
                 </Card>
                 <Card className={c.basicRankingCard}>
                     {normalUsers.map((user, i) => (
-                        <RecordContainer key={user.userId} userId={user.userId}>
+                        <RankingRecordContainer
+                            key={user.userId}
+                            userId={user.userId}
+                        >
                             <BasicRankingRecord user={user} rank={i + 4} />
-                        </RecordContainer>
+                        </RankingRecordContainer>
                     ))}
                 </Card>
             </div>
@@ -91,25 +97,4 @@ const useStyles = makeStyles<Theme, { isWide: boolean }>(theme => ({
 async function fetchUsersForRanking(): Promise<UserForRanking[]> {
     const res = await fetch("api/User/GetUsersForRanking");
     return res.json();
-}
-
-function RecordContainer({
-    userId,
-    children,
-}: {
-    userId: number;
-    children: JSX.Element;
-}) {
-    return (
-        <div
-            onClick={() => {
-                changeAppState("otherUserPanelState", {
-                    targetUserId: userId,
-                });
-            }}
-            className="hoverScale05 pointer"
-        >
-            {children}
-        </div>
-    );
 }
