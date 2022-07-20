@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { changeAppState, useAppState } from "../../../../common/appState";
 import { RightPanel } from "../../../shared/Panel/RightPanel";
-import { MyPageTop } from "./MyPage/MyPageTop";
+import { MyPageTop } from "./MyPage/MyPageTop/MyPageTop";
 import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp/SignUp";
-
-export type SignInPanelState = "signIn" | "signUp" | "myPageTop" | "close";
+import { SignInPanelState } from "./types";
 
 export const signInPanelWidth = 500;
 
@@ -13,18 +12,23 @@ export default function SignInPanel() {
     const [panelState, setIsPanelOpen] = useAppState("signInPanelState");
     return (
         <RightPanel
-            open={panelState !== "close"}
+            open={panelState.type !== "close"}
             onClose={() => {
-                setIsPanelOpen("close");
+                setIsPanelOpen({ type: "close" });
             }}
             panelWidth={signInPanelWidth}
         >
-            <PanelContent type={panelState} />
+            <PanelContent panelState={panelState} />
         </RightPanel>
     );
 }
 
-function PanelContent({ type }: { type: SignInPanelState }) {
+function PanelContent({
+    panelState: { type },
+    panelState,
+}: {
+    panelState: SignInPanelState;
+}) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [user] = useAppState("user");
@@ -33,7 +37,7 @@ function PanelContent({ type }: { type: SignInPanelState }) {
         if (type === "signUp" || type === "signIn") {
             if (user) {
                 // If already logged in, open my page
-                changeAppState("signInPanelState", "myPageTop");
+                changeAppState("signInPanelState", { type: "myPageTop" });
             }
         }
     }, [user, type]);
@@ -66,6 +70,7 @@ function PanelContent({ type }: { type: SignInPanelState }) {
             <MyPageTop
                 chosen={type === "myPageTop"}
                 panelClosed={panelClosed}
+                panelState={panelState}
             />
         </div>
     );

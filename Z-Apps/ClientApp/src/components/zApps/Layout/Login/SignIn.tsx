@@ -161,10 +161,9 @@ export function SignIn({
                                 href="#"
                                 onClick={ev => {
                                     ev.preventDefault();
-                                    changeAppState(
-                                        "signInPanelState",
-                                        "signUp"
-                                    );
+                                    changeAppState("signInPanelState", {
+                                        type: "signUp",
+                                    });
                                 }}
                             >
                                 {"Don't have an account? Sign Up"}
@@ -205,7 +204,7 @@ function getSubmissionError(error: string): ReactNode {
                     href="#"
                     onClick={ev => {
                         ev.preventDefault();
-                        changeAppState("signInPanelState", "signUp");
+                        changeAppState("signInPanelState", { type: "signUp" });
                     }}
                 >
                     create a new account

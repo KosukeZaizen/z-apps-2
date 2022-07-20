@@ -232,10 +232,12 @@ function LoginIcon({
                 className={spaceBetween(c.container, transitionClass)}
                 onClick={() => {
                     if (user) {
-                        changeAppState("signInPanelState", "myPageTop");
+                        changeAppState("signInPanelState", {
+                            type: "myPageTop",
+                        });
                         return;
                     }
-                    changeAppState("signInPanelState", "signUp");
+                    changeAppState("signInPanelState", { type: "signUp" });
                 }}
             >
                 {user?.avatarPath ? (

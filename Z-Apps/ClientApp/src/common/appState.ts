@@ -3,7 +3,7 @@ import {
     AuthorPanelState,
     initialAuthorPanelState,
 } from "../components/shared/Author/types";
-import { SignInPanelState } from "../components/zApps/Layout/Login/Panel";
+import { SignInPanelState } from "../components/zApps/Layout/Login/types";
 import { User } from "./hooks/useUser";
 
 type AppState = {
@@ -25,7 +25,7 @@ const appState: AppState = {
         screenWidth: window.innerWidth,
         screenHeight: window.innerHeight,
     },
-    signInPanelState: "close",
+    signInPanelState: { type: "close" },
     authorPanelState: initialAuthorPanelState,
     user: undefined,
     otherUserPanelState: "closed",

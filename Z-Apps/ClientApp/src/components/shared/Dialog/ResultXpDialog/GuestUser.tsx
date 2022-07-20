@@ -189,7 +189,9 @@ function ResultXpDialog_GuestUser({
                         className={"btn btn-primary btn-lg"}
                         onClick={ev => {
                             ev.stopPropagation();
-                            changeAppState("signInPanelState", "signUp");
+                            changeAppState("signInPanelState", {
+                                type: "signUp",
+                            });
                             abTestSuccess();
                             onClose();
                         }}

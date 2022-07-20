@@ -5,9 +5,16 @@ import { useScreenSize } from "../../../../../../../common/hooks/useScreenSize";
 import { User } from "../../../../../../../common/hooks/useUser";
 import { BasicRanking } from "../../../../../zApps/parts/Ranking/LevelRanking/BasicRanking/BasicRanking";
 import { UserForRanking } from "../../../../../zApps/parts/Ranking/LevelRanking/types";
+import { InitialView } from "../../MyPageTop/types";
 import { OpenableCard } from "../OpenableCard";
 
-export function RankingAroundMe({ user: player }: { user: User }) {
+export function RankingAroundMe({
+    user: player,
+    initialView,
+}: {
+    user: User;
+    initialView?: InitialView;
+}) {
     const [users, setUsers] = useState<UserForRanking[]>([]);
     const [myRank, setMyRank] = useState(0);
     const [initialRank, setInitialRank] = useState<number | undefined>(
@@ -33,10 +40,12 @@ export function RankingAroundMe({ user: player }: { user: User }) {
             title={`Ranking: ${myRank}`}
             icon={<TrendingUpIcon />}
             saveKey="MypageUserRankingAroundMe"
+            id="MypageUserRankingAroundMe"
             open={open}
             setOpen={setOpen}
             alwaysShowIcon
             alwaysShowTitle
+            initiallyOpenedId={initialView}
         >
             <div className={c.container}>
                 <div className={c.rankingWrapper}>

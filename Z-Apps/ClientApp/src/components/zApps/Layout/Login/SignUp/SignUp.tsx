@@ -192,10 +192,9 @@ export function SignUp({
                                 href="#"
                                 onClick={ev => {
                                     ev.preventDefault();
-                                    changeAppState(
-                                        "signInPanelState",
-                                        "signIn"
-                                    );
+                                    changeAppState("signInPanelState", {
+                                        type: "signIn",
+                                    });
                                 }}
                             >
                                 Already have an account? Sign in
@@ -522,7 +521,7 @@ function getSubmissionError(
                     onClick={ev => {
                         ev.preventDefault();
                         setSignInEmail();
-                        changeAppState("signInPanelState", "signIn");
+                        changeAppState("signInPanelState", { type: "signIn" });
                     }}
                     className="bold"
                 >

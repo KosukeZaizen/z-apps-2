@@ -4,5 +4,5 @@ import { mergeLocalStorageAndSavedUserData } from "./progressManager";
 
 export async function loginSuccess(user: User) {
     await mergeLocalStorageAndSavedUserData(user);
-    changeAppState("signInPanelState", "myPageTop");
+    changeAppState("signInPanelState", { type: "myPageTop" });
 }

@@ -279,7 +279,7 @@ function SignUpButton({
         <button
             className="btn btn-primary"
             onClick={() => {
-                changeAppState("signInPanelState", "signUp");
+                changeAppState("signInPanelState", { type: "signUp" });
                 abTestSuccess();
             }}
         >

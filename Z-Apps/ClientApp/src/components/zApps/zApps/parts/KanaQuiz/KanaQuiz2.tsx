@@ -335,7 +335,7 @@ function SignUpButton({ kanaType }: { kanaType: KanaType }) {
         <button
             className="btn btn-dark btn-lg not-square"
             onClick={() => {
-                changeAppState("signInPanelState", "signUp");
+                changeAppState("signInPanelState", { type: "signUp" });
                 abTestSuccess();
             }}
             style={{ margin: "15px 0", width: "calc(100% - 30px)" }}

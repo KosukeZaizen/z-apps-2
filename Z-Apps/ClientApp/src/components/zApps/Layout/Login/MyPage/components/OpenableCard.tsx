@@ -3,9 +3,10 @@ import Card from "@material-ui/core/Card";
 import Collapse from "@material-ui/core/Collapse";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { sleepAsync } from "../../../../../../common/functions";
 import { spaceBetween } from "../../../../../../common/util/Array/spaceBetween";
+import { OpenableCardId } from "../MyPageTop/types";
 
 export function OpenableCard({
     children,
@@ -17,6 +18,8 @@ export function OpenableCard({
     setOpen,
     alwaysShowIcon,
     alwaysShowTitle,
+    id,
+    initiallyOpenedId,
 }: {
     children: ReactNode;
     buttonMessage?: string;
@@ -27,6 +30,8 @@ export function OpenableCard({
     setOpen: (open: boolean) => void;
     alwaysShowIcon?: boolean;
     alwaysShowTitle?: boolean;
+    id: OpenableCardId;
+    initiallyOpenedId?: OpenableCardId;
 }) {
     const saveKey = "OpenableCard-status-" + _saveKey;
     const [isTitleShown, setTitleShown] = useState(!open);
@@ -71,8 +76,17 @@ export function OpenableCard({
         localStorage.setItem(saveKey, open ? "open" : "close");
     }, [open]);
 
+    const cardRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        if (!cardRef.current || id !== initiallyOpenedId) {
+            return;
+        }
+        cardRef.current.scrollIntoView({ behavior: "smooth" });
+        openCollapse();
+    }, [id, initiallyOpenedId]);
+
     return (
-        <Card className={c.card} onClick={openCollapse}>
+        <Card className={c.card} onClick={openCollapse} ref={cardRef}>
             <div className={c.closedContainer}>
                 <div className={c.title}>{title}</div>
                 <div className={c.buttonsContainer}>

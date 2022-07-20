@@ -6,31 +6,35 @@ import RunningIcon from "@material-ui/icons/DirectionsRun";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { changeAppState } from "../../../../../common/appState";
-import { useScreenSize } from "../../../../../common/hooks/useScreenSize";
-import { User, useUser } from "../../../../../common/hooks/useUser";
-import { spaceBetween } from "../../../../../common/util/Array/spaceBetween";
-import { ApplicationState } from "../../../../../store/configureStore";
-import * as vocabStore from "../../../../../store/VocabQuizStore";
-import { FullScreenShurikenProgress } from "../../../../shared/Animations/ShurikenProgress";
-import { Link } from "../../../../shared/Link/LinkWithYouTube";
-import { useOpenState, useStyles } from "../SignUp/SignUp";
-import { OpenableCard } from "./components/OpenableCard";
-import { RankingAroundMe } from "./components/RankingAroudMe/RankingAroudMe";
-import { XpProgressArea } from "./components/XpProgressBar";
-import { AvatarField } from "./Fields/AvatarField";
-import { BioField } from "./Fields/BioField";
-import { UsernameField } from "./Fields/UsernameField";
-import { clearLocalStorageData } from "./progressManager";
-import "./style.css";
-import { useProgress } from "./useProgress";
+import { changeAppState } from "../../../../../../common/appState";
+import { useScreenSize } from "../../../../../../common/hooks/useScreenSize";
+import { User, useUser } from "../../../../../../common/hooks/useUser";
+import { spaceBetween } from "../../../../../../common/util/Array/spaceBetween";
+import { ApplicationState } from "../../../../../../store/configureStore";
+import * as vocabStore from "../../../../../../store/VocabQuizStore";
+import { FullScreenShurikenProgress } from "../../../../../shared/Animations/ShurikenProgress";
+import { Link } from "../../../../../shared/Link/LinkWithYouTube";
+import { useOpenState, useStyles } from "../../SignUp/SignUp";
+import { SignInPanelState } from "../../types";
+import { OpenableCard } from "../components/OpenableCard";
+import { RankingAroundMe } from "../components/RankingAroundMe/RankingAroundMe";
+import { XpProgressArea } from "../components/XpProgressBar";
+import { AvatarField } from "../Fields/AvatarField";
+import { BioField } from "../Fields/BioField";
+import { UsernameField } from "../Fields/UsernameField";
+import { clearLocalStorageData } from "../progressManager";
+import "../style.css";
+import { useProgress } from "../useProgress";
+import { InitialView } from "./types";
 
 export function MyPageTop({
     chosen,
     panelClosed,
+    panelState,
 }: {
     chosen: boolean;
     panelClosed: boolean;
+    panelState: SignInPanelState;
 }) {
     const { partiallyOpened, completelyOpened } = useOpenState(chosen);
     const c = useContainerStyles({ panelClosed, completelyOpened, chosen });
@@ -40,7 +44,13 @@ export function MyPageTop({
 
     return (
         <Container component="div" className={c.container} key="MyPageTop">
-            <Content />
+            <Content
+                initialView={
+                    panelState.type === "myPageTop"
+                        ? panelState.initialView
+                        : undefined
+                }
+            />
         </Container>
     );
 }
@@ -55,7 +65,7 @@ const useContainerStyles = makeStyles<
     }),
 });
 
-function Content() {
+function Content({ initialView }: { initialView?: InitialView }) {
     const classes = useStyles();
     const contentClasses = contentStyles();
     const { screenHeight } = useScreenSize();
@@ -73,8 +83,8 @@ function Content() {
         <div className={classes.paper}>
             <ProfileCard user={user} />
 
-            <RankingAroundMe user={user} />
-            <Progress />
+            <RankingAroundMe user={user} initialView={initialView} />
+            <Progress initialView={initialView} />
 
             <Button
                 onClick={logout}
@@ -137,7 +147,7 @@ function logout() {
         return;
     }
 
-    changeAppState("signInPanelState", "signIn");
+    changeAppState("signInPanelState", { type: "signIn" });
 
     fetch("api/Auth/Logout", {
         headers: {
@@ -151,7 +161,7 @@ function logout() {
     clearLocalStorageData();
 }
 
-type CardsOuterProps = {};
+type CardsOuterProps = { initialView?: InitialView };
 type CardsInnerProps = CardsOuterProps &
     vocabStore.IVocabQuizState &
     vocabStore.ActionCreators;
@@ -159,7 +169,7 @@ type CardsInnerProps = CardsOuterProps &
 const Progress = connect(
     (state: ApplicationState) => state.vocabQuiz,
     dispatch => bindActionCreators(vocabStore.actionCreators, dispatch)
-)(function ({ loadAllGenres, allGenres }: CardsInnerProps) {
+)(function ({ loadAllGenres, allGenres, initialView }: CardsInnerProps) {
     const {
         hiraganaProgress,
         katakanaProgress,
@@ -212,8 +222,10 @@ const Progress = connect(
             title={`Progress: ${totalProgress}%`}
             icon={<RunningIcon />}
             saveKey="MypageProgressPercentageCard"
+            id="MypageProgressPercentageCard"
             open={open}
             setOpen={setOpen}
+            initiallyOpenedId={initialView}
         >
             <h2 className="progressTitle">{"Your Progress"}</h2>
 
@@ -239,5 +251,5 @@ const Progress = connect(
     );
 });
 const onClickProgressLink = () => {
-    changeAppState("signInPanelState", "close");
+    changeAppState("signInPanelState", { type: "close" });
 };
