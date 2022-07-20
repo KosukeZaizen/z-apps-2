@@ -1,5 +1,5 @@
 import Card from "@material-ui/core/Card";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import { useEffect, useRef } from "react";
 import { User } from "../../../../../../../common/hooks/useUser";
 import { EllipsisLabel } from "../../../../../../shared/EllipsisLabel/EllipsisLabel";
@@ -17,14 +17,15 @@ export function BasicRankingRecord({
     player?: User;
     scrollableContainer: HTMLDivElement | null;
 }) {
-    const c = useStyles();
+    const isMyself = user.userId === player?.userId;
+    const c = useStyles({ isMyself });
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!ref.current || !scrollableContainer) {
             return;
         }
-        if (user.userId === player?.userId) {
+        if (isMyself) {
             scrollableContainer.scrollTo({
                 top: ref.current.offsetTop - 4,
                 behavior: "smooth",
@@ -48,13 +49,16 @@ export function BasicRankingRecord({
     );
 }
 
-const useStyles = makeStyles(() => ({
-    card: {
+const useStyles = makeStyles<Theme, { isMyself: boolean }>(({ palette }) => ({
+    card: ({ isMyself }) => ({
         margin: 5,
         display: "flex",
         padding: 5,
         height: 50,
-    },
+        border: isMyself ? "solid" : undefined,
+        fontWeight: isMyself ? "bold" : undefined,
+        borderColor: isMyself ? palette.primary.main : undefined,
+    }),
     rankAndAvatar: {
         display: "flex",
         alignItems: "center",
