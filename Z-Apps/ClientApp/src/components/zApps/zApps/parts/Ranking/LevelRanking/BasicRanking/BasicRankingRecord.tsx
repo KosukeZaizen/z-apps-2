@@ -34,7 +34,7 @@ export function BasicRankingRecord({
     }, [player, user, scrollableContainer]);
 
     return (
-        <Card className={c.card} id={`ranking-record-${user.userId}`} ref={ref}>
+        <Card className={c.card} ref={ref}>
             <div className={c.rankAndAvatar}>
                 <div className={c.rank}>{rank}.</div>
                 <UserAvatar user={user} colorNumber={rank} size={40} />
