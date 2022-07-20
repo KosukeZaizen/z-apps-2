@@ -16,12 +16,17 @@ export async function addRegisteredUserXp(params: AddXpParams, user: User) {
     setRegisteredUserResultDialogState(params);
 
     // Check isLevelUp
-    const { user: newUser, levelUp } = await fetchAddXp(
-        params.xpToAdd,
-        user.userId
-    );
+    const {
+        user: newUser,
+        levelUp,
+        myRank,
+    } = await fetchAddXp(params.xpToAdd, user.userId);
     changeAppState("user", newUser);
-    setRegisteredUserResultDialogState({ ...params, isLevelUp: levelUp });
+    setRegisteredUserResultDialogState({
+        ...params,
+        isLevelUp: levelUp,
+        myRank,
+    });
 }
 
 const initialState = {
@@ -53,7 +58,8 @@ export default function ResultXpDialogWrapper() {
         });
     }, [_state]);
 
-    const { onCloseCallBack, xpToAdd, topSmallMessage, isLevelUp } = lazyState;
+    const { onCloseCallBack, xpToAdd, topSmallMessage, isLevelUp, myRank } =
+        lazyState;
 
     return (
         <ResultXpDialog_RegisteredUser
@@ -65,6 +71,7 @@ export default function ResultXpDialogWrapper() {
             xpToAdd={xpToAdd}
             topSmallMessage={topSmallMessage}
             isLevelUp={isLevelUp}
+            myRank={myRank}
         />
     );
 }
@@ -75,12 +82,14 @@ function ResultXpDialog_RegisteredUser({
     xpToAdd,
     topSmallMessage,
     isLevelUp,
+    myRank,
 }: {
     open: boolean;
     onClose: () => void;
     xpToAdd: number;
     topSmallMessage: ReactNode;
     isLevelUp?: boolean;
+    myRank?: number;
 }) {
     const c = useRegisteredUserResultDialogStyles();
     const { user } = useUser();
@@ -108,6 +117,21 @@ function ResultXpDialog_RegisteredUser({
                 <Card className={c.progressCard}>
                     <h2 className={c.level}>Level: {user?.level}</h2>
                     <XpProgressArea />
+                    <div className={c.rakingContainer}>
+                        <a
+                            href="#"
+                            onClick={ev => {
+                                ev.preventDefault();
+                                ev.stopPropagation();
+                                changeAppState("signInPanelState", {
+                                    type: "myPageTop",
+                                    initialView: "MypageUserRankingAroundMe",
+                                });
+                            }}
+                        >
+                            {`Your ranking is ${myRank} >>`}
+                        </a>
+                    </div>
                 </Card>
 
                 <div>
@@ -135,7 +159,7 @@ const useRegisteredUserResultDialogStyles = makeStyles(theme => ({
     },
     xp: { color: theme.palette.secondary.main, marginBottom: 0 },
     progressCard: {
-        padding: "20px 30px 30px",
+        padding: "20px 30px 22px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -155,12 +179,13 @@ const useRegisteredUserResultDialogStyles = makeStyles(theme => ({
         padding: 5,
         transform: "rotate(-15deg)",
     },
+    rakingContainer: { marginTop: 8 },
 }));
 
 async function fetchAddXp(
     xpToAdd: number,
     userId: number
-): Promise<{ user: User; levelUp: boolean }> {
+): Promise<{ user: User; levelUp: boolean; myRank: number }> {
     const formData = new FormData();
     formData.append("xpToAdd", xpToAdd.toString());
     formData.append("userId", userId.toString());

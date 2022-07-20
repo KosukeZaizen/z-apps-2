@@ -71,7 +71,8 @@ namespace Z_Apps.Controllers
             return Ok(new
             {
                 user = user,
-                levelUp = levelUp
+                levelUp = levelUp,
+                myRank = GetMyRank(userId),
             });
         }
 

@@ -13,6 +13,7 @@ export type RegisteredUserXpDialogState =
           xpToAdd: number;
           topSmallMessage: ReactNode;
           isLevelUp?: boolean;
+          myRank?: number;
       }
     | "close";
 
