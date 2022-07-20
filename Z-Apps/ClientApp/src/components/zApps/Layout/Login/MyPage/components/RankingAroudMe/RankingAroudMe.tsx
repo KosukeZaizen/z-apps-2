@@ -10,6 +10,9 @@ import { OpenableCard } from "../OpenableCard";
 export function RankingAroundMe({ user: player }: { user: User }) {
     const [users, setUsers] = useState<UserForRanking[]>([]);
     const [myRank, setMyRank] = useState(0);
+    const [initialRank, setInitialRank] = useState<number | undefined>(
+        undefined
+    );
     const [open, setOpen] = useState(false);
     const { screenWidth } = useScreenSize();
 
@@ -17,6 +20,9 @@ export function RankingAroundMe({ user: player }: { user: User }) {
         fetchUsersAroundMyRank(player.userId).then(({ users, myRank }) => {
             setUsers(users);
             setMyRank(myRank);
+            setInitialRank(
+                myRank - users.findIndex(u => u.userId === player.userId)
+            );
         });
     }, [player]);
 
@@ -34,7 +40,11 @@ export function RankingAroundMe({ user: player }: { user: User }) {
         >
             <div className={c.container}>
                 <div className={c.rankingWrapper}>
-                    <BasicRanking users={users} player={player} />
+                    <BasicRanking
+                        users={users}
+                        player={player}
+                        initialRank={initialRank}
+                    />
                 </div>
             </div>
         </OpenableCard>

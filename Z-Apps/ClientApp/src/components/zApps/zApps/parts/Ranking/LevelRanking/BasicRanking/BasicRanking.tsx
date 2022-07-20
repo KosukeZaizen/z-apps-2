@@ -9,9 +9,11 @@ import { BasicRankingRecord } from "./BasicRankingRecord";
 export function BasicRanking({
     users,
     player,
+    initialRank = 4,
 }: {
     users: UserForRanking[];
     player?: User;
+    initialRank?: number;
 }) {
     const c = useStyles();
     const scrollableContainerRef = useRef<HTMLDivElement>(null);
@@ -22,7 +24,7 @@ export function BasicRanking({
                 <RankingRecordContainer key={user.userId} userId={user.userId}>
                     <BasicRankingRecord
                         user={user}
-                        rank={i + 4}
+                        rank={i + initialRank}
                         player={player}
                         scrollableContainer={scrollableContainerRef.current}
                     />
