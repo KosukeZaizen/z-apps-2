@@ -3,8 +3,7 @@ import Card from "@material-ui/core/Card";
 import Container from "@material-ui/core/Container";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import RunningIcon from "@material-ui/icons/DirectionsRun";
-import TrendingUpIcon from "@material-ui/icons/TrendingUp";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { changeAppState } from "../../../../../common/appState";
@@ -15,10 +14,9 @@ import { ApplicationState } from "../../../../../store/configureStore";
 import * as vocabStore from "../../../../../store/VocabQuizStore";
 import { FullScreenShurikenProgress } from "../../../../shared/Animations/ShurikenProgress";
 import { Link } from "../../../../shared/Link/LinkWithYouTube";
-import { BasicRanking } from "../../../zApps/parts/Ranking/LevelRanking/BasicRanking/BasicRanking";
-import { UserForRanking } from "../../../zApps/parts/Ranking/LevelRanking/types";
 import { useOpenState, useStyles } from "../SignUp/SignUp";
 import { OpenableCard } from "./components/OpenableCard";
+import { RankingAroundMe } from "./components/RankingAroudMe/RankingAroudMe";
 import { XpProgressArea } from "./components/XpProgressBar";
 import { AvatarField } from "./Fields/AvatarField";
 import { BioField } from "./Fields/BioField";
@@ -99,72 +97,6 @@ const contentStyles = makeStyles(({ palette }) => ({
     },
 }));
 
-function RankingAroundMe({ user: player }: { user: User }) {
-    const [users, setUsers] = useState<UserForRanking[]>([]);
-    const [myRank, setMyRank] = useState(0);
-    const [open, setOpen] = useState(false);
-    const { screenWidth } = useScreenSize();
-
-    useEffect(() => {
-        if (open) {
-            fetchUsersAroundMyRank(player.userId).then(({ users, myRank }) => {
-                setUsers(users);
-                setMyRank(myRank);
-            });
-            return;
-        }
-        fetchMyRank(player.userId).then(myRank => {
-            setMyRank(myRank);
-        });
-    }, [player, open]);
-
-    return (
-        <OpenableCard
-            title={`Ranking: ${myRank}`}
-            icon={<TrendingUpIcon />}
-            saveKey="MypageUserRankingAroundMe"
-            open={open}
-            setOpen={setOpen}
-            alwaysShowIcon
-            alwaysShowTitle
-        >
-            {users.length > 0 && (
-                <div
-                    style={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                    }}
-                >
-                    <div
-                        style={{
-                            width: "calc(100% - 5px)",
-                            marginBottom:
-                                screenWidth > 480
-                                    ? undefined
-                                    : Math.max(-35, -(480 - screenWidth) / 2),
-                        }}
-                    >
-                        <BasicRanking users={users} />
-                    </div>
-                </div>
-            )}
-        </OpenableCard>
-    );
-}
-
-async function fetchUsersAroundMyRank(
-    userId: number
-): Promise<{ users: UserForRanking[]; myRank: number }> {
-    const res = await fetch(`api/User/GetUsersAroundMyRank?userId=${userId}`);
-    return res.json();
-}
-
-async function fetchMyRank(userId: number): Promise<number> {
-    const res = await fetch(`api/User/GetMyRank?userId=${userId}`);
-    return res.json();
-}
-
 function ProfileCard({ user }: { user: User }) {
     const c = useStatusCardStyles();
 
@@ -201,6 +133,10 @@ const useStatusCardStyles = makeStyles({
 });
 
 function logout() {
+    if (!confirm("Do you really want to logout?")) {
+        return;
+    }
+
     changeAppState("signInPanelState", "signIn");
 
     fetch("api/Auth/Logout", {
