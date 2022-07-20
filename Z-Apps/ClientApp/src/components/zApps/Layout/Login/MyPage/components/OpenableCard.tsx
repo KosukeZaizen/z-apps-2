@@ -113,7 +113,7 @@ const useOpenableCardStyles = makeStyles<
         height: open || !isTitleShown ? undefined : 40,
         width: "100%",
         fontSize: "large",
-        margin: "10px 0",
+        margin: "5px 0",
         padding: open ? 30 : 15,
         display: "flex",
         flexDirection: "column",

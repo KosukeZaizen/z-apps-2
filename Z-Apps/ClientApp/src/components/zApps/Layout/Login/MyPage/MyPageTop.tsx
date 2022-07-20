@@ -1,3 +1,4 @@
+import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import Container from "@material-ui/core/Container";
 import { makeStyles, Theme } from "@material-ui/core/styles";
@@ -58,6 +59,7 @@ const useContainerStyles = makeStyles<
 
 function Content() {
     const classes = useStyles();
+    const contentClasses = contentStyles();
     const { screenHeight } = useScreenSize();
     const { user } = useUser();
 
@@ -72,17 +74,30 @@ function Content() {
     return (
         <div className={classes.paper}>
             <ProfileCard user={user} />
+
             <RankingAroundMe user={user} />
             <Progress />
-            <button
-                className="btn btn-dark btn-block logoutButton"
+
+            <Button
                 onClick={logout}
+                fullWidth
+                className={contentClasses.logoutButton}
             >
                 Logout
-            </button>
+            </Button>
         </div>
     );
 }
+const contentStyles = makeStyles(({ palette }) => ({
+    logoutButton: {
+        marginTop: 15,
+        backgroundColor: palette.grey[800],
+        "&:hover": {
+            backgroundColor: palette.grey[700],
+        },
+        color: "white",
+    },
+}));
 
 function RankingAroundMe({ user: player }: { user: User }) {
     const [users, setUsers] = useState<UserForRanking[]>([]);
