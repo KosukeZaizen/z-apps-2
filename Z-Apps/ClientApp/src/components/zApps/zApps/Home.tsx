@@ -400,6 +400,9 @@ const useCardsStyles = makeStyles(() => ({
         margin: 5,
         flex: 1,
         textDecoration: "none",
+        "&:hover": {
+            textDecoration: "none",
+        },
     },
     kanaCard: {
         backgroundColor: "#333",
