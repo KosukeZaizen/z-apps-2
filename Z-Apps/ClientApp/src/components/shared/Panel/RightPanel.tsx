@@ -132,6 +132,8 @@ const useStyles = makeStyles<
             backgroundColor: palette.success.light,
         },
         color: "white",
+        lineHeight: 1,
+        padding: 0,
     },
     closeIcon: { width: 20, height: 20 },
     childrenContainer: {

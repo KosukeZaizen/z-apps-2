@@ -1,4 +1,4 @@
-import { Card, makeStyles } from "@material-ui/core";
+import { Button, Card, makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { CSSProperties, ReactNode, useEffect, useState } from "react";
 import { spaceBetween } from "../../../common/util/Array/spaceBetween";
@@ -62,15 +62,10 @@ export function CenterDialog({
         >
             <Card className={c.card} style={style}>
                 {!withoutCloseButton && (
-                    <button
-                        className="btn btn-success"
+                    <Button
+                        variant="contained"
+                        className={c.closeButton}
                         style={{
-                            width: 28,
-                            height: 28,
-                            borderRadius: "50%",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
                             marginLeft: "auto",
                             marginTop: 3,
                             marginRight: 3,
@@ -78,7 +73,7 @@ export function CenterDialog({
                         onClick={onClose}
                     >
                         <CloseIcon className={c.closeIcon} />
-                    </button>
+                    </Button>
                 )}
                 {children}
             </Card>
@@ -86,7 +81,7 @@ export function CenterDialog({
     );
 }
 
-const useResultDialogStyles = makeStyles(() => ({
+const useResultDialogStyles = makeStyles(({ palette }) => ({
     darkLayer: {
         position: "fixed",
         top: 0,
@@ -108,6 +103,26 @@ const useResultDialogStyles = makeStyles(() => ({
         maxHeight: 350,
         backgroundColor: "white",
         borderRadius: 16,
+    },
+    closeButton: {
+        borderRadius: "50%",
+        maxWidth: 28,
+        maxHeight: 28,
+        minWidth: 28,
+        minHeight: 28,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: palette.success.main,
+        "&:hover": {
+            backgroundColor: palette.success.light,
+        },
+        color: "white",
+        lineHeight: 1,
+        marginLeft: "auto",
+        marginTop: 3,
+        marginRight: 3,
+        padding: 0,
     },
     closeIcon: { width: 20, height: 20 },
 }));
