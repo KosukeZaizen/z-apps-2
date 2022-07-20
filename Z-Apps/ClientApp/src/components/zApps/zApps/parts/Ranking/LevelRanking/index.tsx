@@ -42,7 +42,7 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
                     isWide={isWide}
                     isVeryWide={isVeryWide}
                 />
-                <BasicRanking users={normalUsers} />
+                <BasicRanking users={normalUsers} player={player} />
             </div>
         </Collapse>
     );

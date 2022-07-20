@@ -1,5 +1,7 @@
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
+import { useEffect, useRef } from "react";
+import { User } from "../../../../../../../common/hooks/useUser";
 import { EllipsisLabel } from "../../../../../../shared/EllipsisLabel/EllipsisLabel";
 import { UserAvatar } from "../../../../../../shared/User/UserAvatar/UserAvatar";
 import { UserForRanking } from "../types";
@@ -7,14 +9,31 @@ import { UserForRanking } from "../types";
 export function BasicRankingRecord({
     user,
     rank,
+    player,
+    scrollableContainer,
 }: {
     user: UserForRanking;
     rank: number;
+    player?: User;
+    scrollableContainer: HTMLDivElement | null;
 }) {
     const c = useStyles();
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!ref.current || !scrollableContainer) {
+            return;
+        }
+        if (user.userId === player?.userId) {
+            scrollableContainer.scrollTo({
+                top: ref.current.offsetTop - 4,
+                behavior: "smooth",
+            });
+        }
+    }, [player, user, scrollableContainer]);
 
     return (
-        <Card className={c.card}>
+        <Card className={c.card} id={`ranking-record-${user.userId}`} ref={ref}>
             <div className={c.rankAndAvatar}>
                 <div className={c.rank}>{rank}.</div>
                 <UserAvatar user={user} colorNumber={rank} size={40} />

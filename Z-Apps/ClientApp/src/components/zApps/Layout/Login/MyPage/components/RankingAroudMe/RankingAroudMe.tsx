@@ -34,7 +34,7 @@ export function RankingAroundMe({ user: player }: { user: User }) {
         >
             <div className={c.container}>
                 <div className={c.rankingWrapper}>
-                    <BasicRanking users={users} />
+                    <BasicRanking users={users} player={player} />
                 </div>
             </div>
         </OpenableCard>
