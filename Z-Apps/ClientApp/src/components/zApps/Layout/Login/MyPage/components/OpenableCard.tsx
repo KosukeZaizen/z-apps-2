@@ -76,14 +76,13 @@ export function OpenableCard({
         localStorage.setItem(saveKey, open ? "open" : "close");
     }, [open]);
 
+    const initiallyOpen = id === initiallyOpenedId;
     const cardRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        if (!cardRef.current || id !== initiallyOpenedId) {
-            return;
+        if (initiallyOpen) {
+            openCollapse();
         }
-        cardRef.current.scrollIntoView({ behavior: "smooth" });
-        openCollapse();
-    }, [id, initiallyOpenedId]);
+    }, [initiallyOpen]);
 
     return (
         <Card className={c.card} onClick={openCollapse} ref={cardRef}>
@@ -108,7 +107,19 @@ export function OpenableCard({
                 </div>
             </div>
 
-            <Collapse in={open} timeout={500} className={c.collapse}>
+            <Collapse
+                in={open}
+                timeout={500}
+                className={c.collapse}
+                onEntered={() => {
+                    if (initiallyOpen) {
+                        if (!cardRef.current) {
+                            return;
+                        }
+                        cardRef.current.scrollIntoView({ behavior: "smooth" });
+                    }
+                }}
+            >
                 {children}
             </Collapse>
         </Card>
