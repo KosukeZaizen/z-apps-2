@@ -53,6 +53,7 @@ export function RankingAroundMe({
                         users={users}
                         player={player}
                         initialRank={initialRank}
+                        collapseOpen={open}
                     />
                 </div>
             </div>

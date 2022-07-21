@@ -1,6 +1,7 @@
 import Card from "@material-ui/core/Card";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { useEffect, useRef } from "react";
+import { sleepAsync } from "../../../../../../../common/functions";
 import { User } from "../../../../../../../common/hooks/useUser";
 import { EllipsisLabel } from "../../../../../../shared/EllipsisLabel/EllipsisLabel";
 import { UserAvatar } from "../../../../../../shared/User/UserAvatar/UserAvatar";
@@ -11,27 +12,31 @@ export function BasicRankingRecord({
     rank,
     player,
     scrollableContainer,
+    collapseOpen,
 }: {
     user: UserForRanking;
     rank: number;
     player?: User;
     scrollableContainer: HTMLDivElement | null;
+    collapseOpen: boolean;
 }) {
     const isMyself = user.userId === player?.userId;
     const c = useStyles({ isMyself });
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!ref.current || !scrollableContainer) {
-            return;
-        }
-        if (isMyself) {
-            scrollableContainer.scrollTo({
-                top: ref.current.offsetTop - 4,
-                behavior: "smooth",
+        if (isMyself && collapseOpen) {
+            sleepAsync(700).then(() => {
+                if (!ref.current || !scrollableContainer) {
+                    return;
+                }
+                scrollableContainer.scrollTo({
+                    top: ref.current.offsetTop - 4,
+                    behavior: "smooth",
+                });
             });
         }
-    }, [player, user, scrollableContainer]);
+    }, [player, user, scrollableContainer, collapseOpen]);
 
     return (
         <Card className={c.card} ref={ref}>

@@ -34,15 +34,21 @@ export function LevelRanking({ screenWidth }: { screenWidth: number }) {
     const [user1, user2, user3, ...normalUsers] = users;
     const topUsers = user3 ? [user1, user2, user3] : [];
 
+    const collapseOpen = users.length > 0;
+
     return (
-        <Collapse in={users.length > 0} timeout={700}>
+        <Collapse in={collapseOpen} timeout={700}>
             <div className={c.container}>
                 <TopRanking
                     users={topUsers}
                     isWide={isWide}
                     isVeryWide={isVeryWide}
                 />
-                <BasicRanking users={normalUsers} player={player} />
+                <BasicRanking
+                    users={normalUsers}
+                    player={player}
+                    collapseOpen={collapseOpen}
+                />
             </div>
         </Collapse>
     );

@@ -10,10 +10,12 @@ export function BasicRanking({
     users,
     player,
     initialRank = 4,
+    collapseOpen,
 }: {
     users: UserForRanking[];
     player?: User;
     initialRank?: number;
+    collapseOpen: boolean;
 }) {
     const c = useStyles();
     const scrollableContainerRef = useRef<HTMLDivElement>(null);
@@ -27,6 +29,7 @@ export function BasicRanking({
                         rank={i + initialRank}
                         player={player}
                         scrollableContainer={scrollableContainerRef.current}
+                        collapseOpen={collapseOpen}
                     />
                 </RankingRecordContainer>
             ))}
