@@ -26,6 +26,7 @@ export function BasicRankingRecord({
 
     useEffect(() => {
         if (isMyself && collapseOpen) {
+            // Wait until Collapse opens
             sleepAsync(700).then(() => {
                 if (!ref.current || !scrollableContainer) {
                     return;
