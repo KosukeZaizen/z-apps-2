@@ -53,7 +53,7 @@ const usePreviewFieldStyles = makeStyles(({ palette }) => ({
     pencilIcon: { width: 20, height: 20 },
     previewContainer: {
         width: "100%",
-        marginTop: 25,
+        marginTop: 15,
         position: "relative",
     },
     markdownContainerCard: { padding: 15, cursor: "pointer" },
