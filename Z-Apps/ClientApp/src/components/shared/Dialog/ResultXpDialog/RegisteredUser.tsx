@@ -212,6 +212,10 @@ const useRegisteredUserResultDialogStyles = makeStyles<
         width: 10,
         height: 10,
         marginLeft: 5,
+        transition: "all 200ms",
+        "&:hover": {
+            backgroundColor: theme.palette.primary.main,
+        },
     },
     arrowIcon: { width: 10, height: 10 },
 }));
