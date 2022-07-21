@@ -134,8 +134,8 @@ const useStatusCardStyles = makeStyles({
     card: {
         width: "100%",
         fontSize: "large",
-        margin: "10px 0",
-        padding: 30,
+        margin: "-5px 0 10px",
+        padding: "20px 30px 30px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
