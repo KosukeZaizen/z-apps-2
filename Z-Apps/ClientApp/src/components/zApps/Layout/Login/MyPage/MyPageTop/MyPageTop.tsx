@@ -1,5 +1,4 @@
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
 import Container from "@material-ui/core/Container";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import RunningIcon from "@material-ui/icons/DirectionsRun";
@@ -9,7 +8,6 @@ import { bindActionCreators } from "redux";
 import { changeAppState } from "../../../../../../common/appState";
 import { useScreenSize } from "../../../../../../common/hooks/useScreenSize";
 import { User, useUser } from "../../../../../../common/hooks/useUser";
-import { spaceBetween } from "../../../../../../common/util/Array/spaceBetween";
 import { ApplicationState } from "../../../../../../store/configureStore";
 import * as vocabStore from "../../../../../../store/VocabQuizStore";
 import { FullScreenShurikenProgress } from "../../../../../shared/Animations/ShurikenProgress";
@@ -98,7 +96,7 @@ function Content({ initialView }: { initialView?: InitialView }) {
 }
 const contentStyles = makeStyles(({ palette }) => ({
     logoutButton: {
-        marginTop: 15,
+        marginTop: 25,
         backgroundColor: palette.grey[800],
         "&:hover": {
             backgroundColor: palette.grey[700],
@@ -111,7 +109,7 @@ function ProfileCard({ user }: { user: User }) {
     const c = useStatusCardStyles();
 
     return (
-        <Card className={spaceBetween("progressCard", c.card)}>
+        <div className={c.card}>
             <AvatarField user={user} />
 
             <UsernameField user={user} />
@@ -127,15 +125,15 @@ function ProfileCard({ user }: { user: User }) {
             <XpProgressArea />
 
             <BioField user={user} />
-        </Card>
+        </div>
     );
 }
 const useStatusCardStyles = makeStyles({
     card: {
         width: "100%",
         fontSize: "large",
-        margin: "-5px 0 10px",
-        padding: "20px 30px 30px",
+        margin: "0 0 5px",
+        padding: "0 20px 20px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
