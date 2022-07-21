@@ -1,4 +1,5 @@
-import { Card, makeStyles } from "@material-ui/core";
+import { Card, IconButton, makeStyles, Theme } from "@material-ui/core";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForwardIos";
 import { ReactNode, useEffect, useState } from "react";
 import { changeAppState } from "../../../../common/appState";
 import { sleepAsync } from "../../../../common/functions";
@@ -91,7 +92,7 @@ function ResultXpDialog_RegisteredUser({
     isLevelUp?: boolean;
     myRank?: number;
 }) {
-    const c = useRegisteredUserResultDialogStyles();
+    const c = useRegisteredUserResultDialogStyles({ loaded: !!myRank });
     const { user } = useUser();
 
     return (
@@ -117,20 +118,21 @@ function ResultXpDialog_RegisteredUser({
                 <Card className={c.progressCard}>
                     <h2 className={c.level}>Level: {user?.level}</h2>
                     <XpProgressArea />
-                    <div className={c.rakingContainer}>
-                        <a
-                            href="#"
-                            onClick={ev => {
-                                ev.preventDefault();
-                                ev.stopPropagation();
-                                changeAppState("signInPanelState", {
-                                    type: "myPageTop",
-                                    initialView: "MypageUserRankingAroundMe",
-                                });
-                            }}
-                        >
-                            {`Your ranking is ${myRank} >>`}
-                        </a>
+                    <div
+                        className={c.rakingContainer}
+                        onClick={ev => {
+                            ev.preventDefault();
+                            ev.stopPropagation();
+                            changeAppState("signInPanelState", {
+                                type: "myPageTop",
+                                initialView: "MyPageUserRankingAroundMe",
+                            });
+                        }}
+                    >
+                        {`Your ranking is ${myRank || ""}`}
+                        <IconButton className={c.arrowIconButton}>
+                            <ArrowForwardIcon className={c.arrowIcon} />
+                        </IconButton>
                     </div>
                 </Card>
 
@@ -147,7 +149,10 @@ function ResultXpDialog_RegisteredUser({
         </CenterDialog>
     );
 }
-const useRegisteredUserResultDialogStyles = makeStyles(theme => ({
+const useRegisteredUserResultDialogStyles = makeStyles<
+    Theme,
+    { loaded: boolean }
+>(theme => ({
     container: {
         margin: "0 10px",
         display: "flex",
@@ -158,17 +163,24 @@ const useRegisteredUserResultDialogStyles = makeStyles(theme => ({
         position: "relative",
     },
     xp: { color: theme.palette.secondary.main, marginBottom: 0 },
-    progressCard: {
-        padding: "20px 30px 22px",
+    progressCard: ({ loaded }) => ({
+        paddingTop: 20,
+        paddingBottom: 22,
+        paddingLeft: loaded ? 30 : 0,
+        paddingRight: loaded ? 30 : 0,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "space-around",
         position: "relative",
         bottom: 5,
-    },
+        maxWidth: loaded ? 270 : 0,
+        transition: "all 700ms",
+        overflow: "hidden",
+    }),
     level: {
         marginBottom: 10,
+        whiteSpace: "nowrap",
     },
     levelUp: {
         position: "absolute",
@@ -179,7 +191,29 @@ const useRegisteredUserResultDialogStyles = makeStyles(theme => ({
         padding: 5,
         transform: "rotate(-15deg)",
     },
-    rakingContainer: { marginTop: 8 },
+    rakingContainer: {
+        marginTop: 12,
+        display: "flex",
+        alignItems: "center",
+        fontSize: "medium",
+        color: theme.palette.primary.main,
+        fontWeight: "bold",
+        cursor: "pointer",
+        transition: "opacity 200ms",
+        opacity: 1,
+        "&:hover": {
+            opacity: 0.7,
+        },
+        whiteSpace: "nowrap",
+    },
+    arrowIconButton: {
+        backgroundColor: theme.palette.primary.main,
+        color: "white",
+        width: 10,
+        height: 10,
+        marginLeft: 5,
+    },
+    arrowIcon: { width: 10, height: 10 },
 }));
 
 async function fetchAddXp(

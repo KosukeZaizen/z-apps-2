@@ -221,8 +221,8 @@ const Progress = connect(
         <OpenableCard
             title={`Progress: ${totalProgress}%`}
             icon={<RunningIcon />}
-            saveKey="MypageProgressPercentageCard"
-            id="MypageProgressPercentageCard"
+            saveKey="MyPageProgressPercentageCard"
+            id="MyPageProgressPercentageCard"
             open={open}
             setOpen={setOpen}
             initiallyOpenedId={initialView}

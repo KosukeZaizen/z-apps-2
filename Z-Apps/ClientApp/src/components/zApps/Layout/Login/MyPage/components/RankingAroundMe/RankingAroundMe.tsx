@@ -39,8 +39,8 @@ export function RankingAroundMe({
         <OpenableCard
             title={`Ranking: ${myRank}`}
             icon={<TrendingUpIcon />}
-            saveKey="MypageUserRankingAroundMe"
-            id="MypageUserRankingAroundMe"
+            saveKey="MyPageUserRankingAroundMe"
+            id="MyPageUserRankingAroundMe"
             open={open}
             setOpen={setOpen}
             alwaysShowIcon

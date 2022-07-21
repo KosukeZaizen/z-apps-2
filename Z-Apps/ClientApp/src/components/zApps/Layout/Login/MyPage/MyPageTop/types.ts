@@ -4,8 +4,7 @@ export type MyPageTopPanelState = {
 };
 
 export type OpenableCardId =
-    | "MypageProgressPercentageCard"
-    | "MypageUserRankingAroundMe";
+    | "MyPageProgressPercentageCard"
+    | "MyPageUserRankingAroundMe";
 
 export type InitialView = OpenableCardId;
-
